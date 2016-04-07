@@ -13,6 +13,8 @@ import com.jogamp.opengl.GLEventListener;
 import com.jogamp.opengl.util.FPSAnimator;
 import sk.styk.martin.pv112.project.materials.ChromeMaterial;
 import sk.styk.martin.pv112.project.materials.GoldMaterial;
+import sk.styk.martin.pv112.project.materials.PewterMaterial;
+import sk.styk.martin.pv112.project.objects.Cube;
 import sk.styk.martin.pv112.project.objects.Teapot;
 import sk.styk.martin.pv112.project.programs.BasicProgram;
 import sk.styk.martin.pv112.project.programs.Program;
@@ -38,6 +40,7 @@ public class Scene implements GLEventListener {
     // models
     private Teapot teapot;
     private Teapot teapot2;
+    private Cube cube;
     
     //lights
     private Light light1;
@@ -101,6 +104,8 @@ public class Scene implements GLEventListener {
         // create geometry
         teapot = new Teapot(basicProgram, ChromeMaterial.getInstance());
         teapot2 = new Teapot(basicProgram, GoldMaterial.getInstance());
+        cube = new Cube(basicProgram, PewterMaterial.getInstance());
+
         light1 = new Light(new Vec4(3.0f, 0.0f, 0.0f, 1.0f));
         light2 = new Light(new Vec4(0.0f, -2.0f, 0.0f, 1.0f));
     }
@@ -159,6 +164,12 @@ public class Scene implements GLEventListener {
         model = Mat4.MAT4_IDENTITY.translate(new Vec3(5.0f, 0.0f, 0.0f));
         mvp = projection.multiply(view).multiply(model);
         teapot2.draw(model,mvp);
+
+        // cube
+        model = Mat4.MAT4_IDENTITY.translate(new Vec3(-5.0f, 0.0f, 0.0f));
+        mvp = projection.multiply(view).multiply(model);
+        cube.draw(model,mvp);
+
                 
         gl.glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     }
