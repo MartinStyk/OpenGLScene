@@ -11,13 +11,17 @@ import com.jogamp.opengl.GLDebugListener;
 import com.jogamp.opengl.GLDebugMessage;
 import com.jogamp.opengl.GLEventListener;
 import com.jogamp.opengl.util.FPSAnimator;
+import com.jogamp.opengl.util.texture.Texture;
 import sk.styk.martin.pv112.project.materials.ChromeMaterial;
 import sk.styk.martin.pv112.project.materials.GoldMaterial;
 import sk.styk.martin.pv112.project.materials.PewterMaterial;
 import sk.styk.martin.pv112.project.objects.Cube;
 import sk.styk.martin.pv112.project.objects.Teapot;
 import sk.styk.martin.pv112.project.programs.BasicProgram;
+import sk.styk.martin.pv112.project.programs.BasicTextureProgram;
 import sk.styk.martin.pv112.project.programs.Program;
+import sk.styk.martin.pv112.project.textures.RockTexture;
+import sk.styk.martin.pv112.project.textures.WoodTexture;
 
 /**
  *
@@ -36,11 +40,12 @@ public class Scene implements GLEventListener {
     
     // programs
     private Program basicProgram;
-    
+
     // models
     private Teapot teapot;
     private Teapot teapot2;
     private Cube cube;
+    private Cube cube2;
     
     //lights
     private Light light1;
@@ -93,21 +98,23 @@ public class Scene implements GLEventListener {
         // load GLSL program (vertex and fragment shaders)
         basicProgram = new BasicProgram(gl);
                
-	// get JOGL vertex array
+	    // get JOGL vertex array
         int binding[] = new int[1];
         gl.glGetIntegerv(GL_VERTEX_ARRAY_BINDING, binding, 0);
         joglArray = binding[0];
         
         // clear current Vertex Array Object state
         gl.glBindVertexArray(joglArray);
-        
+
+        Texture wood = WoodTexture.get(gl);
         // create geometry
         teapot = new Teapot(basicProgram, ChromeMaterial.getInstance());
         teapot2 = new Teapot(basicProgram, GoldMaterial.getInstance());
-        cube = new Cube(basicProgram, PewterMaterial.getInstance());
+        cube = new Cube(basicProgram, PewterMaterial.getInstance(),WoodTexture.get(gl));
+        cube2 = new Cube(basicProgram, PewterMaterial.getInstance());
 
         light1 = new Light(new Vec4(3.0f, 0.0f, 0.0f, 1.0f));
-        light2 = new Light(new Vec4(0.0f, -2.0f, 0.0f, 1.0f));
+        light2 = new Light(new Vec4(-7.0f, -7.0f, 0.0f, 1.0f));
     }
 
     @Override
@@ -157,7 +164,7 @@ public class Scene implements GLEventListener {
         // teapot
         Mat4 model = Mat4.MAT4_IDENTITY;
         Mat4 mvp = projection.multiply(view).multiply(model);
-        
+
         teapot.draw(model, mvp);
         
         // teapot2
@@ -169,6 +176,11 @@ public class Scene implements GLEventListener {
         model = Mat4.MAT4_IDENTITY.translate(new Vec3(-5.0f, 0.0f, 0.0f));
         mvp = projection.multiply(view).multiply(model);
         cube.draw(model,mvp);
+
+        // cube2
+        model = Mat4.MAT4_IDENTITY.translate(new Vec3(-5.0f, -5.0f, 0.0f));
+        mvp = projection.multiply(view).multiply(model);
+        cube2.draw(model,mvp);
 
                 
         gl.glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);

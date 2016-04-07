@@ -13,7 +13,7 @@ uniform mat3 N;
 uniform mat4 model;
 
 void main() {
-    vTex_coord = tex_coord; //TODO
+    vTex_coord = tex_coord;
     vPosition = vec3(model * vec4(position, 1.0));
     vNormal = normalize(N * normal);
     gl_Position = MVP * vec4(position, 1.0);

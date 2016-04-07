@@ -27,7 +27,6 @@ uniform vec3 eyePosition;
 
 uniform vec3 color;
 
-uniform int isTexture;
 uniform sampler2D texture;
 
 void main() {
@@ -58,27 +57,14 @@ void main() {
     float d2 = max(dot(vNormal, light2), 0.0);
     float s2 = pow(max(dot(vNormal, h2), 0.0), 100);
 
-    vec3 lightFinal;
+    vec3 texture_color = texture(texture,vTex_coord).rgb;
 
-    if(isTexture == 1){
-        vec3 texture_color = texture(texture,vTex_coord).rgb;
-        lightFinal = materialSpecularColor * light1SpecularColor * s +
-                                              texture_color * light1DiffuseColor * d +
-                                              texture_color * light1AmbientColor +
-                                              texture_color * light2SpecularColor * s2 +
-                                              texture_color * light2DiffuseColor * d2 +
-                                              texture_color * light2AmbientColor;
-
-    } else{
-
-    lightFinal = materialSpecularColor * light1SpecularColor * s +
-                                      materialDiffuseColor * light1DiffuseColor * d +
-                                      materialAmbientColor * light1AmbientColor +
-                                      materialSpecularColor * light2SpecularColor * s2 +
-                                      materialDiffuseColor * light2DiffuseColor * d2 +
-                                      materialAmbientColor * light2AmbientColor;
-    }
-
+    vec3 lightFinal = materialSpecularColor * light1SpecularColor * s +
+                        texture_color * light1DiffuseColor * d +
+                        texture_color * light1AmbientColor +
+                        materialSpecularColor * light2SpecularColor * s2 +
+                        texture_color * light2DiffuseColor * d2 +
+                        texture_color * light2AmbientColor;
 
     fragColor = vec4(lightFinal, 1.0);
 }

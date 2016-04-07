@@ -12,11 +12,16 @@ import static com.jogamp.opengl.GL2ES2.GL_INFO_LOG_LENGTH;
 import static com.jogamp.opengl.GL2ES2.GL_LINK_STATUS;
 import static com.jogamp.opengl.GL2ES2.GL_VERTEX_SHADER;
 import com.jogamp.opengl.GL3;
+import com.jogamp.opengl.util.texture.Texture;
+import com.jogamp.opengl.util.texture.TextureData;
+import com.jogamp.opengl.util.texture.TextureIO;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -86,9 +91,7 @@ public class LoadUtils {
     }
     
     public static String readAllFromResource(String resource) throws IOException {
-        
-        System.out.println(new File(resource).getAbsolutePath());
-        
+
         InputStream is = Scene.class.getResourceAsStream(resource);
         if (is == null) {
             throw new IOException("Resource not found: " + resource);
@@ -118,8 +121,21 @@ public class LoadUtils {
         // get cube program attributes
         int positionAttribLoc = gl.glGetAttribLocation(program, "position");
         int normalAttribLoc = gl.glGetAttribLocation(program, "normal");
+        int textureAttribLoc = gl.glGetAttribLocation(program, "tex_coord");
         // create geometry
-        return Geometry.create(gl, model, positionAttribLoc, normalAttribLoc);
+        return Geometry.create(gl, model, positionAttribLoc, normalAttribLoc,textureAttribLoc);
+    }
+
+    public static Texture loadTexture(GL3 gl, String path, String suffix) {
+        URL url = Scene.class.getResource(path);
+        try {
+            TextureData data = TextureIO.newTextureData(gl.getGLProfile(), url, false, suffix);
+            Texture texture = new Texture(gl, data);
+            return texture;
+        } catch (IOException ex) {
+            System.err.println("File not found");
+        }
+        return null;
     }
     
 }

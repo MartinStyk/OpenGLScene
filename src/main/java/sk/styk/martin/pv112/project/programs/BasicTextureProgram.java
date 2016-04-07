@@ -13,10 +13,10 @@ import sk.styk.martin.pv112.project.Light;
  *
  * @author Martin Styk
  */
-public class BasicProgram extends Program {
+public class BasicTextureProgram extends Program {
 
-    private static final String VERTEX_SHADER = "/shaders/model.vs.glsl";
-    private static final String FRAGMENT_SHADER = "/shaders/model.fs.glsl";
+    private static final String VERTEX_SHADER = "/shaders/texture.vs.glsl";
+    private static final String FRAGMENT_SHADER = "/shaders/texture.fs.glsl";
 
     private static final int NUMBER_LIGHTS = 2;
 
@@ -43,9 +43,9 @@ public class BasicProgram extends Program {
     public static final String EYE_POSITION = "eyePosition";
 
     public static final String TEXTURE = "texture";
-    public static final String IS_TEXTURE = "isTexture";
 
-    public BasicProgram(GL3 gl) {
+    @Deprecated
+    public BasicTextureProgram(GL3 gl) {
         super(gl, VERTEX_SHADER, FRAGMENT_SHADER);
         addUniformLocation(MODEL,
                 MVP,
@@ -64,8 +64,7 @@ public class BasicProgram extends Program {
                 LIGHT2_DIFFUSE_COLOR,
                 LIGHT2_SPECULAR_COLOR,
                 EYE_POSITION,
-                TEXTURE,
-                IS_TEXTURE);
+                TEXTURE);
     }
 
     @Override
@@ -74,7 +73,7 @@ public class BasicProgram extends Program {
         int ambient;
         int diffuse;
         int specular;
-        
+
         switch(i){
             case 1:
                 position = uniformManager.getUniformLocation(LIGHT1_POSITION);
@@ -90,13 +89,13 @@ public class BasicProgram extends Program {
                 break;
             default:throw new IllegalArgumentException("number of light is incorrect");
         }
-        
+
         light.bindUniforms(gl,position, ambient, diffuse, specular);
     }
-    
+
     @Override
     public void bindCamera(Camera camera){
         gl.glUniform3fv(uniformManager.getUniformLocation(EYE_POSITION), 1, camera.getEyePosition().getBuffer());
     }
-        
+
 }

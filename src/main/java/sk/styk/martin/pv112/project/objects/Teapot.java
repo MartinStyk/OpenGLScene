@@ -8,6 +8,7 @@ package sk.styk.martin.pv112.project.objects;
 import com.hackoeur.jglm.Mat3;
 import com.hackoeur.jglm.MatricesUtils;
 import com.jogamp.opengl.GL3;
+import com.jogamp.opengl.util.texture.Texture;
 import sk.styk.martin.pv112.project.materials.Material;
 import sk.styk.martin.pv112.project.programs.BasicProgram;
 import sk.styk.martin.pv112.project.programs.Program;
@@ -19,11 +20,15 @@ import sk.styk.martin.pv112.project.programs.Program;
 public class Teapot extends Drawable {
 
     public Teapot(Program program) {
-        this(program, null);
+        this(program, null, null);
     }
 
     public Teapot(Program program, Material material) {
-        super(program, material, "/models/teapot-high.obj");
+        super(program, material, null, "/models/teapot-high.obj");
+    }
+
+    public Teapot(Program program, Material material, Texture texture) {
+        super(program, material, texture, "/models/teapot-high.obj");
     }
 
     @Override

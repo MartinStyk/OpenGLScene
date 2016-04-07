@@ -7,6 +7,7 @@ package sk.styk.martin.pv112.project.objects;
 
 import com.hackoeur.jglm.Mat4;
 import com.jogamp.opengl.GL3;
+import com.jogamp.opengl.util.texture.Texture;
 import sk.styk.martin.pv112.project.Geometry;
 import sk.styk.martin.pv112.project.LoadUtils;
 import sk.styk.martin.pv112.project.materials.Material;
@@ -21,15 +22,17 @@ public abstract class Drawable {
     protected Program program;
     protected Geometry geometry;
     protected Material material;
+    protected Texture texture;
     protected Mat4 mvp;
     protected Mat4 model;
 
     public Drawable(Program program, String path){
-        this(program, null, path);
+        this(program, null,null, path);
     }
     
-    public Drawable(Program program, Material material,String path){
+    public Drawable(Program program, Material material, Texture texture,String path){
         this.program = program;
+        this.texture = texture;
         this.material = material;
         geometry = LoadUtils.loadGeometry(program.getGL(), program.getID(), path);
     }
@@ -109,6 +112,20 @@ public abstract class Drawable {
      */
     public void setModel(Mat4 model) {
         this.model = model;
+    }
+
+    /**
+     * @return the texture
+     */
+    public Texture getTexture() {
+        return texture;
+    }
+
+    /**
+     * @param texture the texture to set
+     */
+    public void setTexture(Texture texture) {
+        this.texture = texture;
     }
     
     public abstract void draw();
