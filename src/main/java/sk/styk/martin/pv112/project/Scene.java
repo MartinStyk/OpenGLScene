@@ -1,9 +1,6 @@
 package sk.styk.martin.pv112.project;
 
-import com.hackoeur.jglm.Mat4;
-import com.hackoeur.jglm.Matrices;
-import com.hackoeur.jglm.Vec3;
-import com.hackoeur.jglm.Vec4;
+import com.hackoeur.jglm.*;
 import com.jogamp.opengl.GL3;
 import static com.jogamp.opengl.GL3.*;
 import com.jogamp.opengl.GLAutoDrawable;
@@ -11,20 +8,13 @@ import com.jogamp.opengl.GLDebugListener;
 import com.jogamp.opengl.GLDebugMessage;
 import com.jogamp.opengl.GLEventListener;
 import com.jogamp.opengl.util.FPSAnimator;
-import com.jogamp.opengl.util.texture.Texture;
-import sk.styk.martin.pv112.project.materials.ChromeMaterial;
-import sk.styk.martin.pv112.project.materials.GoldMaterial;
-import sk.styk.martin.pv112.project.materials.PewterMaterial;
+import sk.styk.martin.pv112.project.materials.*;
 import sk.styk.martin.pv112.project.objects.Cube;
 import sk.styk.martin.pv112.project.objects.Dice;
 import sk.styk.martin.pv112.project.objects.Teapot;
 import sk.styk.martin.pv112.project.programs.BasicProgram;
-import sk.styk.martin.pv112.project.programs.BasicTextureProgram;
 import sk.styk.martin.pv112.project.programs.Program;
-import sk.styk.martin.pv112.project.textures.DiceTexture;
-import sk.styk.martin.pv112.project.textures.RockTexture;
-import sk.styk.martin.pv112.project.textures.TexturesFactory;
-import sk.styk.martin.pv112.project.textures.WoodTexture;
+import sk.styk.martin.pv112.project.textures.*;
 
 /**
  *
@@ -45,6 +35,8 @@ public class Scene implements GLEventListener {
     private Program basicProgram;
 
     // models
+    private Cube wall;
+    private Cube floor;
     private Teapot teapot;
     private Teapot teapot2;
     private Cube cube;
@@ -109,16 +101,24 @@ public class Scene implements GLEventListener {
         // clear current Vertex Array Object state
         gl.glBindVertexArray(joglArray);
 
-        DiceTexture diceTexture= new DiceTexture(gl);
-
         // create geometry
+        wall = new Cube(basicProgram, WallMaterial.getInstance());
+        floor = new Cube(basicProgram, WallMaterial.getInstance(), new WoodTexture(gl,GL_MIRRORED_REPEAT, GL_REPEAT, GL_MIRRORED_REPEAT, 10,0));
+
         teapot = new Teapot(basicProgram, ChromeMaterial.getInstance(), new RockTexture(gl));
+        teapot.setModel(Mat4.MAT4_IDENTITY);
+
         teapot2 = new Teapot(basicProgram, GoldMaterial.getInstance());
+        teapot2.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(5.0f, 0.0f, 0.0f)));
+
         cube = new Dice(basicProgram);
+        cube.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(-5.0f, 0.0f, 0.0f)));
+
         cube2 = new Cube(basicProgram, ChromeMaterial.getInstance(), new RockTexture(gl,GL_MIRRORED_REPEAT,GL_MIRRORED_REPEAT,GL_MIRRORED_REPEAT,3,-1));
+        cube2.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(-5.0f, -5.0f, 0.0f)));
 
         light1 = new Light(new Vec4(3.0f, 0.0f, 0.0f, 1.0f));
-        light2 = new Light(new Vec4(-7.0f, -7.0f, 0.0f, 1.0f));
+        light2 = new Light(new Vec4(-2.0f, 5.0f, 0.0f, 1.0f));
     }
 
     @Override
@@ -164,70 +164,30 @@ public class Scene implements GLEventListener {
         // draw filled polygons or lines
         gl.glPolygonMode(GL_FRONT_AND_BACK, mode);
         gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-                
-        // teapot
-        Mat4 model = Mat4.MAT4_IDENTITY;
-        Mat4 mvp = projection.multiply(view).multiply(model);
 
-        teapot.draw(model, mvp);
+        //walls
+        drawWalls(projection,view);
+
+        // teapot
+        Mat4 mvp = projection.multiply(view).multiply(teapot.getModel());
+        teapot.draw(mvp);
         
         // teapot2
-        model = Mat4.MAT4_IDENTITY.translate(new Vec3(5.0f, 0.0f, 0.0f));
-        mvp = projection.multiply(view).multiply(model);
-        teapot2.draw(model,mvp);
+        mvp = projection.multiply(view).multiply(teapot2.getModel());
+        teapot2.draw(mvp);
 
         // cube
-        model = Mat4.MAT4_IDENTITY.translate(new Vec3(-5.0f, 0.0f, 0.0f));
-        mvp = projection.multiply(view).multiply(model);
-        cube.draw(model,mvp);
+        mvp = projection.multiply(view).multiply(cube.getModel());
+        cube.draw(mvp);
 
         // cube2
-        model = Mat4.MAT4_IDENTITY.translate(new Vec3(-5.0f, -5.0f, 0.0f));
-        mvp = projection.multiply(view).multiply(model);
-        cube2.draw(model,mvp);
+        mvp = projection.multiply(view).multiply(cube2.getModel());
+        cube2.draw(mvp);
 
                 
         gl.glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     }
-    
-//    private void drawModel(GL3 gl, Mat4 model, Mat4 mvp, Material material) {
-//        gl.glUseProgram(modelProgram);
-//
-//        Mat3 n = MatricesUtils.inverse(getMat3(model).transpose());
-//        gl.glUniformMatrix3fv(nLoc, 1, false, n.getBuffer());
-//        
-//        gl.glUniformMatrix4fv(modelLoc, 1, false, model.getBuffer());
-//        
-//        material.bindUniforms(gl, materialAmbientColorLoc, materialDiffuseColorLoc, materialSpecularColorLoc, materialShininessLoc);
-//        
-//        gl.glUniformMatrix4fv(mvpLoc, 1, false, mvp.getBuffer());
-//        
-//        gl.glUniform3f(colorLoc, 1f, 1f, 0.2f);
-//        
-//        teapot.draw(gl);
-//        
-//	gl.glUseProgram(0);
-//    }
-//    
-//     private void drawModel(Drawable drawable) {
-//        GL3 gl = drawable.getGl(); 
-//        gl.glUseProgram(drawable.getProgram());
-//
-//        Mat3 n = MatricesUtils.inverse(getMat3(drawable.getModel()).transpose());
-//        gl.glUniformMatrix3fv(nLoc, 1, false, n.getBuffer());
-//        
-//        gl.glUniformMatrix4fv(modelLoc, 1, false, drawable.getModel().getBuffer());
-//        
-//        drawable.getMaterial().bindUniforms(gl, materialAmbientColorLoc, materialDiffuseColorLoc, materialSpecularColorLoc, materialShininessLoc);
-//        
-//        gl.glUniformMatrix4fv(mvpLoc, 1, false, drawable.getMvp().getBuffer());
-//        
-//        gl.glUniform3f(colorLoc, 1f, 1f, 0.2f);
-//        
-//        drawable.getGeometry().draw(gl);
-//        
-//	gl.glUseProgram(0);
-//    }
+
     
     @Override
     public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
@@ -238,6 +198,52 @@ public class Scene implements GLEventListener {
         
 	gl.glViewport(0, 0, width, height);
     }
-    
+
+    private void drawWalls(Mat4 projection, Mat4 view){
+        //back wall
+        wall.setModel(Mat4.MAT4_IDENTITY
+                .multiply(Matrices.rotate((float)(0.5f * Math.PI), new Vec3(0,1,0)))
+                .translate(new Vec3(15.0f, 0.0f, 0.0f))
+                .multiply(MatricesUtils.scale(0.1f, 5.0f, 10.0f)));
+        Mat4 mvp = projection.multiply(view).multiply(wall.getModel());
+        wall.draw(mvp);
+
+        //front wall
+        wall.setModel(Mat4.MAT4_IDENTITY
+                .multiply(Matrices.rotate((float)(1.5 * Math.PI), new Vec3(0,1,0)))
+                .translate(new Vec3(15.0f, 0.0f, 0.0f))
+                .multiply(MatricesUtils.scale(0.1f, 5.0f, 10.0f)));
+        mvp = projection.multiply(view).multiply(wall.getModel());
+        wall.draw(mvp);
+
+        //left wall
+        wall.setModel(Mat4.MAT4_IDENTITY
+                .multiply(Matrices.rotate((float)( 1 *  Math.PI), new Vec3(0,1,0)))
+                .translate(new Vec3(10.0f, 0.0f, 0.0f))
+                .multiply(MatricesUtils.scale(0.1f, 5.0f, 15.0f)));
+        mvp = projection.multiply(view).multiply(wall.getModel());
+        wall.draw(mvp);
+
+        //right wall
+        wall.setModel(Mat4.MAT4_IDENTITY
+                .translate(new Vec3(10.0f, 0.0f, 0.0f))
+                .multiply(MatricesUtils.scale(0.1f, 5.0f, 15.0f)));
+        mvp = projection.multiply(view).multiply(wall.getModel());
+        wall.draw(mvp);
+
+        //ceiling
+        wall.setModel(Mat4.MAT4_IDENTITY
+                .translate(new Vec3(0.0f, 5.0f, 0.0f))
+                .multiply(MatricesUtils.scale(10.0f, 0.1f, 15.0f)));
+        mvp = projection.multiply(view).multiply(wall.getModel());
+        wall.draw(mvp);
+
+        //floor
+        floor.setModel(Mat4.MAT4_IDENTITY
+                .translate(new Vec3(0.0f, -5.0f, 0.0f))
+                .multiply(MatricesUtils.scale(10.0f, 0.1f, 15.0f)));
+        mvp = projection.multiply(view).multiply(floor.getModel());
+        floor.draw(mvp);
+    }
     
 }

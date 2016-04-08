@@ -51,12 +51,12 @@ void main() {
     vec3 h = normalize(light + v);
 
     float d = max(dot(vNormal, light), 0.0);
-    float s = pow(max(dot(vNormal, h), 0.0), 100);
+    float s = d * pow(max(dot(vNormal, h), 0.0), materialShininess);
 
     vec3 h2 = normalize(light2 + v);
 
     float d2 = max(dot(vNormal, light2), 0.0);
-    float s2 = pow(max(dot(vNormal, h2), 0.0), 100);
+    float s2 =d2 * pow(max(dot(vNormal, h2), 0.0), materialShininess);
 
     vec3 lightFinal;
 

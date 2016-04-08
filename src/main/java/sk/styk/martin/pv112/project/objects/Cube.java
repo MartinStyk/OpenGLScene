@@ -1,11 +1,6 @@
 package sk.styk.martin.pv112.project.objects;
 
-import com.hackoeur.jglm.Mat3;
-import com.hackoeur.jglm.MatricesUtils;
-import com.jogamp.opengl.GL3;
-import com.jogamp.opengl.util.texture.Texture;
 import sk.styk.martin.pv112.project.materials.Material;
-import sk.styk.martin.pv112.project.programs.BasicProgram;
 import sk.styk.martin.pv112.project.programs.Program;
 import sk.styk.martin.pv112.project.textures.ConfigurableTexture;
 

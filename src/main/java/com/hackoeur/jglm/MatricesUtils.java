@@ -80,6 +80,28 @@ public class MatricesUtils {
         return x;
     }
 
+    public static Mat4 translate(float x, float y, float z) {
+        Mat4 m = new Mat4(
+                1, 0, 0, x,
+                0, 1, 0, y,
+                0, 0, 1, z,
+                0, 0, 0, 1
+        );
+        m = m.transpose();
+        return m;
+    }
+
+    public static Mat4 scale(float x, float y, float z) {
+        Mat4 m = new Mat4(
+                x, 0, 0, 0,
+                0, y, 0, 0,
+                0, 0, z, 0,
+                0, 0, 0, 1
+        );
+        m = m.transpose();
+        return m;
+    }
+
 
     // Method to carry out the partial-pivoting Gaussian
     // elimination.  Here index[] stores pivoting order.

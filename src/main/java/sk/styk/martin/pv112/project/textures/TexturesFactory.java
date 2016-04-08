@@ -17,12 +17,13 @@ public class TexturesFactory {
     private GL3 gl;
 
     public enum Types {
-        WOOD, ROCKS, DICE1, DICE2,DICE3,DICE4,DICE5,DICE6
+        WOOD, ROCKS, DICE1, DICE2,DICE3,DICE4,DICE5,DICE6,WALL
     }
 
     private Texture wood;
     private Texture rocks;
     private List<Texture> dice;
+    private Texture wall;
 
     protected TexturesFactory(GL3 gl) {
         this.gl = gl;
@@ -51,6 +52,11 @@ public class TexturesFactory {
                     rocks = LoadUtils.loadTexture(gl, RockTexture.getPath(), RockTexture.getType());
                 }
                 return rocks;
+            case WALL:
+                if (wall == null) {
+                    wall = LoadUtils.loadTexture(gl, WallTexture.getPath(), WallTexture.getType());
+                }
+                return wall;
             default:
                 throw new IllegalArgumentException("Texture type does not exist");
         }

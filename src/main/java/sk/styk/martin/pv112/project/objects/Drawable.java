@@ -170,7 +170,13 @@ public abstract class Drawable {
 
         gl.glUseProgram(0);
     };
-    
+
+    public void draw(Mat4 mvp){
+        this.setModel(model);
+        this.setMvp(mvp);
+        draw();
+    }
+
     public void draw(Mat4 model, Mat4 mvp){
         this.setModel(model);
         this.setMvp(mvp);
