@@ -45,6 +45,9 @@ public class BasicProgram extends Program {
     public static final String TEXTURE = "texture";
     public static final String IS_TEXTURE = "isTexture";
 
+    public static final String TEXTURE_COORDINATES_MULTIPLIER = "texCoordMultiplier";
+    public static final String TEXTURE_COORDINATES_OFFSET = "texCoordOffset";
+
     public BasicProgram(GL3 gl) {
         super(gl, VERTEX_SHADER, FRAGMENT_SHADER);
         addUniformLocation(MODEL,
@@ -65,7 +68,9 @@ public class BasicProgram extends Program {
                 LIGHT2_SPECULAR_COLOR,
                 EYE_POSITION,
                 TEXTURE,
-                IS_TEXTURE);
+                IS_TEXTURE,
+                TEXTURE_COORDINATES_MULTIPLIER,
+                TEXTURE_COORDINATES_OFFSET);
     }
 
     @Override

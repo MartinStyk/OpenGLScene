@@ -12,6 +12,7 @@ import com.jogamp.opengl.util.texture.Texture;
 import sk.styk.martin.pv112.project.materials.Material;
 import sk.styk.martin.pv112.project.programs.BasicProgram;
 import sk.styk.martin.pv112.project.programs.Program;
+import sk.styk.martin.pv112.project.textures.ConfigurableTexture;
 
 /**
  *
@@ -27,7 +28,7 @@ public class Teapot extends Drawable {
         super(program, material, null, "/models/teapot-high.obj");
     }
 
-    public Teapot(Program program, Material material, Texture texture) {
+    public Teapot(Program program, Material material, ConfigurableTexture texture) {
         super(program, material, texture, "/models/teapot-high.obj");
     }
 

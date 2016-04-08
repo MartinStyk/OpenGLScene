@@ -7,9 +7,9 @@ import com.jogamp.opengl.util.texture.Texture;
 import sk.styk.martin.pv112.project.materials.Material;
 import sk.styk.martin.pv112.project.programs.BasicProgram;
 import sk.styk.martin.pv112.project.programs.Program;
+import sk.styk.martin.pv112.project.textures.ConfigurableTexture;
 
 import static com.jogamp.opengl.GL.*;
-import static com.jogamp.opengl.GL.GL_TEXTURE_2D;
 
 /**
  * Created by Martin Styk on 07.04.2016.
@@ -24,7 +24,7 @@ public class Cube extends Drawable {
         this(program, material, null);
     }
 
-    public Cube(Program program, Material material, Texture texture) {
+    public Cube(Program program, Material material, ConfigurableTexture texture) {
         super(program, material, texture, "/models/cube.obj");
     }
 
@@ -36,8 +36,9 @@ public class Cube extends Drawable {
 
         Mat3 n = MatricesUtils.inverse(MatricesUtils.getMat3(model).transpose());
         gl.glUniformMatrix3fv(program.getUniformLoc(BasicProgram.N), 1, false, n.getBuffer());
-
         gl.glUniformMatrix4fv(program.getUniformLoc(BasicProgram.MODEL), 1, false, model.getBuffer());
+        gl.glUniformMatrix4fv(program.getUniformLoc(BasicProgram.MVP), 1, false, mvp.getBuffer());
+        gl.glUniform3f(program.getUniformLoc(BasicProgram.COLOR), 1f, 1f, 0.2f);
 
         if (material != null) {
             material.bindUniforms(gl,
@@ -48,19 +49,17 @@ public class Cube extends Drawable {
             );
         }
 
-        gl.glUniformMatrix4fv(program.getUniformLoc(BasicProgram.MVP), 1, false, mvp.getBuffer());
-
-        gl.glUniform3f(program.getUniformLoc(BasicProgram.COLOR), 1f, 1f, 0.2f);
-
         if (texture != null) {
             gl.glUniform1i(program.getUniformLoc(BasicProgram.IS_TEXTURE), 1);
             gl.glActiveTexture(GL_TEXTURE0);
-            texture.bind(gl);
+            texture.get().bind(gl);
+            gl.glUniform1f(program.getUniformLoc(BasicProgram.TEXTURE_COORDINATES_MULTIPLIER), texture.getCoordinatesMultiplier());
+            gl.glUniform1f(program.getUniformLoc(BasicProgram.TEXTURE_COORDINATES_OFFSET), texture.getCoordinatesOffset());
             gl.glUniform1i(program.getUniformLoc(BasicProgram.TEXTURE),0);
-            gl.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-            gl.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-            gl.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
-            gl.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+            gl.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, texture.getMinFilter());
+            gl.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, texture.getMagFilter());
+            gl.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, texture.getWrapS());
+            gl.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, texture.getWrapT());
             gl.glGenerateMipmap(GL_TEXTURE_2D);
         }
 

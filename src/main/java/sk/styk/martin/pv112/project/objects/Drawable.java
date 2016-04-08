@@ -12,6 +12,7 @@ import sk.styk.martin.pv112.project.Geometry;
 import sk.styk.martin.pv112.project.LoadUtils;
 import sk.styk.martin.pv112.project.materials.Material;
 import sk.styk.martin.pv112.project.programs.Program;
+import sk.styk.martin.pv112.project.textures.ConfigurableTexture;
 
 /**
  *
@@ -22,7 +23,7 @@ public abstract class Drawable {
     protected Program program;
     protected Geometry geometry;
     protected Material material;
-    protected Texture texture;
+    protected ConfigurableTexture texture;
     protected Mat4 mvp;
     protected Mat4 model;
 
@@ -30,7 +31,7 @@ public abstract class Drawable {
         this(program, null,null, path);
     }
     
-    public Drawable(Program program, Material material, Texture texture,String path){
+    public Drawable(Program program, Material material, ConfigurableTexture texture,String path){
         this.program = program;
         this.texture = texture;
         this.material = material;
@@ -117,14 +118,14 @@ public abstract class Drawable {
     /**
      * @return the texture
      */
-    public Texture getTexture() {
+    public ConfigurableTexture getTexture() {
         return texture;
     }
 
     /**
      * @param texture the texture to set
      */
-    public void setTexture(Texture texture) {
+    public void setTexture(ConfigurableTexture texture) {
         this.texture = texture;
     }
     

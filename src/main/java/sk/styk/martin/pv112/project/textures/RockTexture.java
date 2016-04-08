@@ -1,33 +1,31 @@
 package sk.styk.martin.pv112.project.textures;
 
 import com.jogamp.opengl.GL3;
-import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureIO;
-import sk.styk.martin.pv112.project.LoadUtils;
 
-import static com.jogamp.opengl.GL.*;
-import static com.jogamp.opengl.GL.GL_REPEAT;
-import static com.jogamp.opengl.GL.GL_TEXTURE_2D;
 
 /**
  * Created by Martin Styk on 07.04.2016.
  */
-public class RockTexture {
-    private static Texture texture;
+public class RockTexture extends ConfigurableTexture{
 
-    protected RockTexture(){};
+    public RockTexture(GL3 gl) {
+        super(TexturesFactory.getInstance(gl).get(TexturesFactory.Types.ROCKS));
+    }
 
-    public static Texture get(GL3 gl){
-        if(texture == null){
-            texture = LoadUtils.loadTexture(gl, "/textures/rocks.jpg", TextureIO.JPG);
-        }
-        texture.bind(gl);
-        gl.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-        gl.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        gl.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
-        gl.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-        gl.glGenerateMipmap(GL_TEXTURE_2D);
-        return texture;
+    public RockTexture(GL3 gl, int wrapS, int wrapT, int wrapR, int coordinatesMultiplier, int coordinatesOffset) {
+        super(TexturesFactory.getInstance(gl).get(TexturesFactory.Types.ROCKS), wrapS, wrapT, wrapR, coordinatesMultiplier, coordinatesOffset);
+    }
+
+    public RockTexture(GL3 gl, int wrapS, int wrapT, int wrapR, int coordinatesMultiplier, int coordinatesOffset, int minFilter, int magFilter, int dimensions) {
+        super(TexturesFactory.getInstance(gl).get(TexturesFactory.Types.ROCKS), wrapS, wrapT, wrapR, coordinatesMultiplier, coordinatesOffset, minFilter, magFilter, dimensions);
+    }
+
+    public static String getPath(){
+        return "/textures/rocks.jpg";
+    }
+    public static String getType(){
+        return TextureIO.JPG;
     }
 
 }

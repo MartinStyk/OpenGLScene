@@ -12,8 +12,11 @@ uniform mat4 MVP;
 uniform mat3 N;
 uniform mat4 model;
 
+uniform float texCoordMultiplier;
+uniform float texCoordOffset;
+
 void main() {
-    vTex_coord = tex_coord; //TODO
+    vTex_coord = texCoordMultiplier * tex_coord + texCoordOffset;
     vPosition = vec3(model * vec4(position, 1.0));
     vNormal = normalize(N * normal);
     gl_Position = MVP * vec4(position, 1.0);
