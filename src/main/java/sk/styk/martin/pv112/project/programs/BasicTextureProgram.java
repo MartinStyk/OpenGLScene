@@ -7,13 +7,14 @@ package sk.styk.martin.pv112.project.programs;
 
 import com.jogamp.opengl.GL3;
 import sk.styk.martin.pv112.project.Camera;
-import sk.styk.martin.pv112.project.Light;
+import sk.styk.martin.pv112.project.Lights.Light;
 
 /**
  *
  * @author Martin Styk
  */
-public class BasicTextureProgram extends Program {
+@Deprecated
+public abstract class BasicTextureProgram extends Program {
 
     private static final String VERTEX_SHADER = "/shaders/texture.vs.glsl";
     private static final String FRAGMENT_SHADER = "/shaders/texture.fs.glsl";

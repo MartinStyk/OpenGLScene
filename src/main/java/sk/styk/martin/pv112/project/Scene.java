@@ -8,6 +8,8 @@ import com.jogamp.opengl.GLDebugListener;
 import com.jogamp.opengl.GLDebugMessage;
 import com.jogamp.opengl.GLEventListener;
 import com.jogamp.opengl.util.FPSAnimator;
+import sk.styk.martin.pv112.project.Lights.AttenuationLight;
+import sk.styk.martin.pv112.project.Lights.Light;
 import sk.styk.martin.pv112.project.materials.*;
 import sk.styk.martin.pv112.project.objects.Cube;
 import sk.styk.martin.pv112.project.objects.Dice;
@@ -117,8 +119,8 @@ public class Scene implements GLEventListener {
         cube2 = new Cube(basicProgram, ChromeMaterial.getInstance(), new RockTexture(gl,GL_MIRRORED_REPEAT,GL_MIRRORED_REPEAT,GL_MIRRORED_REPEAT,3,-1));
         cube2.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(-5.0f, -5.0f, 0.0f)));
 
-        light1 = new Light(new Vec4(3.0f, 0.0f, 0.0f, 1.0f));
-        light2 = new Light(new Vec4(0.0f, 3.0f, -6.0f, 1.0f));
+        light1 = new AttenuationLight(new Vec4(3.0f, 0.0f, 0.0f, 1.0f));
+        light2 = new AttenuationLight(new Vec4(-5.0f, -2.5f, 0.0f, 1.0f),0.05f,0.05f,0.05f);
     }
 
     @Override
@@ -153,6 +155,7 @@ public class Scene implements GLEventListener {
         basicProgram.use();
         basicProgram.bindLight(1, light1);
         basicProgram.bindLight(2, light2);
+        basicProgram.setGlobalAmbientLight(new Vec3(0.1f,0.1f,0.1f));
         //LIGHTS
         //light1.animateLight(t/100);
      

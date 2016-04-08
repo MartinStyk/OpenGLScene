@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package sk.styk.martin.pv112.project;
+package sk.styk.martin.pv112.project.Lights;
 
 import com.hackoeur.jglm.Matrices;
 import com.hackoeur.jglm.MatricesUtils;

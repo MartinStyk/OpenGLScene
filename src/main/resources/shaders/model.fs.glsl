@@ -6,17 +6,23 @@ in vec3 vNormal;
 in vec3 vPosition;
 in vec2 vTex_coord;
 
-uniform vec4 light1Position;
+uniform vec3 lightGlobalAmbientColor;
 
+uniform vec4 light1Position;
 uniform vec3 light1AmbientColor;
 uniform vec3 light1DiffuseColor;
 uniform vec3 light1SpecularColor;
+uniform float light1AttenuationConst1;
+uniform float light1AttenuationConst2;
+uniform float light1AttenuationConst3;
 
 uniform vec4 light2Position;
-
 uniform vec3 light2AmbientColor;
 uniform vec3 light2DiffuseColor;
 uniform vec3 light2SpecularColor;
+uniform float light2AttenuationConst1;
+uniform float light2AttenuationConst2;
+uniform float light2AttenuationConst3;
 
 uniform vec3 materialAmbientColor;
 uniform vec3 materialDiffuseColor;
@@ -60,10 +66,10 @@ void main() {
 
     //zoslabnutie
     float distLight1 = distance(vPosition,light1Position.xyz);
-    float attenuation1 = 1/(0.1 + 0.1*distLight1 + 0.1*distLight1*distLight1);
+    float attenuation1 = 1/(light1AttenuationConst1 + light1AttenuationConst2*distLight1 + light1AttenuationConst3*distLight1*distLight1);
 
     float distLight2 = distance(vPosition,light2Position.xyz);
-    float attenuation2 = 1/(0.1 + 0.1*distLight2 + 0.1*distLight2*distLight2);
+    float attenuation2 = 1/(light2AttenuationConst1 + light2AttenuationConst2*distLight2 + light2AttenuationConst3*distLight1*distLight2);
 
     vec3 lightFinal;
 
@@ -76,7 +82,7 @@ void main() {
                                               texture_color * light2DiffuseColor * d2 +
                                               texture_color * light2AmbientColor) * attenuation2 ;
 
-        lightFinal = light1Final + light2Final;
+        lightFinal = lightGlobalAmbientColor * texture_color + light1Final + light2Final;
 
     } else{
 
@@ -88,7 +94,7 @@ void main() {
                                       materialDiffuseColor * light2DiffuseColor * d2 +
                                       materialAmbientColor * light2AmbientColor ) * attenuation2;
 
-        lightFinal = light1Final + light2Final;
+        lightFinal = lightGlobalAmbientColor * materialAmbientColor + light1Final + light2Final;
     }
 
 
