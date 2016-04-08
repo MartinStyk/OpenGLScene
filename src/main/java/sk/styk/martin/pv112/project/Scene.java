@@ -36,13 +36,19 @@ public class Scene implements GLEventListener {
     // window size
     private int width;
     private int height;
-    
+
+    //reusable textures
+    private ConfigurableTexture floorTexture;
+    private ConfigurableTexture carpetTexture;
+    private ConfigurableTexture wallTexture;
+    private ConfigurableTexture wallCovering;
+    private ConfigurableTexture personalPicture;
+
     // programs
     private Program basicProgram;
 
     // models
     private Cube wall;
-    private Cube floor;
     private Teapot teapot;
     private Teapot teapot2;
     private Cube cube;
@@ -82,7 +88,7 @@ public class Scene implements GLEventListener {
     @Override
     public void init(GLAutoDrawable drawable) {
         GL3 gl = drawable.getGL().getGL3();
-        
+
         // add listener that will inform us when we make an error.
         gl.getContext().addGLDebugListener(new GLDebugListener() {
             @Override
@@ -96,14 +102,14 @@ public class Scene implements GLEventListener {
                 }
             }
         });
-        
+
         // empty scene color
         gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         gl.glLineWidth(3.0f);
-        
+
         // enable depth test
         gl.glEnable(GL_DEPTH_TEST);
-        
+
         // load GLSL program (vertex and fragment shaders)
         basicProgram = new BasicProgram(gl);
 
@@ -111,13 +117,12 @@ public class Scene implements GLEventListener {
         int binding[] = new int[1];
         gl.glGetIntegerv(GL_VERTEX_ARRAY_BINDING, binding, 0);
         joglArray = binding[0];
-        
+
         // clear current Vertex Array Object state
         gl.glBindVertexArray(joglArray);
 
         // create geometry
         wall = new Cube(basicProgram, WallMaterial.getInstance());
-        floor = new Cube(basicProgram, WallMaterial.getInstance(), new WoodTexture(gl,GL_MIRRORED_REPEAT, GL_REPEAT, GL_MIRRORED_REPEAT, 10,0));
 
         teapot = new Teapot(basicProgram, ChromeMaterial.getInstance(), new RockTexture(gl));
         teapot.setModel(Mat4.MAT4_IDENTITY);
@@ -141,6 +146,13 @@ public class Scene implements GLEventListener {
         light8 = new AttenuationLight(new Vec4(-3.0f, CEILING_LIGHT_HEIGHT, 0.0f, 1.0f));
         light9 = new AttenuationLight(new Vec4(-5.0f, CEILING_LIGHT_HEIGHT, 5.0f, 1.0f));
         light10 = new AttenuationLight(new Vec4(-3.0f, CEILING_LIGHT_HEIGHT, 10.0f, 1.0f));
+
+        //texture load
+        floorTexture = new ParquetTexture(gl,GL_MIRRORED_REPEAT, GL_REPEAT, GL_MIRRORED_REPEAT, 5,0);
+        carpetTexture = new CarpetTexture(gl,GL_MIRRORED_REPEAT, GL_MIRRORED_REPEAT, GL_REPEAT, 15,-1);
+        wallTexture = new WallTexture(gl,GL_REPEAT, GL_REPEAT, GL_REPEAT, 6,-1);
+        wallCovering = new WallCovering(gl, GL_REPEAT, GL_REPEAT, GL_REPEAT,1,0);
+        personalPicture = new PersonPictureTexture(gl);
     }
 
     @Override
@@ -231,6 +243,7 @@ public class Scene implements GLEventListener {
     }
 
     private void drawWalls(Mat4 projection, Mat4 view){
+        wall.setTexture(null);
         //back wall
         wall.setModel(Mat4.MAT4_IDENTITY
                 .multiply(Matrices.rotate((float)(0.5f * Math.PI), new Vec3(0,1,0)))
@@ -239,6 +252,7 @@ public class Scene implements GLEventListener {
         Mat4 mvp = projection.multiply(view).multiply(wall.getModel());
         wall.draw(mvp);
 
+        wall.setTexture(null);
         //front wall
         wall.setModel(Mat4.MAT4_IDENTITY
                 .multiply(Matrices.rotate((float)(1.5 * Math.PI), new Vec3(0,1,0)))
@@ -247,6 +261,7 @@ public class Scene implements GLEventListener {
         mvp = projection.multiply(view).multiply(wall.getModel());
         wall.draw(mvp);
 
+        wall.setTexture(wallCovering);
         //left wall
         wall.setModel(Mat4.MAT4_IDENTITY
                 .multiply(Matrices.rotate((float)( 1 *  Math.PI), new Vec3(0,1,0)))
@@ -255,6 +270,7 @@ public class Scene implements GLEventListener {
         mvp = projection.multiply(view).multiply(wall.getModel());
         wall.draw(mvp);
 
+        wall.setTexture(null);
         //right wall
         wall.setModel(Mat4.MAT4_IDENTITY
                 .translate(new Vec3(10.0f, 0.0f, 0.0f))
@@ -270,11 +286,28 @@ public class Scene implements GLEventListener {
         wall.draw(mvp);
 
         //floor
-        floor.setModel(Mat4.MAT4_IDENTITY
+        wall.setTexture(floorTexture);
+        wall.setModel(Mat4.MAT4_IDENTITY
                 .translate(new Vec3(0.0f, FLOOR_POS, 0.0f))
                 .multiply(MatricesUtils.scale(10.0f, 0.1f, 15.0f)));
-        mvp = projection.multiply(view).multiply(floor.getModel());
-        floor.draw(mvp);
+        mvp = projection.multiply(view).multiply(wall.getModel());
+        wall.draw(mvp);
+
+        //carpet
+        wall.setTexture(carpetTexture);
+        wall.setModel(Mat4.MAT4_IDENTITY
+                .translate(new Vec3(0.0f, FLOOR_POS + 0.01f, 0.0f))
+                .multiply(MatricesUtils.scale(6.0f, 0.1f, 10.0f)));
+        mvp = projection.multiply(view).multiply(wall.getModel());
+        wall.draw(mvp);
+
+        //picture on right wall wall
+        wall.setTexture(personalPicture);
+        wall.setModel(Mat4.MAT4_IDENTITY
+                .translate(new Vec3(10.0f - 0.01f , 0.0f, 0.0f))
+                .multiply(MatricesUtils.scale(0.1f, 1.0f, 1.5f)));
+        mvp = projection.multiply(view).multiply(wall.getModel());
+        wall.draw(mvp);
     }
     
 }

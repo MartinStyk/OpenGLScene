@@ -16,8 +16,8 @@ public class WallMaterial extends Material {
     }
 
     private WallMaterial(){
-        super(new Vec3(0.1f,0.1f,0.1f),
-                new Vec3(0.5f,0.5f,0.5f),
+        super(new Vec3(0.7f,0.7f,0.7f),
+                new Vec3(1.0f,1.0f,1.0f),
                 new Vec3(0.10f,0.10f,0.10f),
                 1f);
     }
