@@ -4,6 +4,9 @@ import com.jogamp.opengl.GL3;
 import com.jogamp.opengl.util.texture.Texture;
 import sk.styk.martin.pv112.project.LoadUtils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Martin Styk on 08.04.2016.
  */
@@ -14,12 +17,12 @@ public class TexturesFactory {
     private GL3 gl;
 
     public enum Types {
-        WOOD, ROCKS
+        WOOD, ROCKS, DICE1, DICE2,DICE3,DICE4,DICE5,DICE6
     }
 
     private Texture wood;
     private Texture rocks;
-    ;
+    private List<Texture> dice;
 
     protected TexturesFactory(GL3 gl) {
         this.gl = gl;
@@ -34,6 +37,9 @@ public class TexturesFactory {
     }
 
     public Texture get(Types type) {
+        Texture res = checkDice(type);
+        if(res != null) return res;
+
         switch (type) {
             case WOOD:
                 if (wood == null) {
@@ -48,6 +54,21 @@ public class TexturesFactory {
             default:
                 throw new IllegalArgumentException("Texture type does not exist");
         }
+    }
+
+    private Texture checkDice(Types type) {
+        if(!type.toString().toLowerCase().contains("dice")){
+            return null;
+        }
+        if(dice==null || dice.isEmpty()){
+            dice = new ArrayList<>();
+            for(int i=1;i<7;i++){
+                dice.add(LoadUtils.loadTexture(gl, DiceTexture.getPath(i), DiceTexture.getType()));
+            }
+        }
+        String last = type.toString().substring(4);
+        int i = Integer.parseInt(last) - 1;
+        return  dice.get(i);
     }
 
 }

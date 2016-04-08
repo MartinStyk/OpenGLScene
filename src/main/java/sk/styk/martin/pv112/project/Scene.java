@@ -16,10 +16,12 @@ import sk.styk.martin.pv112.project.materials.ChromeMaterial;
 import sk.styk.martin.pv112.project.materials.GoldMaterial;
 import sk.styk.martin.pv112.project.materials.PewterMaterial;
 import sk.styk.martin.pv112.project.objects.Cube;
+import sk.styk.martin.pv112.project.objects.Dice;
 import sk.styk.martin.pv112.project.objects.Teapot;
 import sk.styk.martin.pv112.project.programs.BasicProgram;
 import sk.styk.martin.pv112.project.programs.BasicTextureProgram;
 import sk.styk.martin.pv112.project.programs.Program;
+import sk.styk.martin.pv112.project.textures.DiceTexture;
 import sk.styk.martin.pv112.project.textures.RockTexture;
 import sk.styk.martin.pv112.project.textures.TexturesFactory;
 import sk.styk.martin.pv112.project.textures.WoodTexture;
@@ -107,14 +109,12 @@ public class Scene implements GLEventListener {
         // clear current Vertex Array Object state
         gl.glBindVertexArray(joglArray);
 
-        TexturesFactory f = TexturesFactory.getInstance(gl);
-        Texture cf = f.get(TexturesFactory.Types.WOOD);
-
+        DiceTexture diceTexture= new DiceTexture(gl);
 
         // create geometry
         teapot = new Teapot(basicProgram, ChromeMaterial.getInstance(), new RockTexture(gl));
         teapot2 = new Teapot(basicProgram, GoldMaterial.getInstance());
-        cube = new Cube(basicProgram, PewterMaterial.getInstance(), new WoodTexture(gl));
+        cube = new Dice(basicProgram);
         cube2 = new Cube(basicProgram, ChromeMaterial.getInstance(), new RockTexture(gl,GL_MIRRORED_REPEAT,GL_MIRRORED_REPEAT,GL_MIRRORED_REPEAT,3,-1));
 
         light1 = new Light(new Vec4(3.0f, 0.0f, 0.0f, 1.0f));

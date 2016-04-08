@@ -12,17 +12,19 @@ import static com.jogamp.opengl.GL.*;
  */
 public abstract class ConfigurableTexture {
 
-    private Texture texture;
-    private int bufferNumber = new Random().nextInt(32);
+    protected Texture texture;
+    protected int bufferNumber = new Random().nextInt(32);
 
-    private int dimensions = GL_TEXTURE_2D;
-    private int minFilter = GL_LINEAR_MIPMAP_LINEAR;
-    private int magFilter = GL_LINEAR;
-    private int wrapS = GL_MIRRORED_REPEAT;
-    private int wrapT = GL_REPEAT;
-    private int wrapR = GL_REPEAT;
-    private int coordinatesMultiplier = 1;
-    private int coordinatesOffset = 0;
+    protected int dimensions = GL_TEXTURE_2D;
+    protected int minFilter = GL_LINEAR_MIPMAP_LINEAR;
+    protected int magFilter = GL_LINEAR;
+    protected int wrapS = GL_MIRRORED_REPEAT;
+    protected int wrapT = GL_REPEAT;
+    protected int wrapR = GL_REPEAT;
+    protected int coordinatesMultiplier = 1;
+    protected int coordinatesOffset = 0;
+
+    protected ConfigurableTexture(){}
 
     protected ConfigurableTexture(Texture texture) {
         if (texture == null) {
@@ -129,6 +131,14 @@ public abstract class ConfigurableTexture {
 
     public void setCoordinatesOffset(int coordinatesOffset) {
         this.coordinatesOffset = coordinatesOffset;
+    }
+
+    public int getBufferNumber() {
+        return bufferNumber;
+    }
+
+    public void setBufferNumber(int bufferNumber) {
+        this.bufferNumber = bufferNumber;
     }
 
     public void use(GL3 gl, int coordinatesMultiLoc, int coordinatesOffsetLot, int textureNo) {
