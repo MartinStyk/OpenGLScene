@@ -23,7 +23,11 @@ import sk.styk.martin.pv112.project.textures.*;
  * @author Adam Jurcik <xjurc@fi.muni.cz>
  */
 public class Scene implements GLEventListener {
-   
+
+    public static final int CEILING_POS = 5;
+    public static final int FLOOR_POS = -5;
+    public static final float CEILING_LIGHT_HEIGHT = CEILING_POS - 0.125f;
+
     private FPSAnimator animator;
     private Camera camera;
     private int mode = GL_FILL;
@@ -47,6 +51,14 @@ public class Scene implements GLEventListener {
     //lights
     private Light light1;
     private Light light2;
+    private Light light3;
+    private Light light4;
+    private Light light5;
+    private Light light6;
+    private Light light7;
+    private Light light8;
+    private Light light9;
+    private Light light10;
     
     // JOGL resouces
     private int joglArray; // JOGL uses own vertex array for updating GLJPanel
@@ -94,7 +106,7 @@ public class Scene implements GLEventListener {
         
         // load GLSL program (vertex and fragment shaders)
         basicProgram = new BasicProgram(gl);
-               
+
 	    // get JOGL vertex array
         int binding[] = new int[1];
         gl.glGetIntegerv(GL_VERTEX_ARRAY_BINDING, binding, 0);
@@ -119,8 +131,16 @@ public class Scene implements GLEventListener {
         cube2 = new Cube(basicProgram, ChromeMaterial.getInstance(), new RockTexture(gl,GL_MIRRORED_REPEAT,GL_MIRRORED_REPEAT,GL_MIRRORED_REPEAT,3,-1));
         cube2.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(-5.0f, -5.0f, 0.0f)));
 
-        light1 = new AttenuationLight(new Vec4(3.0f, 0.0f, 0.0f, 1.0f));
-        light2 = new AttenuationLight(new Vec4(-5.0f, -2.5f, 0.0f, 1.0f),0.05f,0.05f,0.05f);
+        light1 = new AttenuationLight(new Vec4(5.0f, CEILING_LIGHT_HEIGHT, -10.0f, 1.0f));
+        light2 = new AttenuationLight(new Vec4(3.0f, CEILING_LIGHT_HEIGHT, -5.0f, 1.0f));
+        light3 = new AttenuationLight(new Vec4(5.0f, CEILING_LIGHT_HEIGHT, 0.0f, 1.0f));
+        light4 = new AttenuationLight(new Vec4(3.0f, CEILING_LIGHT_HEIGHT, 5.0f, 1.0f));
+        light5 = new AttenuationLight(new Vec4(5.0f, CEILING_LIGHT_HEIGHT, 10.0f, 1.0f));
+        light6 = new AttenuationLight(new Vec4(-3.0f, CEILING_LIGHT_HEIGHT, -10.0f, 1.0f));
+        light7 = new AttenuationLight(new Vec4(-5.0f, CEILING_LIGHT_HEIGHT, -5.0f, 1.0f));
+        light8 = new AttenuationLight(new Vec4(-3.0f, CEILING_LIGHT_HEIGHT, 0.0f, 1.0f));
+        light9 = new AttenuationLight(new Vec4(-5.0f, CEILING_LIGHT_HEIGHT, 5.0f, 1.0f));
+        light10 = new AttenuationLight(new Vec4(-3.0f, CEILING_LIGHT_HEIGHT, 10.0f, 1.0f));
     }
 
     @Override
@@ -155,7 +175,15 @@ public class Scene implements GLEventListener {
         basicProgram.use();
         basicProgram.bindLight(1, light1);
         basicProgram.bindLight(2, light2);
-        basicProgram.setGlobalAmbientLight(new Vec3(0.1f,0.1f,0.1f));
+        basicProgram.bindLight(3, light3);
+        basicProgram.bindLight(4, light4);
+        basicProgram.bindLight(5, light5);
+        basicProgram.bindLight(6, light6);
+        basicProgram.bindLight(7, light7);
+        basicProgram.bindLight(8, light8);
+        basicProgram.bindLight(9, light9);
+        basicProgram.bindLight(10, light10);
+        basicProgram.setGlobalAmbientLight(new Vec3(0.01f,0.01f,0.01f));
         //LIGHTS
         //light1.animateLight(t/100);
      
@@ -236,14 +264,14 @@ public class Scene implements GLEventListener {
 
         //ceiling
         wall.setModel(Mat4.MAT4_IDENTITY
-                .translate(new Vec3(0.0f, 5.0f, 0.0f))
+                .translate(new Vec3(0.0f, CEILING_POS, 0.0f))
                 .multiply(MatricesUtils.scale(10.0f, 0.1f, 15.0f)));
         mvp = projection.multiply(view).multiply(wall.getModel());
         wall.draw(mvp);
 
         //floor
         floor.setModel(Mat4.MAT4_IDENTITY
-                .translate(new Vec3(0.0f, -5.0f, 0.0f))
+                .translate(new Vec3(0.0f, FLOOR_POS, 0.0f))
                 .multiply(MatricesUtils.scale(10.0f, 0.1f, 15.0f)));
         mvp = projection.multiply(view).multiply(floor.getModel());
         floor.draw(mvp);
