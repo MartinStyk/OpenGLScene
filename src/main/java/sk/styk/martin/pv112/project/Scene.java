@@ -112,10 +112,10 @@ public class Scene implements GLEventListener {
 
 
         // create geometry
-        teapot = new Teapot(basicProgram, ChromeMaterial.getInstance());
+        teapot = new Teapot(basicProgram, ChromeMaterial.getInstance(), new RockTexture(gl));
         teapot2 = new Teapot(basicProgram, GoldMaterial.getInstance());
         cube = new Cube(basicProgram, PewterMaterial.getInstance(), new WoodTexture(gl));
-        cube2 = new Cube(basicProgram, PewterMaterial.getInstance(), new WoodTexture(gl,GL_MIRRORED_REPEAT,GL_MIRRORED_REPEAT,GL_MIRRORED_REPEAT,3,-1));
+        cube2 = new Cube(basicProgram, ChromeMaterial.getInstance(), new RockTexture(gl,GL_MIRRORED_REPEAT,GL_MIRRORED_REPEAT,GL_MIRRORED_REPEAT,3,-1));
 
         light1 = new Light(new Vec4(3.0f, 0.0f, 0.0f, 1.0f));
         light2 = new Light(new Vec4(-7.0f, -7.0f, 0.0f, 1.0f));

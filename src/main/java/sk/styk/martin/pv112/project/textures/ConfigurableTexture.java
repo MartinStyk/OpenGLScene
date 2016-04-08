@@ -1,6 +1,9 @@
 package sk.styk.martin.pv112.project.textures;
 
+import com.jogamp.opengl.GL3;
 import com.jogamp.opengl.util.texture.Texture;
+
+import java.util.Random;
 
 import static com.jogamp.opengl.GL.*;
 
@@ -10,6 +13,8 @@ import static com.jogamp.opengl.GL.*;
 public abstract class ConfigurableTexture {
 
     private Texture texture;
+    private int bufferNumber = new Random().nextInt(32);
+
     private int dimensions = GL_TEXTURE_2D;
     private int minFilter = GL_LINEAR_MIPMAP_LINEAR;
     private int magFilter = GL_LINEAR;
@@ -124,5 +129,18 @@ public abstract class ConfigurableTexture {
 
     public void setCoordinatesOffset(int coordinatesOffset) {
         this.coordinatesOffset = coordinatesOffset;
+    }
+
+    public void use(GL3 gl, int coordinatesMultiLoc, int coordinatesOffsetLot, int textureNo) {
+        gl.glActiveTexture(GL_TEXTURE0 + bufferNumber);
+        texture.bind(gl);
+        gl.glUniform1f(coordinatesMultiLoc, coordinatesMultiplier);
+        gl.glUniform1f(coordinatesOffsetLot, coordinatesOffset);
+        gl.glUniform1i(textureNo, bufferNumber);
+        gl.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, minFilter);
+        gl.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, magFilter);
+        gl.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrapS);
+        gl.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrapT);
+        gl.glGenerateMipmap(GL_TEXTURE_2D);
     }
 }

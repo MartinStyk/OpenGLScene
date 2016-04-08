@@ -5,12 +5,15 @@
  */
 package sk.styk.martin.pv112.project.objects;
 
+import com.hackoeur.jglm.Mat3;
 import com.hackoeur.jglm.Mat4;
+import com.hackoeur.jglm.MatricesUtils;
 import com.jogamp.opengl.GL3;
 import com.jogamp.opengl.util.texture.Texture;
 import sk.styk.martin.pv112.project.Geometry;
 import sk.styk.martin.pv112.project.LoadUtils;
 import sk.styk.martin.pv112.project.materials.Material;
+import sk.styk.martin.pv112.project.programs.BasicProgram;
 import sk.styk.martin.pv112.project.programs.Program;
 import sk.styk.martin.pv112.project.textures.ConfigurableTexture;
 
@@ -128,8 +131,45 @@ public abstract class Drawable {
     public void setTexture(ConfigurableTexture texture) {
         this.texture = texture;
     }
-    
-    public abstract void draw();
+
+    /**
+     * basic draw scenation in BasicProgram
+     * materials and textures supported
+     */
+    public void draw(){
+        GL3 gl = program.getGL();
+        gl.glUseProgram(program.getID());
+
+        Mat3 n = MatricesUtils.inverse(MatricesUtils.getMat3(model).transpose());
+        gl.glUniformMatrix3fv(program.getUniformLoc(BasicProgram.N), 1, false, n.getBuffer());
+        gl.glUniformMatrix4fv(program.getUniformLoc(BasicProgram.MODEL), 1, false, model.getBuffer());
+        gl.glUniformMatrix4fv(program.getUniformLoc(BasicProgram.MVP), 1, false, mvp.getBuffer());
+        gl.glUniform3f(program.getUniformLoc(BasicProgram.COLOR), 1f, 1f, 0.2f);
+
+        if (material != null) {
+            material.bindUniforms(gl,
+                    program.getUniformLoc(BasicProgram.MATERIAL_AMBIENT_COLOR),
+                    program.getUniformLoc(BasicProgram.MATERIAL_DIFFUSE_COLOR),
+                    program.getUniformLoc(BasicProgram.MATERIAL_SPECULAR_COLOR),
+                    program.getUniformLoc(BasicProgram.MATERIAL_SHININESS)
+            );
+        }
+
+        if (texture != null) {
+            gl.glUniform1i(program.getUniformLoc(BasicProgram.IS_TEXTURE), 1);
+            texture.use(gl,
+                    program.getUniformLoc(BasicProgram.TEXTURE_COORDINATES_MULTIPLIER),
+                    program.getUniformLoc(BasicProgram.TEXTURE_COORDINATES_OFFSET),
+                    program.getUniformLoc(BasicProgram.TEXTURE));
+        }
+
+        geometry.draw(gl);
+
+        //not texture
+        gl.glUniform1i(program.getUniformLoc(BasicProgram.IS_TEXTURE), 0);
+
+        gl.glUseProgram(0);
+    };
     
     public void draw(Mat4 model, Mat4 mvp){
         this.setModel(model);
