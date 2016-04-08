@@ -118,7 +118,7 @@ public class Scene implements GLEventListener {
         cube2.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(-5.0f, -5.0f, 0.0f)));
 
         light1 = new Light(new Vec4(3.0f, 0.0f, 0.0f, 1.0f));
-        light2 = new Light(new Vec4(-2.0f, 5.0f, 0.0f, 1.0f));
+        light2 = new Light(new Vec4(0.0f, 3.0f, -6.0f, 1.0f));
     }
 
     @Override

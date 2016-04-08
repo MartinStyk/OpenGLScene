@@ -58,25 +58,37 @@ void main() {
     float d2 = max(dot(vNormal, light2), 0.0);
     float s2 =d2 * pow(max(dot(vNormal, h2), 0.0), materialShininess);
 
+    //zoslabnutie
+    float distLight1 = distance(vPosition,light1Position.xyz);
+    float attenuation1 = 1/(0.1 + 0.1*distLight1 + 0.1*distLight1*distLight1);
+
+    float distLight2 = distance(vPosition,light2Position.xyz);
+    float attenuation2 = 1/(0.1 + 0.1*distLight2 + 0.1*distLight2*distLight2);
+
     vec3 lightFinal;
 
     if(isTexture == 1){
         vec3 texture_color = texture(texture,vTex_coord).rgb;
-        lightFinal = materialSpecularColor * light1SpecularColor * s +
+        vec3 light1Final = (materialSpecularColor * light1SpecularColor * s +
                                               texture_color * light1DiffuseColor * d +
-                                              texture_color * light1AmbientColor +
-                                              texture_color * light2SpecularColor * s2 +
+                                              texture_color * light1AmbientColor) * attenuation1;
+        vec3 light2Final = (materialSpecularColor * light2SpecularColor * s2 +
                                               texture_color * light2DiffuseColor * d2 +
-                                              texture_color * light2AmbientColor;
+                                              texture_color * light2AmbientColor) * attenuation2 ;
+
+        lightFinal = light1Final + light2Final;
 
     } else{
 
-    lightFinal = materialSpecularColor * light1SpecularColor * s +
+        vec3 light1Final = (materialSpecularColor * light1SpecularColor * s +
                                       materialDiffuseColor * light1DiffuseColor * d +
-                                      materialAmbientColor * light1AmbientColor +
-                                      materialSpecularColor * light2SpecularColor * s2 +
+                                      materialAmbientColor * light1AmbientColor) * attenuation1;
+
+        vec3 light2Final = (materialSpecularColor * light2SpecularColor * s2 +
                                       materialDiffuseColor * light2DiffuseColor * d2 +
-                                      materialAmbientColor * light2AmbientColor;
+                                      materialAmbientColor * light2AmbientColor ) * attenuation2;
+
+        lightFinal = light1Final + light2Final;
     }
 
 
