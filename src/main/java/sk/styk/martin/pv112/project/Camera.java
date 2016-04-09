@@ -1,26 +1,29 @@
 package sk.styk.martin.pv112.project;
 
 import com.hackoeur.jglm.Vec3;
-import com.hackoeur.jglm.Vec4;
-import com.jogamp.opengl.GL3;
 
 /**
  * SIMPLE PV112 CAMERA CLASS.
- * 
+ * <p>
  * This is a VERY SIMPLE class that allows to very simply move with the camera.
  * It is not a perfect, brilliant, smart, or whatever implementation of a camera,
  * but it is sufficient for PV112 lectures.
- * 
+ * <p>
  * Use left mouse button to change the point of view.
  * Use right mouse button to zoom in and zoom out.
  */
 public class Camera {
-    
-    public static enum Button {
+
+    public enum Button {
         LEFT, RIGHT;
     }
-    
+
+    public enum Direction {
+        FORWARD, BACK, LEFT, RIGHT;
+    }
+
     /// Constants that defines the behaviour of the camera
+    private static final float ONE_STEP = 0.1f;
     ///		- Minimum elevation in radians
     private static final float MIN_ELEVALITON = -1.5f;
     ///		- Maximum elevation in radians
@@ -49,92 +52,79 @@ public class Camera {
 
     /// Final position of the eye in world space coordinates, for LookAt or shaders
     private Vec3 position;
+    private Vec3 centerPosition;
 
     /// Last X and Y coordinates of the mouse cursor
     private int lastX;
     private int lastY;
 
-    /// True or false if moused buttons are pressed and the user rotates/zooms the camera
-    private boolean rotating;
-    private boolean zooming;
-
     public Camera() {
         directon = 0.0f;
         elevation = 0.0f;
-        distance = 5.0f;
+        distance = 1.0f;
         lastX = 0;
         lastY = 0;
-        rotating = false;
-        zooming = false;
-	updateEyePosition();
+        centerPosition = new Vec3(0,0,0);
+        position = new Vec3(0,0,0);
+        updateEyePosition();
     }
-    
+
     /// Recomputes 'eye_position' from 'angle_direction', 'angle_elevation', and 'distance'
     private void updateEyePosition() {
         float x = (float) (distance * Math.cos(elevation) * -Math.sin(directon));
         float y = (float) (distance * Math.sin(elevation));
         float z = (float) (distance * Math.cos(elevation) * Math.cos(directon));
-        position = new Vec3(x, y, z);
-    }
-
-    /// Called when the user presses or releases a mouse button (see MainWindow)
-    public void updateMouseButton(Button button, boolean pressed, int x, int y) {
-        // Left mouse button affects the angles
-        if (button == Button.LEFT) {
-            if (pressed) {
-                lastX = x;
-                lastY = y;
-                rotating = true;
-            } else {
-                rotating = false;
-            }
-        }
-        // Right mouse button affects the zoom
-        if (button == Button.RIGHT) {
-            if (pressed) {
-                lastX = x;
-                lastY = y;
-                zooming = true;
-            } else {
-                zooming = false;
-            }
-        }
+        centerPosition = new Vec3(x, y, z);
     }
 
     /// Called when the user moves with the mouse cursor (see MainWindow)
-    public void updateMousePosition(int x, int y) {
+    public synchronized void  updateMousePosition(int x, int y) {
+ 
         float dx = (float) (x - lastX);
         float dy = (float) (y - lastY);
         lastX = x;
         lastY = y;
 
-        if (rotating) {
-            directon += dx * ANGLE_SENSITIVITY;
-            elevation += dy * ANGLE_SENSITIVITY;
+        directon += dx * ANGLE_SENSITIVITY;
+        elevation += dy * ANGLE_SENSITIVITY;
 
-            // Clamp the results
-            if (elevation > MAX_ELEVATION) {
-                elevation = MAX_ELEVATION;
-            }
-            if (elevation < MIN_ELEVALITON) {
-                elevation = MIN_ELEVALITON;
-            }
+        // Clamp the results
+        if (elevation > MAX_ELEVATION) {
+            elevation = MAX_ELEVATION;
         }
-        if (zooming) {
-            distance *= (1.0f + dy * ZOOM_SENSITIVITY);
+        if (elevation < MIN_ELEVALITON) {
+            elevation = MIN_ELEVALITON;
+        }
 
-            // Clamp the results
-            if (distance < MIN_DISTANCE) {
-                distance = MIN_DISTANCE;
-            }
-        }
-        
         updateEyePosition();
     }
+
+    public void move(Direction dir) {
+            Vec3 directionalVec = new Vec3(centerPosition);
+            directionalVec = directionalVec.subtract(position);
+            centerPosition = centerPosition.add(directionalVec.multiply(0.1f));
+            position = position.add(directionalVec.multiply(0.1f));
+    }
+
 
     /// Returns the position of the eye in world space coordinates
     public Vec3 getEyePosition() {
         return position;
     }
-    
+
+    public Vec3 getCenterPosition() {
+       // return new Vec3 (1,1,1);
+        return centerPosition;
+       // return position.add(new Vec3(ONE_STEP, ONE_STEP, ONE_STEP));
+        //return polarCoordinates(position.getX(), position.getY());
+    }
+
+    public Vec3 polarCoordinates(float azimuth, float altitude) {
+        float cartesian[] = new float[3];
+        float a = (float) Math.sin(Math.toRadians(altitude));
+        cartesian[2] = (float) (a * Math.cos(Math.toRadians(azimuth)));
+        cartesian[0] = (float) (a * Math.sin(Math.toRadians(azimuth)));
+        cartesian[1] = (float) Math.cos(Math.toRadians(altitude));
+        return new Vec3(cartesian[0], cartesian[1], cartesian[2]);
+    }
 }

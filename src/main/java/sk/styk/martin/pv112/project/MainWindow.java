@@ -55,30 +55,10 @@ public class MainWindow extends javax.swing.JFrame {
             public void mouseMoved(MouseEvent e) {
                 camera.updateMousePosition(e.getX(), e.getY());
             }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                // TODO
-                if (e.getButton() == MouseEvent.BUTTON1) {
-                    camera.updateMouseButton(Camera.Button.LEFT, false, e.getX(), e.getY());
-                } else if (e.getButton() == MouseEvent.BUTTON3) {
-                    camera.updateMouseButton(Camera.Button.RIGHT, false, e.getX(), e.getY());
-                }
-            }
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-                // TODO
-                if (e.getButton() == MouseEvent.BUTTON1) {
-                    camera.updateMouseButton(Camera.Button.LEFT, true, e.getX(), e.getY());
-                } else if (e.getButton() == MouseEvent.BUTTON3) {
-                    camera.updateMouseButton(Camera.Button.RIGHT, true, e.getX(), e.getY());
-                }
-            }
         });
         panel.addMouseMotionListener(new MouseAdapter() {
             @Override
-            public void mouseDragged(MouseEvent e) {
+            public void mouseMoved(MouseEvent e) {
                 camera.updateMousePosition(e.getX(), e.getY());
             }
         });
@@ -121,6 +101,11 @@ public class MainWindow extends javax.swing.JFrame {
             case KeyEvent.VK_L:
                 scene.toggleLines();
                 break;
+
+            case KeyEvent.VK_W:
+                camera.move(Camera.Direction.FORWARD);
+                break;
+
         }
 
         panel.display();

@@ -176,7 +176,7 @@ public class Scene implements GLEventListener {
         
         // set view transform based on camera position and orientation
         Vec3 yAxis = new Vec3(0.0f, 1.0f, 0.0f);
-        Mat4 view = Matrices.lookAt(camera.getEyePosition(), Vec3.VEC3_ZERO, yAxis);
+        Mat4 view = Matrices.lookAt(camera.getEyePosition(), camera.getCenterPosition(), yAxis);
         
         // get projection * view (VP) matrix
 //        Mat4 vp = Mat4.MAT4_IDENTITY;
