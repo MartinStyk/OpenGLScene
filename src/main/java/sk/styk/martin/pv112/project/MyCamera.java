@@ -2,6 +2,8 @@ package sk.styk.martin.pv112.project;
 
 import com.hackoeur.jglm.Vec3;
 
+import java.awt.event.MouseEvent;
+
 
 /**
  * Created by Martin Styk on 09.04.2016.
@@ -21,7 +23,26 @@ public class MyCamera implements Camera {
 
     int xPosition = 0, yPosition = 0;
 
-    public void onMouseMove(int x, int y, int mouseButton) {
+    private boolean rotating = false;
+
+    public void onMousePress(int x, int y, int mouseButton, boolean pressed) {
+
+        if (mouseButton != MouseEvent.BUTTON1) {
+            return;
+        }
+        if (pressed) {
+            xPosition = x;
+            yPosition = y;
+            rotating = true;
+        } else {
+            rotating = false;
+        }
+    }
+
+    public void onMouseMove(int x, int y) {
+
+        if(!rotating)
+            return;
 
         horizontalAngle += mouseSpeed * (xPosition - x);
         verticalAngle += mouseSpeed * (yPosition - y);

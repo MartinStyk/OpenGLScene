@@ -9,6 +9,7 @@ public interface Camera {
 
     Vec3 getEyePosition();
     Vec3 getCenterPosition();
-    void onMouseMove(int x, int y,int mouseButton);
+    void onMouseMove(int x, int y);
+    void onMousePress(int x, int y, int mouseButton, boolean pressed);
     void onKeyPressed(char c);
 }

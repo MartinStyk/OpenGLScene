@@ -12,7 +12,7 @@ import com.hackoeur.jglm.Vec3;
  * Use left mouse button to change the point of view.
  * Use right mouse button to zoom in and zoom out.
  */
-public class CenterPointCamera implements Camera{
+public class CenterPointCamera{
 
     public enum Button {
         LEFT, RIGHT;
@@ -78,8 +78,8 @@ public class CenterPointCamera implements Camera{
     }
 
     /// Called when the user moves with the mouse cursor (see MainWindow)
-    @Override
-    public void  onMouseMove(int x, int y,int mouseButton) {
+
+    public void  onMouseMove(int x, int y,int mouseButton, boolean pressed) {
  
         float dx = (float) (x - lastX);
         float dy = (float) (y - lastY);

@@ -9,8 +9,8 @@ import com.jogamp.opengl.util.FPSAnimator;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
 
 /**
  * @author Adam Jurcik <xjurc@fi.muni.cz>
@@ -59,13 +59,27 @@ public class MainWindow extends javax.swing.JFrame {
                 MainWindow.this.keyPressed(e);
             }
         });
-        panel.addMouseMotionListener(new MouseMotionAdapter() {
-            public void mouseDragged(MouseEvent evt) {
-                canvasPanelMouseMoved(evt);
+        panel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                camera.onMouseMove(e.getX(), e.getY());
             }
 
-            public void mouseMoved(java.awt.event.MouseEvent evt) {
-                canvasPanelMouseMoved(evt);
+            @Override
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                camera.onMousePress(evt.getX(), evt.getY(), evt.getButton(), true);
+            }
+
+            @Override
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                camera.onMousePress(evt.getX(), evt.getY(), evt.getButton(), false);
+            }
+        });
+
+        panel.addMouseMotionListener(new MouseAdapter() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                camera.onMouseMove(e.getX(), e.getY());
             }
         });
         animator.start();
@@ -194,15 +208,4 @@ public class MainWindow extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
 
-    private void canvasPanelMouseMoved(java.awt.event.MouseEvent evt) {
-
-        if (shouldMove) {
-            camera.onMouseMove(evt.getX(), evt.getY(), 0);
-            shouldMove = false;
-         //   robot.mouseMove(getWidth() / 2 + getX(), getHeight() / 2 + getY());
-
-        } else {
-            shouldMove = true;
-        }
-    }
 }
