@@ -8,6 +8,7 @@ package sk.styk.martin.pv112.project.programs;
 import com.hackoeur.jglm.Vec3;
 import com.jogamp.opengl.GL3;
 import sk.styk.martin.pv112.project.Camera;
+import sk.styk.martin.pv112.project.CenterPointCamera;
 import sk.styk.martin.pv112.project.Lights.AttenuationLight;
 import sk.styk.martin.pv112.project.Lights.Light;
 

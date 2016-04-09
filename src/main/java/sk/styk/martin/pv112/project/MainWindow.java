@@ -5,25 +5,28 @@ import com.jogamp.opengl.GLContext;
 import com.jogamp.opengl.GLProfile;
 import com.jogamp.opengl.awt.GLJPanel;
 import com.jogamp.opengl.util.FPSAnimator;
-import java.awt.BorderLayout;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
+
+import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 
 /**
- *
  * @author Adam Jurcik <xjurc@fi.muni.cz>
  */
 public class MainWindow extends javax.swing.JFrame {
+
+    public static int WINDOW_HEIGHT = 1080;
+    public static int WINDOW_WIDTH = 1920;
 
     private GLJPanel panel;
     private Camera camera;
     private Scene scene;
     private FPSAnimator animator;
     private boolean fullscreen = false;
+    private Robot robot;
+    private static boolean shouldMove = true;
 
     /**
      * Creates new form MainWindow
@@ -32,15 +35,21 @@ public class MainWindow extends javax.swing.JFrame {
         initComponents();
         GLProfile profile = GLProfile.get(GLProfile.GL3);
 
+        try {
+            robot = new Robot();
+        } catch (AWTException e) {
+            e.printStackTrace();
+        }
+
         setTitle("Projekt");
-        setSize(1024, 860);
+        setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
         panel = new GLJPanel(new GLCapabilities(profile));
         panel.setContextCreationFlags(GLContext.CTX_OPTION_DEBUG);
 
         add(panel, BorderLayout.CENTER);
 
         animator = new FPSAnimator(panel, 60, true);
-        camera = new Camera();
+        camera = new MyCamera();
         scene = new Scene(animator, camera);
 
         panel.addGLEventListener(scene);
@@ -50,19 +59,15 @@ public class MainWindow extends javax.swing.JFrame {
                 MainWindow.this.keyPressed(e);
             }
         });
-        panel.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseMoved(MouseEvent e) {
-                camera.updateMousePosition(e.getX(), e.getY());
+        panel.addMouseMotionListener(new MouseMotionAdapter() {
+            public void mouseDragged(MouseEvent evt) {
+                canvasPanelMouseMoved(evt);
             }
-        });
-        panel.addMouseMotionListener(new MouseAdapter() {
-            @Override
-            public void mouseMoved(MouseEvent e) {
-                camera.updateMousePosition(e.getX(), e.getY());
-            }
-        });
 
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                canvasPanelMouseMoved(evt);
+            }
+        });
         animator.start();
     }
 
@@ -86,9 +91,9 @@ public class MainWindow extends javax.swing.JFrame {
                 System.exit(0);
                 break;
 
-            case KeyEvent.VK_A:
-                toggleAnimation();
-                break;
+//            case KeyEvent.VK_A:
+//                toggleAnimation();
+//                break;
 
             case KeyEvent.VK_T:
                 toggleFullScreen();
@@ -103,7 +108,16 @@ public class MainWindow extends javax.swing.JFrame {
                 break;
 
             case KeyEvent.VK_W:
-                camera.move(Camera.Direction.FORWARD);
+                camera.onKeyPressed('w');
+                break;
+            case KeyEvent.VK_A:
+                camera.onKeyPressed('a');
+                break;
+            case KeyEvent.VK_S:
+                camera.onKeyPressed('s');
+                break;
+            case KeyEvent.VK_D:
+                camera.onKeyPressed('d');
                 break;
 
         }
@@ -179,4 +193,16 @@ public class MainWindow extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
+
+    private void canvasPanelMouseMoved(java.awt.event.MouseEvent evt) {
+
+        if (shouldMove) {
+            camera.onMouseMove(evt.getX(), evt.getY(), 0);
+            shouldMove = false;
+         //   robot.mouseMove(getWidth() / 2 + getX(), getHeight() / 2 + getY());
+
+        } else {
+            shouldMove = true;
+        }
+    }
 }
