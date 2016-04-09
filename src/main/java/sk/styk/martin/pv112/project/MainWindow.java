@@ -133,6 +133,12 @@ public class MainWindow extends javax.swing.JFrame {
             case KeyEvent.VK_D:
                 camera.onKeyPressed('d');
                 break;
+            case KeyEvent.VK_N:
+                scene.moreLight();
+                break;
+            case KeyEvent.VK_M:
+                scene.lessLight();
+                break;
 
         }
 

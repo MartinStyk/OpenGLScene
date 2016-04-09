@@ -1,8 +1,11 @@
 package sk.styk.martin.pv112.project.Lights;
 
+import com.hackoeur.jglm.Matrices;
+import com.hackoeur.jglm.MatricesUtils;
 import com.hackoeur.jglm.Vec3;
 import com.hackoeur.jglm.Vec4;
 import com.jogamp.opengl.GL3;
+import sk.styk.martin.pv112.project.Scene;
 
 /**
  * Created by Martin Styk on 08.04.2016.
@@ -44,8 +47,13 @@ public class AttenuationLight extends Light {
                              int attenuationQuadraticLocation) {
         super.bindUniforms(gl, positionLocation, ambientColorLocation, diffuseColorLocation, specularColorLocation);
 
-        gl.glUniform1f(attenuationConstLocation, attenuationConst);
-        gl.glUniform1f(attenuationLinearLocation, attenuationLinear);
-        gl.glUniform1f(attenuationQuadraticLocation, attenuationQuadratic);
+        gl.glUniform1f(attenuationConstLocation, attenuationConst * Scene.lightPower);
+        gl.glUniform1f(attenuationLinearLocation, attenuationLinear * Scene.lightPower );
+        gl.glUniform1f(attenuationQuadraticLocation, attenuationQuadratic * Scene.lightPower );
+    }
+
+    @Override
+    public void animateLight(float t){
+
     }
 }

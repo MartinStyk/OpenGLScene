@@ -13,6 +13,7 @@ import sk.styk.martin.pv112.project.Lights.Light;
 import sk.styk.martin.pv112.project.materials.*;
 import sk.styk.martin.pv112.project.objects.Cube;
 import sk.styk.martin.pv112.project.objects.Dice;
+import sk.styk.martin.pv112.project.objects.Sofa;
 import sk.styk.martin.pv112.project.objects.Teapot;
 import sk.styk.martin.pv112.project.programs.BasicProgram;
 import sk.styk.martin.pv112.project.programs.Program;
@@ -26,13 +27,14 @@ public class Scene implements GLEventListener {
 
     public static final int CEILING_POS = 5;
     public static final int FLOOR_POS = -5;
-    public static final float CEILING_LIGHT_HEIGHT = CEILING_POS - 0.125f;
+    public static final float CEILING_LIGHT_HEIGHT = CEILING_POS - 0.2f;
 
     private FPSAnimator animator;
     private Camera camera;
     private int mode = GL_FILL;
 
-    
+    public static float lightPower = 1;
+
     // window size
     private int width;
     private int height;
@@ -49,6 +51,7 @@ public class Scene implements GLEventListener {
 
     // models
     private Cube wall;
+    private Sofa sofa;
     private Teapot teapot;
     private Teapot teapot2;
     private Cube cube;
@@ -124,6 +127,9 @@ public class Scene implements GLEventListener {
         // create geometry
         wall = new Cube(basicProgram, WallMaterial.getInstance());
 
+        sofa = new Sofa(basicProgram, ChromeMaterial.getInstance(), new WoodTexture(gl));
+        sofa.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(5.0f, 5.0f, 0.0f)));
+
         teapot = new Teapot(basicProgram, ChromeMaterial.getInstance(), new RockTexture(gl));
         teapot.setModel(Mat4.MAT4_IDENTITY);
 
@@ -182,8 +188,7 @@ public class Scene implements GLEventListener {
 //        Mat4 vp = Mat4.MAT4_IDENTITY;
 //        vp = vp.multiply(projection);
 //        vp = vp.multiply(view);
-//               
-	
+
         basicProgram.use();
         basicProgram.bindLight(1, light1);
         basicProgram.bindLight(2, light2);
@@ -214,7 +219,11 @@ public class Scene implements GLEventListener {
         // teapot
         Mat4 mvp = projection.multiply(view).multiply(teapot.getModel());
         teapot.draw(mvp);
-        
+
+        //sofa
+        mvp = projection.multiply(view).multiply(sofa.getModel());
+        sofa.draw(mvp);
+
         // teapot2
         mvp = projection.multiply(view).multiply(teapot2.getModel());
         teapot2.draw(mvp);
@@ -309,5 +318,15 @@ public class Scene implements GLEventListener {
         mvp = projection.multiply(view).multiply(wall.getModel());
         wall.draw(mvp);
     }
-    
+
+    public void moreLight(){
+        if(lightPower > 0.7){
+            lightPower -= 0.1f;
+        }
+    }
+    public void lessLight(){
+        if(lightPower < 5){
+            lightPower += 0.1f;
+        }
+    }
 }

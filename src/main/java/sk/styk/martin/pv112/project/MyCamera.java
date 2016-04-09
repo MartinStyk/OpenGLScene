@@ -86,9 +86,6 @@ public class MyCamera implements Camera {
     }
 
     public Vec3 getCenterPosition() {
-        if (direction.equals(new Vec3(0, 0, 0))) {
-            return new Vec3(0, 0, 0);
-        }
         return position.add(direction);
     }
 
