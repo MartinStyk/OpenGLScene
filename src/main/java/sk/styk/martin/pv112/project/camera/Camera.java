@@ -1,4 +1,4 @@
-package sk.styk.martin.pv112.project;
+package sk.styk.martin.pv112.project.camera;
 
 import com.hackoeur.jglm.Vec3;
 

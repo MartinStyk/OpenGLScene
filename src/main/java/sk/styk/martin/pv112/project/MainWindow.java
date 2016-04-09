@@ -5,6 +5,8 @@ import com.jogamp.opengl.GLContext;
 import com.jogamp.opengl.GLProfile;
 import com.jogamp.opengl.awt.GLJPanel;
 import com.jogamp.opengl.util.FPSAnimator;
+import sk.styk.martin.pv112.project.camera.Camera;
+import sk.styk.martin.pv112.project.camera.MyCamera;
 
 import java.awt.*;
 import java.awt.event.KeyAdapter;

@@ -1,4 +1,4 @@
-package sk.styk.martin.pv112.project;
+package sk.styk.martin.pv112.project.camera;
 
 import com.hackoeur.jglm.Vec3;
 
@@ -9,6 +9,11 @@ import java.awt.event.MouseEvent;
  * Created by Martin Styk on 09.04.2016.
  */
 public class MyCamera implements Camera {
+
+    private static final float MIN_ELEVALITON = -1.5f;
+    ///		- Maximum elevation in radians
+    private static final float MAX_ELEVATION = 1.5f;
+
     // position
     Vec3 position = new Vec3(0, 0, -5);
     Vec3 direction = new Vec3(0, 0, 0);
@@ -47,6 +52,13 @@ public class MyCamera implements Camera {
         horizontalAngle += mouseSpeed * (xPosition - x);
         verticalAngle += mouseSpeed * (yPosition - y);
 
+        if(verticalAngle > MAX_ELEVATION){
+            verticalAngle = MAX_ELEVATION;
+        }
+        if(verticalAngle < MIN_ELEVALITON){
+            verticalAngle = MIN_ELEVALITON;
+        }
+
         xPosition = x;
         yPosition = y;
 
@@ -71,10 +83,10 @@ public class MyCamera implements Camera {
             case 's':
                 position = position.subtract(direction.multiply(speed));
                 break;
-            case 'd':
+            case 'a':
                 position = position.subtract(rightDirection.multiply(speed));
                 break;
-            case 'a':
+            case 'd':
                 position = position.add(rightDirection.multiply(speed));
                 break;
         }

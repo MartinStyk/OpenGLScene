@@ -10,6 +10,7 @@ import com.jogamp.opengl.GLEventListener;
 import com.jogamp.opengl.util.FPSAnimator;
 import sk.styk.martin.pv112.project.Lights.AttenuationLight;
 import sk.styk.martin.pv112.project.Lights.Light;
+import sk.styk.martin.pv112.project.camera.Camera;
 import sk.styk.martin.pv112.project.materials.*;
 import sk.styk.martin.pv112.project.objects.Cube;
 import sk.styk.martin.pv112.project.objects.Dice;
