@@ -12,10 +12,7 @@ import sk.styk.martin.pv112.project.Lights.AttenuationLight;
 import sk.styk.martin.pv112.project.Lights.Light;
 import sk.styk.martin.pv112.project.camera.Camera;
 import sk.styk.martin.pv112.project.materials.*;
-import sk.styk.martin.pv112.project.objects.Cube;
-import sk.styk.martin.pv112.project.objects.Dice;
-import sk.styk.martin.pv112.project.objects.Sofa;
-import sk.styk.martin.pv112.project.objects.Teapot;
+import sk.styk.martin.pv112.project.objects.*;
 import sk.styk.martin.pv112.project.programs.BasicProgram;
 import sk.styk.martin.pv112.project.programs.Program;
 import sk.styk.martin.pv112.project.textures.*;
@@ -26,8 +23,8 @@ import sk.styk.martin.pv112.project.textures.*;
  */
 public class Scene implements GLEventListener {
 
-    public static final int CEILING_POS = 5;
-    public static final int FLOOR_POS = -5;
+    public static final int CEILING_POS = 8;
+    public static final int FLOOR_POS = -8;
     public static final float CEILING_LIGHT_HEIGHT = CEILING_POS - 0.2f;
 
     private FPSAnimator animator;
@@ -52,6 +49,8 @@ public class Scene implements GLEventListener {
 
     // models
     private Cube wall;
+    private Table table;
+    private Vase vase;
     private Sofa sofa;
     private Teapot teapot;
     private Teapot teapot2;
@@ -128,6 +127,12 @@ public class Scene implements GLEventListener {
         // create geometry
         wall = new Cube(basicProgram, WallMaterial.getInstance());
 
+        table = new Table(basicProgram, ChromeMaterial.getInstance(), new WoodTexture(gl,GL_MIRRORED_REPEAT, GL_MIRRORED_REPEAT, GL_REPEAT, 12,-1));
+        table.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(-14,-8,+26)).multiply(MatricesUtils.scale(0.1f,0.08f,0.1f)));
+
+        vase = new Vase(basicProgram,PewterMaterial.getInstance());
+        vase.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(14,-8,+26)).multiply(MatricesUtils.scale(0.1f,0.2f,0.1f)));
+
         sofa = new Sofa(basicProgram, ChromeMaterial.getInstance(), new WoodTexture(gl));
         sofa.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(5.0f, 5.0f, 0.0f)));
 
@@ -140,7 +145,7 @@ public class Scene implements GLEventListener {
         cube = new Dice(basicProgram);
         cube.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(-5.0f, 0.0f, 0.0f)));
 
-        cube2 = new Cube(basicProgram, ChromeMaterial.getInstance(), new RockTexture(gl,GL_MIRRORED_REPEAT,GL_MIRRORED_REPEAT,GL_MIRRORED_REPEAT,3,-1));
+        cube2 = new RubicCube(basicProgram);
         cube2.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(-5.0f, -5.0f, 0.0f)));
 
         light1 = new AttenuationLight(new Vec4(5.0f, CEILING_LIGHT_HEIGHT, -10.0f, 1.0f));
@@ -156,8 +161,8 @@ public class Scene implements GLEventListener {
 
         //texture load
         floorTexture = new ParquetTexture(gl,GL_MIRRORED_REPEAT, GL_REPEAT, GL_MIRRORED_REPEAT, 5,0);
-        carpetTexture = new CarpetTexture(gl,GL_MIRRORED_REPEAT, GL_MIRRORED_REPEAT, GL_REPEAT, 15,-1);
-        wallTexture = new WallTexture(gl,GL_REPEAT, GL_REPEAT, GL_REPEAT, 6,-1);
+        carpetTexture = new CarpetTexture(gl,GL_MIRRORED_REPEAT, GL_MIRRORED_REPEAT, GL_REPEAT, 12,-1);
+        wallTexture = new WallTexture(gl,GL_REPEAT, GL_REPEAT, GL_REPEAT, 3,-1);
         wallCovering = new WallCovering(gl, GL_REPEAT, GL_REPEAT, GL_REPEAT,1,0);
         personalPicture = new PersonPictureTexture(gl);
     }
@@ -172,7 +177,7 @@ public class Scene implements GLEventListener {
     @Override
     public void display(GLAutoDrawable drawable) {
         GL3 gl = drawable.getGL().getGL3();
-        
+        Mat4 mvp;
         // animate variables
         if (animator.isAnimating()) {
             t += 0.02f;
@@ -218,8 +223,16 @@ public class Scene implements GLEventListener {
         drawWalls(projection,view);
 
         // teapot
-        Mat4 mvp = projection.multiply(view).multiply(teapot.getModel());
+        mvp = projection.multiply(view).multiply(teapot.getModel());
         teapot.draw(mvp);
+
+        //table
+        mvp = projection.multiply(view).multiply(table.getModel());
+        table.draw(mvp);
+
+        //vase
+        mvp = projection.multiply(view.multiply(vase.getModel()));
+        vase.draw(mvp);
 
         //sofa
         mvp = projection.multiply(view).multiply(sofa.getModel());
@@ -253,12 +266,16 @@ public class Scene implements GLEventListener {
     }
 
     private void drawWalls(Mat4 projection, Mat4 view){
+
+        float directionA = 30.0f;
+        float directionB = 20.0f;
+
         wall.setTexture(null);
         //back wall
         wall.setModel(Mat4.MAT4_IDENTITY
                 .multiply(Matrices.rotate((float)(0.5f * Math.PI), new Vec3(0,1,0)))
-                .translate(new Vec3(15.0f, 0.0f, 0.0f))
-                .multiply(MatricesUtils.scale(0.1f, 5.0f, 10.0f)));
+                .translate(new Vec3(directionA, 0.0f, 0.0f))
+                .multiply(MatricesUtils.scale(0.1f, 8.0f, directionB)));
         Mat4 mvp = projection.multiply(view).multiply(wall.getModel());
         wall.draw(mvp);
 
@@ -266,8 +283,8 @@ public class Scene implements GLEventListener {
         //front wall
         wall.setModel(Mat4.MAT4_IDENTITY
                 .multiply(Matrices.rotate((float)(1.5 * Math.PI), new Vec3(0,1,0)))
-                .translate(new Vec3(15.0f, 0.0f, 0.0f))
-                .multiply(MatricesUtils.scale(0.1f, 5.0f, 10.0f)));
+                .translate(new Vec3(directionA, 0.0f, 0.0f))
+                .multiply(MatricesUtils.scale(0.1f, 8.0f, directionB)));
         mvp = projection.multiply(view).multiply(wall.getModel());
         wall.draw(mvp);
 
@@ -275,23 +292,23 @@ public class Scene implements GLEventListener {
         //left wall
         wall.setModel(Mat4.MAT4_IDENTITY
                 .multiply(Matrices.rotate((float)( 1 *  Math.PI), new Vec3(0,1,0)))
-                .translate(new Vec3(10.0f, 0.0f, 0.0f))
-                .multiply(MatricesUtils.scale(0.1f, 5.0f, 15.0f)));
+                .translate(new Vec3(directionB, 0.0f, 0.0f))
+                .multiply(MatricesUtils.scale(0.1f, 8.0f, directionA)));
         mvp = projection.multiply(view).multiply(wall.getModel());
         wall.draw(mvp);
 
         wall.setTexture(null);
         //right wall
         wall.setModel(Mat4.MAT4_IDENTITY
-                .translate(new Vec3(10.0f, 0.0f, 0.0f))
-                .multiply(MatricesUtils.scale(0.1f, 5.0f, 15.0f)));
+                .translate(new Vec3(directionB, 0.0f, 0.0f))
+                .multiply(MatricesUtils.scale(0.1f, 8.0f, directionA)));
         mvp = projection.multiply(view).multiply(wall.getModel());
         wall.draw(mvp);
 
         //ceiling
         wall.setModel(Mat4.MAT4_IDENTITY
                 .translate(new Vec3(0.0f, CEILING_POS, 0.0f))
-                .multiply(MatricesUtils.scale(10.0f, 0.1f, 15.0f)));
+                .multiply(MatricesUtils.scale(directionB, 0.1f, directionA)));
         mvp = projection.multiply(view).multiply(wall.getModel());
         wall.draw(mvp);
 
@@ -299,7 +316,7 @@ public class Scene implements GLEventListener {
         wall.setTexture(floorTexture);
         wall.setModel(Mat4.MAT4_IDENTITY
                 .translate(new Vec3(0.0f, FLOOR_POS, 0.0f))
-                .multiply(MatricesUtils.scale(10.0f, 0.1f, 15.0f)));
+                .multiply(MatricesUtils.scale(directionB, 0.1f, directionA)));
         mvp = projection.multiply(view).multiply(wall.getModel());
         wall.draw(mvp);
 
@@ -307,14 +324,14 @@ public class Scene implements GLEventListener {
         wall.setTexture(carpetTexture);
         wall.setModel(Mat4.MAT4_IDENTITY
                 .translate(new Vec3(0.0f, FLOOR_POS + 0.01f, 0.0f))
-                .multiply(MatricesUtils.scale(6.0f, 0.1f, 10.0f)));
+                .multiply(MatricesUtils.scale(directionB/2, 0.1f, directionA/2)));
         mvp = projection.multiply(view).multiply(wall.getModel());
         wall.draw(mvp);
 
         //picture on right wall wall
         wall.setTexture(personalPicture);
         wall.setModel(Mat4.MAT4_IDENTITY
-                .translate(new Vec3(10.0f - 0.01f , 0.0f, 0.0f))
+                .translate(new Vec3(directionB - 0.01f , 0.0f, 0.0f))
                 .multiply(MatricesUtils.scale(0.1f, 1.0f, 1.5f)));
         mvp = projection.multiply(view).multiply(wall.getModel());
         wall.draw(mvp);

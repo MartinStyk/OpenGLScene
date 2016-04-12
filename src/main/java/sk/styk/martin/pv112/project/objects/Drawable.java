@@ -172,7 +172,6 @@ public abstract class Drawable {
     };
 
     public void draw(Mat4 mvp){
-        this.setModel(model);
         this.setMvp(mvp);
         draw();
     }

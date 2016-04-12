@@ -17,12 +17,13 @@ public class TexturesFactory {
     private GL3 gl;
 
     public enum Types {
-        WOOD, ROCKS, DICE1, DICE2,DICE3,DICE4,DICE5,DICE6,WALL, CARPET, WALL_COVERING, PHOTO_PERSONAL, PARQUET
+        WOOD, ROCKS, DICE1, DICE2, DICE3, DICE4, DICE5, DICE6, WALL, CARPET, WALL_COVERING, PHOTO_PERSONAL, PARQUET, RUBIC1, RUBIC2, RUBIC3, RUBIC4, RUBIC5, RUBIC6
     }
 
     private Texture wood;
     private Texture rocks;
     private List<Texture> dice;
+    private List<Texture> rubic;
     private Texture wall;
     private Texture carpet;
     private Texture wallCovering;
@@ -42,8 +43,10 @@ public class TexturesFactory {
     }
 
     public Texture get(Types type) {
-        Texture res = checkDice(type);
-        if(res != null) return res;
+        Texture res1 = checkDice(type);
+        Texture res2 = checkRubic(type);
+        if (res1 != null) return res1;
+        if (res2 != null) return res2;
 
         switch (type) {
             case WOOD:
@@ -87,18 +90,33 @@ public class TexturesFactory {
     }
 
     private Texture checkDice(Types type) {
-        if(!type.toString().toLowerCase().contains("dice")){
+        if (!type.toString().toLowerCase().contains("dice")) {
             return null;
         }
-        if(dice==null || dice.isEmpty()){
+        if (dice == null || dice.isEmpty()) {
             dice = new ArrayList<>();
-            for(int i=1;i<7;i++){
+            for (int i = 1; i < 7; i++) {
                 dice.add(LoadUtils.loadTexture(gl, DiceTexture.getPath(i), DiceTexture.getType()));
             }
         }
         String last = type.toString().substring(4);
         int i = Integer.parseInt(last) - 1;
-        return  dice.get(i);
+        return dice.get(i);
+    }
+
+    private Texture checkRubic(Types type) {
+        if (!type.toString().toLowerCase().contains("rubic")) {
+            return null;
+        }
+        if (rubic == null || rubic.isEmpty()) {
+            rubic = new ArrayList<>();
+            for (int i = 1; i < 7; i++) {
+                rubic.add(LoadUtils.loadTexture(gl, RubicTexture.getPath(i), RubicTexture.getType()));
+            }
+        }
+        String last = type.toString().substring(5);
+        int i = Integer.parseInt(last) - 1;
+        return rubic.get(i);
     }
 
 }
