@@ -54,8 +54,8 @@ public class Scene implements GLEventListener {
     private Sofa sofa;
     private Teapot teapot;
     private Teapot teapot2;
-    private Cube cube;
-    private Cube cube2;
+    private Cube dice;
+    private Cube rubic;
     
     //lights
     private Light light1;
@@ -71,10 +71,11 @@ public class Scene implements GLEventListener {
     
     // JOGL resouces
     private int joglArray; // JOGL uses own vertex array for updating GLJPanel
-        
-    // our GLSL resources (model)
-  
-    
+
+    // helper classes
+    private CubeRandomRotate cubeRandomRotate = new CubeRandomRotate(10);
+
+
     public Scene(FPSAnimator animator, Camera camera) {
         this.animator = animator;
         this.camera = camera;
@@ -131,7 +132,7 @@ public class Scene implements GLEventListener {
         table.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(-14,-8,+26)).multiply(MatricesUtils.scale(0.1f,0.08f,0.1f)));
 
         vase = new Vase(basicProgram,PewterMaterial.getInstance());
-        vase.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(14,-8,+26)).multiply(MatricesUtils.scale(0.1f,0.2f,0.1f)));
+        vase.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(14,-8,16)).multiply(MatricesUtils.scale(0.1f,0.2f,0.1f)));
 
         sofa = new Sofa(basicProgram, ChromeMaterial.getInstance(), new WoodTexture(gl));
         sofa.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(5.0f, 5.0f, 0.0f)));
@@ -142,11 +143,11 @@ public class Scene implements GLEventListener {
         teapot2 = new Teapot(basicProgram, GoldMaterial.getInstance());
         teapot2.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(5.0f, 0.0f, 0.0f)));
 
-        cube = new Dice(basicProgram);
-        cube.setModel(Mat4.MAT4_IDENTITY);
+        dice = new Dice(basicProgram);
+        dice.setModel(Mat4.MAT4_IDENTITY);
 
-        cube2 = new RubicCube(basicProgram);
-        cube2.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(-5.0f, -5.0f, 0.0f)));
+        rubic = new RubicCube(basicProgram);
+        rubic.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(-5.0f, -5.0f, 0.0f)));
 
         light1 = new AttenuationLight(new Vec4(5.0f, CEILING_LIGHT_HEIGHT, -10.0f, 1.0f));
         light2 = new AttenuationLight(new Vec4(3.0f, CEILING_LIGHT_HEIGHT, -5.0f, 1.0f));
@@ -222,6 +223,9 @@ public class Scene implements GLEventListener {
         //walls
         drawWalls(projection,view);
 
+        //cubes, rubic and dice
+        drawCubes(projection,view);
+
         // teapot
         mvp = projection.multiply(view).multiply(teapot.getModel());
         teapot.draw(mvp);
@@ -242,15 +246,6 @@ public class Scene implements GLEventListener {
         mvp = projection.multiply(view).multiply(teapot2.getModel());
         teapot2.draw(mvp);
 
-        // cube
-        mvp = projection.multiply(view).multiply(cube.getModel());
-        cube.draw(mvp);
-
-        // cube2
-        mvp = projection.multiply(view).multiply(cube2.getModel());
-        cube2.draw(mvp);
-
-                
         gl.glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     }
 
@@ -337,6 +332,92 @@ public class Scene implements GLEventListener {
         wall.draw(mvp);
     }
 
+    private void drawCubes(Mat4 projection, Mat4 view) {
+        float x = 12f;
+        float y = -7f;
+        float z = 28f;
+        float diff = 2;
+
+        dice.setModel(Mat4.MAT4_IDENTITY
+                .translate(new Vec3( x, y, z))
+                .multiply(Matrices.rotate((float) ( (0.25f+cubeRandomRotate.getRandom(0)) * Math.PI ), new Vec3(0, 1, 0)))
+                .multiply(MatricesUtils.scale(1, 1, 1)));
+        Mat4 mvp = projection.multiply(view).multiply(dice.getModel());
+        dice.draw(mvp);
+
+        rubic.setModel(Mat4.MAT4_IDENTITY
+                .translate(new Vec3( x + diff, y, z - diff))
+                .multiply(Matrices.rotate((float) ( (cubeRandomRotate.getRandom(1) + 0.25f) * Math.PI ), new Vec3(0, 1, 0)))
+                .multiply(MatricesUtils.scale(1, 1, 1)));
+        mvp = projection.multiply(view).multiply(rubic.getModel());
+        rubic.draw(mvp);
+
+        dice.setModel(Mat4.MAT4_IDENTITY
+                .translate(new Vec3( x + 2*diff, y, z - 2*diff))
+                .multiply(Matrices.rotate((float) ( (cubeRandomRotate.getRandom(2) + 0.75f) * Math.PI ), new Vec3(0, 1, 0)))
+                .multiply(MatricesUtils.scale(1, 1, 1)));
+        mvp = projection.multiply(view).multiply(dice.getModel());
+        dice.draw(mvp);
+
+        rubic.setModel(Mat4.MAT4_IDENTITY
+                .translate(new Vec3( x + 3*diff, y, z - 3*diff))
+                .multiply(Matrices.rotate((float) ( (cubeRandomRotate.getRandom(3) + 0.75f) * Math.PI ), new Vec3(0, 1, 0)))
+                .multiply(MatricesUtils.scale(1, 1, 1)));
+        mvp = projection.multiply(view).multiply(rubic.getModel());
+        rubic.draw(mvp);
+
+        //2nd level
+
+        rubic.setModel(Mat4.MAT4_IDENTITY
+                .translate(new Vec3( x + 2.5f*diff, y + diff, z - 2.5f*diff))
+                .multiply(Matrices.rotate((float) ( (cubeRandomRotate.getRandom(4) + 1.25f) * Math.PI ), new Vec3(0, 1, 0)))
+                .multiply(MatricesUtils.scale(1, 1, 1)));
+        mvp = projection.multiply(view).multiply(rubic.getModel());
+        rubic.draw(mvp);
+
+        rubic.setModel(Mat4.MAT4_IDENTITY
+                .translate(new Vec3( x + 1.5f*diff, y + diff, z - 1.5f*diff))
+                .multiply(Matrices.rotate((float) (1.25f * Math.PI), new Vec3(0, 1, 0)))
+                .multiply(Matrices.rotate((float) (0.5f * Math.PI), new Vec3(1, 0, 0)))
+                .multiply(MatricesUtils.scale(1, 1, 1)));
+        mvp = projection.multiply(view).multiply(rubic.getModel());
+        rubic.draw(mvp);
+
+        dice.setModel(Mat4.MAT4_IDENTITY
+                .translate(new Vec3( x + 0.5f*diff, y + diff, z - 0.5f*diff))
+                .multiply(Matrices.rotate((float) (1.25f * Math.PI), new Vec3(0, 1, 0)))
+                .multiply(Matrices.rotate((float) (0.5f * Math.PI), new Vec3(1, 0, 0)))
+                .multiply(MatricesUtils.scale(1, 1, 1)));
+        mvp = projection.multiply(view).multiply(dice.getModel());
+        dice.draw(mvp);
+
+        //3rd level
+
+        dice.setModel(Mat4.MAT4_IDENTITY
+                .translate(new Vec3( x + 2f*diff, y + 2*diff, z - 2f*diff))
+                .multiply(Matrices.rotate((float) ( (cubeRandomRotate.getRandom(7) + 1.75f) * Math.PI ), new Vec3(0, 1, 0)))
+                .multiply(MatricesUtils.scale(1, 1, 1)));
+        mvp = projection.multiply(view).multiply(dice.getModel());
+        dice.draw(mvp);
+
+        rubic.setModel(Mat4.MAT4_IDENTITY
+                .translate(new Vec3( x + diff, y + 2*diff, z - diff))
+                .multiply(Matrices.rotate((float) ((cubeRandomRotate.getRandom(8) + 1.75f) * Math.PI ), new Vec3(0, 1, 0)))
+                .multiply(MatricesUtils.scale(1, 1, 1)));
+        mvp = projection.multiply(view).multiply(rubic.getModel());
+        rubic.draw(mvp);
+
+        //top
+
+        dice.setModel(Mat4.MAT4_IDENTITY
+                .translate(new Vec3( x + 1.5f*diff, y + 3f*diff, z - 1.5f*diff))
+                .multiply(Matrices.rotate((float) (0.25f * Math.PI), new Vec3(0, 1, 0)))
+                .multiply(Matrices.rotate((float) (0.5f * Math.PI), new Vec3(1, 0, 0)))
+                .multiply(MatricesUtils.scale(1, 1, 1)));
+        mvp = projection.multiply(view).multiply(dice.getModel());
+        dice.draw(mvp);
+
+    }
     public void moreLight(){
         if(lightPower > 0.7){
             lightPower -= 0.1f;
