@@ -143,7 +143,7 @@ public class Scene implements GLEventListener {
         teapot2.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(5.0f, 0.0f, 0.0f)));
 
         cube = new Dice(basicProgram);
-        cube.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(-5.0f, 0.0f, 0.0f)));
+        cube.setModel(Mat4.MAT4_IDENTITY);
 
         cube2 = new RubicCube(basicProgram);
         cube2.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(-5.0f, -5.0f, 0.0f)));

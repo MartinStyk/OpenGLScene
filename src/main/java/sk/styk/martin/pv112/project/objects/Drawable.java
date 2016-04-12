@@ -27,8 +27,8 @@ public abstract class Drawable {
     protected Geometry geometry;
     protected Material material;
     protected ConfigurableTexture texture;
-    protected Mat4 mvp;
-    protected Mat4 model;
+    protected Mat4 mvp = Mat4.MAT4_IDENTITY;
+    protected Mat4 model = Mat4.MAT4_IDENTITY;
 
     public Drawable(Program program, String path){
         this(program, null,null, path);
