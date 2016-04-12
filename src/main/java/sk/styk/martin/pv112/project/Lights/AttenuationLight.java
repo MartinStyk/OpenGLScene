@@ -1,7 +1,5 @@
-package sk.styk.martin.pv112.project.Lights;
+package sk.styk.martin.pv112.project.lights;
 
-import com.hackoeur.jglm.Matrices;
-import com.hackoeur.jglm.MatricesUtils;
 import com.hackoeur.jglm.Vec3;
 import com.hackoeur.jglm.Vec4;
 import com.jogamp.opengl.GL3;

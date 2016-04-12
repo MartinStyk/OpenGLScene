@@ -8,8 +8,8 @@ package sk.styk.martin.pv112.project.programs;
 import com.hackoeur.jglm.Vec3;
 import com.jogamp.opengl.GL3;
 import sk.styk.martin.pv112.project.camera.Camera;
-import sk.styk.martin.pv112.project.Lights.AttenuationLight;
-import sk.styk.martin.pv112.project.Lights.Light;
+import sk.styk.martin.pv112.project.lights.AttenuationLight;
+import sk.styk.martin.pv112.project.lights.Light;
 
 /**
  * Program for textured and not textred indoor objects

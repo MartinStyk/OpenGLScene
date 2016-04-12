@@ -7,7 +7,7 @@ package sk.styk.martin.pv112.project.programs;
 
 import com.jogamp.opengl.GL3;
 import sk.styk.martin.pv112.project.camera.Camera;
-import sk.styk.martin.pv112.project.Lights.Light;
+import sk.styk.martin.pv112.project.lights.Light;
 
 /**
  *

@@ -1,4 +1,4 @@
-package sk.styk.martin.pv112.project;
+package sk.styk.martin.pv112.project.tooling;
 
 import java.io.BufferedReader;
 import java.io.IOException;

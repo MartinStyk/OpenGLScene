@@ -2,7 +2,7 @@ package sk.styk.martin.pv112.project.textures;
 
 import com.jogamp.opengl.GL3;
 import com.jogamp.opengl.util.texture.Texture;
-import sk.styk.martin.pv112.project.LoadUtils;
+import sk.styk.martin.pv112.project.tooling.LoadUtils;
 
 import java.util.ArrayList;
 import java.util.List;

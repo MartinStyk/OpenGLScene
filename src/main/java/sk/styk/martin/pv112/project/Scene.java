@@ -8,14 +8,15 @@ import com.jogamp.opengl.GLDebugListener;
 import com.jogamp.opengl.GLDebugMessage;
 import com.jogamp.opengl.GLEventListener;
 import com.jogamp.opengl.util.FPSAnimator;
-import sk.styk.martin.pv112.project.Lights.AttenuationLight;
-import sk.styk.martin.pv112.project.Lights.Light;
+import sk.styk.martin.pv112.project.lights.AttenuationLight;
+import sk.styk.martin.pv112.project.lights.Light;
 import sk.styk.martin.pv112.project.camera.Camera;
 import sk.styk.martin.pv112.project.materials.*;
 import sk.styk.martin.pv112.project.objects.*;
 import sk.styk.martin.pv112.project.programs.BasicProgram;
 import sk.styk.martin.pv112.project.programs.Program;
 import sk.styk.martin.pv112.project.textures.*;
+import sk.styk.martin.pv112.project.tooling.CubeRandomRotate;
 
 /**
  *

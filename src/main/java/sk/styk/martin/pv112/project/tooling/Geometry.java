@@ -1,4 +1,4 @@
-package sk.styk.martin.pv112.project;
+package sk.styk.martin.pv112.project.tooling;
 import com.jogamp.common.nio.Buffers;
 import com.jogamp.opengl.GL3;
 import static com.jogamp.opengl.GL3.*;

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package sk.styk.martin.pv112.project;
+package sk.styk.martin.pv112.project.tooling;
 
 import static com.jogamp.opengl.GL.GL_FALSE;
 import static com.jogamp.opengl.GL2ES2.GL_COMPILE_STATUS;
@@ -15,9 +15,9 @@ import com.jogamp.opengl.GL3;
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureData;
 import com.jogamp.opengl.util.texture.TextureIO;
+import sk.styk.martin.pv112.project.Scene;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;

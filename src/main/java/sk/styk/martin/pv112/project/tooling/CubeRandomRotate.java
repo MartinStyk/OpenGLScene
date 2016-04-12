@@ -1,4 +1,4 @@
-package sk.styk.martin.pv112.project;
+package sk.styk.martin.pv112.project.tooling;
 
 import java.util.HashMap;
 import java.util.Map;
