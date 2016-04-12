@@ -52,6 +52,7 @@ public class Scene implements GLEventListener {
     private Cube wall;
     private Table table;
     private Vase vase;
+    private Bin bin;
     private Sofa sofa;
     private Teapot teapot;
     private Teapot teapot2;
@@ -134,6 +135,9 @@ public class Scene implements GLEventListener {
 
         vase = new Vase(basicProgram,PewterMaterial.getInstance());
         vase.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(14,-8,16)).multiply(MatricesUtils.scale(0.1f,0.2f,0.1f)));
+
+        bin = new Bin(basicProgram, BlackPlastic.getInstance());
+        bin.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(-5,-8,+26)).multiply(MatricesUtils.scale(0.1f,0.08f,0.1f)));
 
         sofa = new Sofa(basicProgram, ChromeMaterial.getInstance(), new WoodTexture(gl));
         sofa.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(5.0f, 5.0f, 0.0f)));
@@ -234,6 +238,10 @@ public class Scene implements GLEventListener {
         //table
         mvp = projection.multiply(view).multiply(table.getModel());
         table.draw(mvp);
+
+        //bin
+        mvp = projection.multiply(view).multiply(bin.getModel());
+        bin.draw(mvp);
 
         //vase
         mvp = projection.multiply(view.multiply(vase.getModel()));
