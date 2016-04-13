@@ -445,21 +445,21 @@ public class Scene implements GLEventListener {
         Mat4 mvp = projection.multiply(view).multiply(clock.getModel());
 
         clock.getClockHourHand().setModel(Mat4.MAT4_IDENTITY
-                .translate(new Vec3( 0, 1.75f, 29.3f))
+                .translate(new Vec3( 0, 1.68f, 29.3f))
                 .multiply(Matrices.rotate(clockUtils.getHourHandRotation(), new Vec3(0, 0, 1)))
                 .multiply(MatricesUtils.scale(0.1f, 0.1f, 0.1f))
                 .translate(new Vec3( 0,4,0)));
         Mat4 mvpHour =projection.multiply(view).multiply(clock.getClockHourHand().getModel());
 
         clock.getClockMinuteHand().setModel(Mat4.MAT4_IDENTITY
-                .translate(new Vec3( 0, 1.75f, 29.3f))
+                .translate(new Vec3( 0, 1.68f, 29.3f))
                 .multiply(MatricesUtils.scale(0.1f, 0.1f, 0.1f))
                 .multiply(Matrices.rotate(clockUtils.getMinuteHandRotation() , new Vec3(0, 0, 1)))
                 .translate(new Vec3( 0,4,0)));
         Mat4 mvpMinute =projection.multiply(view).multiply(clock.getClockMinuteHand().getModel());
 
         clock.getClockSecondHand().setModel(Mat4.MAT4_IDENTITY
-                .translate(new Vec3( 0, 1.75f, 29.3f))
+                .translate(new Vec3( 0, 1.68f, 29.3f))
                 .multiply(MatricesUtils.scale(0.1f, 0.1f, 0.1f))
                 .multiply(Matrices.rotate(clockUtils.getSecondsHandRotation() , new Vec3(0, 0, 1)))
                 .translate(new Vec3( 0,4,0)));
