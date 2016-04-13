@@ -60,6 +60,8 @@ public class Scene implements GLEventListener {
     private Cube dice;
     private Cube rubic;
     private Clock clock;
+    private Box box;
+    private Library library;
     
     //lights
     private Light light1;
@@ -136,7 +138,7 @@ public class Scene implements GLEventListener {
         table.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(-14,-8,+26)).multiply(MatricesUtils.scale(0.1f,0.08f,0.1f)));
 
         vase = new Vase(basicProgram,PewterMaterial.getInstance());
-        vase.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(14,-8,16)).multiply(MatricesUtils.scale(0.1f,0.2f,0.1f)));
+        vase.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(5,-8,24)).multiply(MatricesUtils.scale(0.1f,0.2f,0.1f)));
 
         bin = new Bin(basicProgram, BlackPlastic.getInstance());
         bin.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(-5,-8,+26)).multiply(MatricesUtils.scale(0.1f,0.08f,0.1f)));
@@ -159,16 +161,21 @@ public class Scene implements GLEventListener {
         clock = new Clock(basicProgram);
         clock.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(-5.0f, -5.0f, 0.0f)));
 
-        light1 = new AttenuationLight(new Vec4(5.0f, CEILING_LIGHT_HEIGHT, -10.0f, 1.0f));
-        light2 = new AttenuationLight(new Vec4(3.0f, CEILING_LIGHT_HEIGHT, -5.0f, 1.0f));
-        light3 = new AttenuationLight(new Vec4(5.0f, CEILING_LIGHT_HEIGHT, 0.0f, 1.0f));
-        light4 = new AttenuationLight(new Vec4(3.0f, CEILING_LIGHT_HEIGHT, 5.0f, 1.0f));
-        light5 = new AttenuationLight(new Vec4(5.0f, CEILING_LIGHT_HEIGHT, 10.0f, 1.0f));
-        light6 = new AttenuationLight(new Vec4(-3.0f, CEILING_LIGHT_HEIGHT, -10.0f, 1.0f));
-        light7 = new AttenuationLight(new Vec4(-5.0f, CEILING_LIGHT_HEIGHT, -5.0f, 1.0f));
+        box = new Box(basicProgram,ChromeMaterial.getInstance(), new WoodTexture(gl));
+        box.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(-14,-8,-25)).multiply(MatricesUtils.scale(0.07f,0.07f,0.07f)));
+
+        library = new Library(basicProgram,ChromeMaterial.getInstance(), new WoodTexture(gl));
+
+        light1 = new AttenuationLight(new Vec4(8.0f, CEILING_LIGHT_HEIGHT, -15.0f, 1.0f));
+        light2 = new AttenuationLight(new Vec4(3.0f, CEILING_LIGHT_HEIGHT, -7.0f, 1.0f));
+        light3 = new AttenuationLight(new Vec4(8.0f, CEILING_LIGHT_HEIGHT, 0.0f, 1.0f));
+        light4 = new AttenuationLight(new Vec4(3.0f, CEILING_LIGHT_HEIGHT, 7.0f, 1.0f));
+        light5 = new AttenuationLight(new Vec4(8.0f, CEILING_LIGHT_HEIGHT, 15.0f, 1.0f));
+        light6 = new AttenuationLight(new Vec4(-3.0f, CEILING_LIGHT_HEIGHT, -15.0f, 1.0f));
+        light7 = new AttenuationLight(new Vec4(-8.0f, CEILING_LIGHT_HEIGHT, -7.0f, 1.0f));
         light8 = new AttenuationLight(new Vec4(-3.0f, CEILING_LIGHT_HEIGHT, 0.0f, 1.0f));
-        light9 = new AttenuationLight(new Vec4(-5.0f, CEILING_LIGHT_HEIGHT, 5.0f, 1.0f));
-        light10 = new AttenuationLight(new Vec4(-3.0f, CEILING_LIGHT_HEIGHT, 10.0f, 1.0f));
+        light9 = new AttenuationLight(new Vec4(-8.0f, CEILING_LIGHT_HEIGHT, 7.0f, 1.0f));
+        light10 = new AttenuationLight(new Vec4(-3.0f, CEILING_LIGHT_HEIGHT, 15.0f, 1.0f));
 
         //texture load
         floorTexture = new ParquetTexture(gl,GL_MIRRORED_REPEAT, GL_REPEAT, GL_MIRRORED_REPEAT, 5,0);
@@ -239,6 +246,9 @@ public class Scene implements GLEventListener {
         //clock
         drawClock(projection,view);
 
+        //libraries
+        drawLibraries(projection,view);
+
         // teapot
         mvp = projection.multiply(view).multiply(teapot.getModel());
         teapot.draw(mvp);
@@ -263,7 +273,26 @@ public class Scene implements GLEventListener {
         mvp = projection.multiply(view).multiply(teapot2.getModel());
         teapot2.draw(mvp);
 
+        // box
+        mvp = projection.multiply(view).multiply(box.getModel());
+        box.draw(mvp);
+
         gl.glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    }
+
+    private void drawLibraries(Mat4 projection, Mat4 view) {
+        library.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(18,-8,-20))
+                .multiply(Matrices.rotate((float)Math.PI/-2, new Vec3(0,1,0)))
+                .multiply(MatricesUtils.scale(0.12f,0.07f,0.12f)));
+        library.draw(projection.multiply(view).multiply(library.getModel()));
+        library.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(18,-8,-13))
+                .multiply(Matrices.rotate((float)Math.PI/-2, new Vec3(0,1,0)))
+                .multiply(MatricesUtils.scale(0.07f,0.07f,0.12f)));
+        library.draw(projection.multiply(view).multiply(library.getModel()));
+        library.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(18,-8,-6))
+                .multiply(Matrices.rotate((float)Math.PI/-2, new Vec3(0,1,0)))
+                .multiply(MatricesUtils.scale(0.12f,0.07f,0.12f)));
+        library.draw(projection.multiply(view).multiply(library.getModel()));
     }
 
     @Override
