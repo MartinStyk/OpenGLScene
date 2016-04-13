@@ -16,6 +16,7 @@ import sk.styk.martin.pv112.project.objects.*;
 import sk.styk.martin.pv112.project.programs.BasicProgram;
 import sk.styk.martin.pv112.project.programs.Program;
 import sk.styk.martin.pv112.project.textures.*;
+import sk.styk.martin.pv112.project.tooling.ClockRotate;
 import sk.styk.martin.pv112.project.tooling.CubeRandomRotate;
 
 /**
@@ -58,6 +59,7 @@ public class Scene implements GLEventListener {
     private Teapot teapot2;
     private Cube dice;
     private Cube rubic;
+    private Clock clock;
     
     //lights
     private Light light1;
@@ -154,6 +156,9 @@ public class Scene implements GLEventListener {
         rubic = new RubicCube(basicProgram);
         rubic.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(-5.0f, -5.0f, 0.0f)));
 
+        clock = new Clock(basicProgram);
+        clock.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(-5.0f, -5.0f, 0.0f)));
+
         light1 = new AttenuationLight(new Vec4(5.0f, CEILING_LIGHT_HEIGHT, -10.0f, 1.0f));
         light2 = new AttenuationLight(new Vec4(3.0f, CEILING_LIGHT_HEIGHT, -5.0f, 1.0f));
         light3 = new AttenuationLight(new Vec4(5.0f, CEILING_LIGHT_HEIGHT, 0.0f, 1.0f));
@@ -231,6 +236,9 @@ public class Scene implements GLEventListener {
         //cubes, rubic and dice
         drawCubes(projection,view);
 
+        //clock
+        drawClock(projection,view);
+
         // teapot
         mvp = projection.multiply(view).multiply(teapot.getModel());
         teapot.draw(mvp);
@@ -258,7 +266,6 @@ public class Scene implements GLEventListener {
         gl.glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     }
 
-    
     @Override
     public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
         GL3 gl = drawable.getGL().getGL3();
@@ -427,6 +434,38 @@ public class Scene implements GLEventListener {
         dice.draw(mvp);
 
     }
+
+    private void drawClock(Mat4 projection, Mat4 view) {
+        clock.setModel(Mat4.MAT4_IDENTITY
+                .translate(new Vec3( 0, 2, 29.6f))
+                .multiply(Matrices.rotate((float) Math.PI , new Vec3(0, 1, 0)))
+                .multiply(MatricesUtils.scale(0.1f, 0.1f, 0.1f)));
+        Mat4 mvp = projection.multiply(view).multiply(clock.getModel());
+
+        clock.getClockHourHand().setModel(Mat4.MAT4_IDENTITY
+                .translate(new Vec3( 0, 1.75f, 29.3f))
+                .multiply(Matrices.rotate(ClockRotate.getHourHandRotation(), new Vec3(0, 0, 1)))
+                .multiply(MatricesUtils.scale(0.1f, 0.1f, 0.1f))
+                .translate(new Vec3( 0,4,0)));
+        Mat4 mvpHour =projection.multiply(view).multiply(clock.getClockHourHand().getModel());
+
+        clock.getClockMinuteHand().setModel(Mat4.MAT4_IDENTITY
+                .translate(new Vec3( 0, 1.75f, 29.3f))
+                .multiply(MatricesUtils.scale(0.1f, 0.1f, 0.1f))
+                .multiply(Matrices.rotate(ClockRotate.getMinuteHandRotation() , new Vec3(0, 0, 1)))
+                .translate(new Vec3( 0,4,0)));
+        Mat4 mvpMinute =projection.multiply(view).multiply(clock.getClockMinuteHand().getModel());
+
+        clock.getClockSecondHand().setModel(Mat4.MAT4_IDENTITY
+                .translate(new Vec3( 0, 1.75f, 29.3f))
+                .multiply(MatricesUtils.scale(0.1f, 0.1f, 0.1f))
+                .multiply(Matrices.rotate(ClockRotate.getSecondsHandRotation() , new Vec3(0, 0, 1)))
+                .translate(new Vec3( 0,4,0)));
+        Mat4 mvpSecond =projection.multiply(view).multiply(clock.getClockSecondHand().getModel());
+
+        clock.draw(mvp,mvpHour, mvpMinute,mvpSecond);
+    }
+
     public void moreLight(){
         if(lightPower > 0.7){
             lightPower -= 0.1f;

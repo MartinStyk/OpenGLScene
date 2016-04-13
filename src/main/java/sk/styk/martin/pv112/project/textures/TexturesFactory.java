@@ -17,7 +17,8 @@ public class TexturesFactory {
     private GL3 gl;
 
     public enum Types {
-        WOOD, ROCKS, DICE1, DICE2, DICE3, DICE4, DICE5, DICE6, WALL, CARPET, WALL_COVERING, PHOTO_PERSONAL, PARQUET, RUBIC1, RUBIC2, RUBIC3, RUBIC4, RUBIC5, RUBIC6
+        WOOD, ROCKS, DICE1, DICE2, DICE3, DICE4, DICE5, DICE6, WALL, CARPET, WALL_COVERING, PHOTO_PERSONAL, PARQUET, RUBIC1, RUBIC2, RUBIC3, RUBIC4, RUBIC5, RUBIC6,
+        CLOCK_HAND, CLOCK
     }
 
     private Texture wood;
@@ -29,6 +30,8 @@ public class TexturesFactory {
     private Texture wallCovering;
     private Texture photoPersonal;
     private Texture parquet;
+    private Texture clock;
+    private Texture clockHand;
 
     protected TexturesFactory(GL3 gl) {
         this.gl = gl;
@@ -84,6 +87,16 @@ public class TexturesFactory {
                     parquet = LoadUtils.loadTexture(gl, ParquetTexture.getPath(), ParquetTexture.getType());
                 }
                 return parquet;
+            case CLOCK:
+                if (clock == null) {
+                    clock = LoadUtils.loadTexture(gl, ClockTexture.getPath(), ClockTexture.getType());
+                }
+                return clock;
+            case CLOCK_HAND:
+                if (clockHand == null) {
+                    clockHand = LoadUtils.loadTexture(gl, ClockHandTexture.getPath(), ClockHandTexture.getType());
+                }
+                return clockHand;
             default:
                 throw new IllegalArgumentException("Texture type does not exist");
         }
