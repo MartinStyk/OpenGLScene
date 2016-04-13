@@ -6,6 +6,7 @@ import sk.styk.martin.pv112.project.programs.Program;
 import sk.styk.martin.pv112.project.textures.ClockHandTexture;
 import sk.styk.martin.pv112.project.textures.ClockTexture;
 import sk.styk.martin.pv112.project.textures.ConfigurableTexture;
+import sk.styk.martin.pv112.project.tooling.ClockUtils;
 
 import static com.jogamp.opengl.GL.GL_REPEAT;
 
@@ -15,10 +16,9 @@ import static com.jogamp.opengl.GL.GL_REPEAT;
 public class Clock extends Drawable {
 
     private ClockHourHand clockHourHand;
-
     private ClockMinuteHand clockSecondHand;
-
     private ClockMinuteHand clockMinuteHand;
+    private ClockUtils clockUtils = new ClockUtils();
 
     public Clock(Program program) {
         this(program, WhiteRubber.getInstance(),new ClockTexture(program.getGL()));
@@ -51,5 +51,7 @@ public class Clock extends Drawable {
         return clockSecondHand;
     }
 
-
+    public ClockUtils getClockUtils() {
+        return clockUtils;
+    }
 }

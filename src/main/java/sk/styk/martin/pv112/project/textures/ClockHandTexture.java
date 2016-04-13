@@ -25,7 +25,7 @@ public class ClockHandTexture extends ConfigurableTexture{
         return "/textures/clock-hand.png";
     }
     public static String getType(){
-        return TextureIO.PNG;
+        return TextureIO.PNG    ;
     }
 
 }

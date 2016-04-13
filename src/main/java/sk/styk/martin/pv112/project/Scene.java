@@ -16,7 +16,7 @@ import sk.styk.martin.pv112.project.objects.*;
 import sk.styk.martin.pv112.project.programs.BasicProgram;
 import sk.styk.martin.pv112.project.programs.Program;
 import sk.styk.martin.pv112.project.textures.*;
-import sk.styk.martin.pv112.project.tooling.ClockRotate;
+import sk.styk.martin.pv112.project.tooling.ClockUtils;
 import sk.styk.martin.pv112.project.tooling.CubeRandomRotate;
 
 /**
@@ -436,6 +436,8 @@ public class Scene implements GLEventListener {
     }
 
     private void drawClock(Mat4 projection, Mat4 view) {
+        ClockUtils clockUtils = clock.getClockUtils();
+
         clock.setModel(Mat4.MAT4_IDENTITY
                 .translate(new Vec3( 0, 2, 29.6f))
                 .multiply(Matrices.rotate((float) Math.PI , new Vec3(0, 1, 0)))
@@ -444,7 +446,7 @@ public class Scene implements GLEventListener {
 
         clock.getClockHourHand().setModel(Mat4.MAT4_IDENTITY
                 .translate(new Vec3( 0, 1.75f, 29.3f))
-                .multiply(Matrices.rotate(ClockRotate.getHourHandRotation(), new Vec3(0, 0, 1)))
+                .multiply(Matrices.rotate(clockUtils.getHourHandRotation(), new Vec3(0, 0, 1)))
                 .multiply(MatricesUtils.scale(0.1f, 0.1f, 0.1f))
                 .translate(new Vec3( 0,4,0)));
         Mat4 mvpHour =projection.multiply(view).multiply(clock.getClockHourHand().getModel());
@@ -452,14 +454,14 @@ public class Scene implements GLEventListener {
         clock.getClockMinuteHand().setModel(Mat4.MAT4_IDENTITY
                 .translate(new Vec3( 0, 1.75f, 29.3f))
                 .multiply(MatricesUtils.scale(0.1f, 0.1f, 0.1f))
-                .multiply(Matrices.rotate(ClockRotate.getMinuteHandRotation() , new Vec3(0, 0, 1)))
+                .multiply(Matrices.rotate(clockUtils.getMinuteHandRotation() , new Vec3(0, 0, 1)))
                 .translate(new Vec3( 0,4,0)));
         Mat4 mvpMinute =projection.multiply(view).multiply(clock.getClockMinuteHand().getModel());
 
         clock.getClockSecondHand().setModel(Mat4.MAT4_IDENTITY
                 .translate(new Vec3( 0, 1.75f, 29.3f))
                 .multiply(MatricesUtils.scale(0.1f, 0.1f, 0.1f))
-                .multiply(Matrices.rotate(ClockRotate.getSecondsHandRotation() , new Vec3(0, 0, 1)))
+                .multiply(Matrices.rotate(clockUtils.getSecondsHandRotation() , new Vec3(0, 0, 1)))
                 .translate(new Vec3( 0,4,0)));
         Mat4 mvpSecond =projection.multiply(view).multiply(clock.getClockSecondHand().getModel());
 
