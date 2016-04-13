@@ -7,11 +7,11 @@ import java.util.Random;
 /**
  * Created by Martin Styk on 12.04.2016.
  */
-public class CubeRandomRotate {
+public class RandomRotate {
 
     private Map<Integer, Float> map;
 
-    public CubeRandomRotate(int number) {
+    public RandomRotate(int number) {
         map = new HashMap<Integer, Float>();
         for (int i = 0; i < number; i++) {
             map.put(i, createRandom());

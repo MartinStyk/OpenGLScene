@@ -18,7 +18,7 @@ public class TexturesFactory {
 
     public enum Types {
         WOOD, ROCKS, DICE1, DICE2, DICE3, DICE4, DICE5, DICE6, WALL, CARPET, WALL_COVERING, PHOTO_PERSONAL, PARQUET, RUBIC1, RUBIC2, RUBIC3, RUBIC4, RUBIC5, RUBIC6,
-        CLOCK_HAND, CLOCK
+        CLOCK_HAND, CLOCK, CERAMIC1, CERAMIC2
     }
 
     private Texture wood;
@@ -32,6 +32,8 @@ public class TexturesFactory {
     private Texture parquet;
     private Texture clock;
     private Texture clockHand;
+    private Texture ceramic1;
+    private Texture ceramic2;
 
     protected TexturesFactory(GL3 gl) {
         this.gl = gl;
@@ -97,6 +99,16 @@ public class TexturesFactory {
                     clockHand = LoadUtils.loadTexture(gl, ClockHandTexture.getPath(), ClockHandTexture.getType());
                 }
                 return clockHand;
+            case CERAMIC1:
+                if (ceramic1 == null) {
+                    ceramic1 = LoadUtils.loadTexture(gl, Ceramic1.getPath(), Ceramic1.getType());
+                }
+                return ceramic1;
+            case CERAMIC2:
+                if (ceramic2 == null) {
+                    ceramic2 = LoadUtils.loadTexture(gl, Ceramic2.getPath(), Ceramic2.getType());
+                }
+                return ceramic2;
             default:
                 throw new IllegalArgumentException("Texture type does not exist");
         }
