@@ -41,6 +41,8 @@ public class Scene implements GLEventListener {
     private ConfigurableTexture wallTexture;
     private ConfigurableTexture wallCovering;
     private ConfigurableTexture personalPicture;
+    private ConfigurableTexture dogPicture;
+    private ConfigurableTexture civicPicture;
     private ConfigurableTexture ceramicWhite;
     private ConfigurableTexture ceramicBlue;
 
@@ -172,9 +174,11 @@ public class Scene implements GLEventListener {
         //texture load
         floorTexture = new ParquetTexture(gl, GL_MIRRORED_REPEAT, GL_REPEAT, GL_MIRRORED_REPEAT, 5, 0);
         carpetTexture = new CarpetTexture(gl, GL_MIRRORED_REPEAT, GL_MIRRORED_REPEAT, GL_REPEAT, 12, -1);
-        wallTexture = new WallTexture(gl, GL_REPEAT, GL_REPEAT, GL_REPEAT, 3, -1);
+        wallTexture = new WallTexture(gl, GL_REPEAT, GL_REPEAT, GL_REPEAT, 1, -1);
         wallCovering = new WallCovering(gl, GL_REPEAT, GL_REPEAT, GL_REPEAT, 1, 0);
         personalPicture = new PersonPictureTexture(gl);
+        civicPicture = new CivicPictureTexture(gl);
+        dogPicture = new DogPictureTexture(gl);
         ceramicBlue = new Ceramic2(gl);
         ceramicWhite = new Ceramic1(gl);
     }
@@ -262,8 +266,8 @@ public class Scene implements GLEventListener {
         vase.draw(mvp);
 
         //sofa
-        mvp = projection.multiply(view).multiply(sofa.getModel());
-        sofa.draw(mvp);
+//        mvp = projection.multiply(view).multiply(sofa.getModel());
+//        sofa.draw(mvp);
 
         // box
         mvp = projection.multiply(view).multiply(box.getModel());
@@ -458,11 +462,28 @@ public class Scene implements GLEventListener {
         mvp = projection.multiply(view).multiply(wall.getModel());
         wall.draw(mvp);
 
-        //picture on right wall wall
+        //pictures on backs wall
         wall.setTexture(personalPicture);
         wall.setModel(Mat4.MAT4_IDENTITY
-                .translate(new Vec3(directionB - 0.01f, 0.0f, 0.0f))
-                .multiply(MatricesUtils.scale(0.1f, 1.0f, 1.5f)));
+                .translate(new Vec3(0, 0.0f, -directionA + 0.1f))
+                .multiply(MatricesUtils.scale(4f, 1.8f, 0.1f))
+                .multiply(Matrices.rotate((float)(Math.PI/2), new Vec3(0,1,0))));
+        mvp = projection.multiply(view).multiply(wall.getModel());
+        wall.draw(mvp);
+
+        wall.setTexture(dogPicture);
+        wall.setModel(Mat4.MAT4_IDENTITY
+                .translate(new Vec3(+10, 0.0f, -directionA + 0.1f))
+                .multiply(MatricesUtils.scale(4f, 1.8f, 0.1f))
+                .multiply(Matrices.rotate((float)(Math.PI/2), new Vec3(0,1,0))));
+        mvp = projection.multiply(view).multiply(wall.getModel());
+        wall.draw(mvp);
+
+        wall.setTexture(civicPicture);
+        wall.setModel(Mat4.MAT4_IDENTITY
+                .translate(new Vec3(-10, 0.0f, -directionA + 0.1f))
+                .multiply(MatricesUtils.scale(4f, 1.8f, 0.1f))
+                .multiply(Matrices.rotate((float)(Math.PI/2), new Vec3(0,1,0))));
         mvp = projection.multiply(view).multiply(wall.getModel());
         wall.draw(mvp);
     }
