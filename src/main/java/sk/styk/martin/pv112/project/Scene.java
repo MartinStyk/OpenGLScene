@@ -41,6 +41,8 @@ public class Scene implements GLEventListener {
     private ConfigurableTexture wallTexture;
     private ConfigurableTexture wallCovering;
     private ConfigurableTexture personalPicture;
+    private ConfigurableTexture ceramicWhite;
+    private ConfigurableTexture ceramicBlue;
 
     // programs
     private Program basicProgram;
@@ -131,8 +133,7 @@ public class Scene implements GLEventListener {
         table = new Table(basicProgram, ChromeMaterial.getInstance(), new WoodTexture(gl, GL_MIRRORED_REPEAT, GL_MIRRORED_REPEAT, GL_REPEAT, 12, -1));
         table.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(-14, -8, +26)).multiply(MatricesUtils.scale(0.1f, 0.08f, 0.1f)));
 
-        vase = new Vase(basicProgram, PewterMaterial.getInstance());
-        vase.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(5, -8, 24)).multiply(MatricesUtils.scale(0.1f, 0.2f, 0.1f)));
+        vase = new Vase(basicProgram, PewterMaterial.getInstance(),new Ceramic1(gl));
 
         bin = new Bin(basicProgram, BlackPlastic.getInstance());
         bin.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(-5, -8, +26)).multiply(MatricesUtils.scale(0.1f, 0.08f, 0.1f)));
@@ -174,6 +175,8 @@ public class Scene implements GLEventListener {
         wallTexture = new WallTexture(gl, GL_REPEAT, GL_REPEAT, GL_REPEAT, 3, -1);
         wallCovering = new WallCovering(gl, GL_REPEAT, GL_REPEAT, GL_REPEAT, 1, 0);
         personalPicture = new PersonPictureTexture(gl);
+        ceramicBlue = new Ceramic2(gl);
+        ceramicWhite = new Ceramic1(gl);
     }
 
     @Override
@@ -241,7 +244,10 @@ public class Scene implements GLEventListener {
         drawLibraries(projection, view);
 
         //teapots
-        drawTeapots(projection, view,gl);
+        drawTeapots(projection, view);
+
+        //vase
+        drawVases(projection,view);
 
         //table
         mvp = projection.multiply(view).multiply(table.getModel());
@@ -266,7 +272,35 @@ public class Scene implements GLEventListener {
         gl.glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     }
 
-    private void drawTeapots(Mat4 projection, Mat4 view, GL3 gl) {
+    private void drawVases(Mat4 projection, Mat4 view) {
+
+        vase.setTexture(ceramicBlue);
+        vase.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(17, -8, 3))
+                .multiply(MatricesUtils.scale(0.1f, 0.2f, 0.1f)));
+                vase.draw(projection.multiply(view).multiply(vase.getModel()));
+
+        vase.setTexture(ceramicWhite);
+        vase.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(17, -8, 6))
+                .multiply(MatricesUtils.scale(0.12f, 0.3f, 0.12f)));
+        vase.draw(projection.multiply(view).multiply(vase.getModel()));
+
+        vase.setTexture(ceramicBlue);
+        vase.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(17, -8, 9))
+                .multiply(MatricesUtils.scale(0.1f, 0.2f, 0.1f)));
+        vase.draw(projection.multiply(view).multiply(vase.getModel()));
+
+        vase.setTexture(ceramicWhite);
+        vase.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(17, -8, 12))
+                .multiply(MatricesUtils.scale(0.12f, 0.3f, 0.12f)));
+        vase.draw(projection.multiply(view).multiply(vase.getModel()));
+
+        vase.setTexture(ceramicBlue);
+        vase.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(17, -8, 15))
+                .multiply(MatricesUtils.scale(0.1f, 0.2f, 0.1f)));
+        vase.draw(projection.multiply(view).multiply(vase.getModel()));
+    }
+
+    private void drawTeapots(Mat4 projection, Mat4 view) {
 
         float x = 18;
         float lvl1 = +2.4f;
@@ -320,8 +354,8 @@ public class Scene implements GLEventListener {
                 .multiply(Matrices.rotate((float) Math.PI / -2, new Vec3(0, 1, 0))));
         teapot.draw(projection.multiply(view).multiply(teapot.getModel()));
 
-        //ceramic1
-        teapot.setTexture(new Ceramic1(gl));
+        //ceramicBlue
+        teapot.setTexture(ceramicBlue);
         teapot.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(x, lvl4, -23))
                 .multiply(Matrices.rotate((float) Math.PI / -2, new Vec3(0, 1, 0))));
         teapot.draw(projection.multiply(view).multiply(teapot.getModel()));
@@ -334,8 +368,8 @@ public class Scene implements GLEventListener {
                 .multiply(Matrices.rotate((float) Math.PI / -2, new Vec3(0, 1, 0))));
         teapot.draw(projection.multiply(view).multiply(teapot.getModel()));
 
-        //ceramic2
-        teapot.setTexture(new Ceramic2(gl));
+        //ceramicWhite
+        teapot.setTexture(ceramicWhite);
         teapot.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(x, lvl1, -19))
                 .multiply(Matrices.rotate((float) Math.PI / -2, new Vec3(0, 1, 0))));
         teapot.draw(projection.multiply(view).multiply(teapot.getModel()));
@@ -359,16 +393,6 @@ public class Scene implements GLEventListener {
                 .multiply(Matrices.rotate((float) Math.PI / -2, new Vec3(0, 1, 0)))
                 .multiply(MatricesUtils.scale(0.12f, 0.07f, 0.12f)));
         library.draw(projection.multiply(view).multiply(library.getModel()));
-    }
-
-    @Override
-    public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
-        GL3 gl = drawable.getGL().getGL3();
-
-        this.width = width;
-        this.height = height;
-
-        gl.glViewport(0, 0, width, height);
     }
 
     private void drawWalls(Mat4 projection, Mat4 view) {
@@ -574,4 +598,15 @@ public class Scene implements GLEventListener {
             lightPower += 0.1f;
         }
     }
+
+    @Override
+    public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
+        GL3 gl = drawable.getGL().getGL3();
+
+        this.width = width;
+        this.height = height;
+
+        gl.glViewport(0, 0, width, height);
+    }
+
 }
