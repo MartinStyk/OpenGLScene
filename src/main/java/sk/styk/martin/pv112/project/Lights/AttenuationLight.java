@@ -10,9 +10,9 @@ import sk.styk.martin.pv112.project.Scene;
  */
 public class AttenuationLight extends Light {
 
-    private float attenuationConst = 0.1f;
+    private float attenuationConst = 0.5f;
     private float attenuationLinear = 0.1f;
-    private float attenuationQuadratic = 0.1f;
+    private float attenuationQuadratic = 0.05f;
 
     public AttenuationLight() {
         super();
@@ -45,7 +45,7 @@ public class AttenuationLight extends Light {
                              int attenuationQuadraticLocation) {
         super.bindUniforms(gl, positionLocation, ambientColorLocation, diffuseColorLocation, specularColorLocation);
 
-        gl.glUniform1f(attenuationConstLocation, attenuationConst * Scene.lightPower);
+        gl.glUniform1f(attenuationConstLocation, attenuationConst);
         gl.glUniform1f(attenuationLinearLocation, attenuationLinear * Scene.lightPower );
         gl.glUniform1f(attenuationQuadraticLocation, attenuationQuadratic * Scene.lightPower );
     }

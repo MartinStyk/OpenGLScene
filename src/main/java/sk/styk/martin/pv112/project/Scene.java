@@ -16,14 +16,12 @@ import sk.styk.martin.pv112.project.tooling.RandomRotate;
 
 import static com.jogamp.opengl.GL3.*;
 
-/**
- * @author Adam Jurcik <xjurc@fi.muni.cz>
- */
 public class Scene implements GLEventListener {
 
     public static final int CEILING_POS = 8;
     public static final int FLOOR_POS = -8;
     public static final float CEILING_LIGHT_HEIGHT = CEILING_POS - 0.2f;
+    public static final float LIGHT_DIST_FROM_CENTER = 7.0f;
 
     private FPSAnimator animator;
     private Camera camera;
@@ -61,6 +59,7 @@ public class Scene implements GLEventListener {
     private Clock clock;
     private Box box;
     private Library library;
+    private Lamp lamp;
 
     //lights
     private Light light1;
@@ -132,6 +131,8 @@ public class Scene implements GLEventListener {
         // create geometry
         wall = new Cube(basicProgram, WallMaterial.getInstance());
 
+        lamp = new Lamp(basicProgram,RubyMaterial.getInstance());
+
         table = new Table(basicProgram, ChromeMaterial.getInstance(), new WoodTexture(gl, GL_MIRRORED_REPEAT, GL_MIRRORED_REPEAT, GL_REPEAT, 12, -1));
         table.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(-14, -8, +26)).multiply(MatricesUtils.scale(0.1f, 0.08f, 0.1f)));
 
@@ -160,16 +161,16 @@ public class Scene implements GLEventListener {
 
         library = new Library(basicProgram, ChromeMaterial.getInstance(), new WoodTexture(gl));
 
-        light1 = new AttenuationLight(new Vec4(8.0f, CEILING_LIGHT_HEIGHT, -15.0f, 1.0f));
-        light2 = new AttenuationLight(new Vec4(3.0f, CEILING_LIGHT_HEIGHT, -7.0f, 1.0f));
-        light3 = new AttenuationLight(new Vec4(8.0f, CEILING_LIGHT_HEIGHT, 0.0f, 1.0f));
-        light4 = new AttenuationLight(new Vec4(3.0f, CEILING_LIGHT_HEIGHT, 7.0f, 1.0f));
-        light5 = new AttenuationLight(new Vec4(8.0f, CEILING_LIGHT_HEIGHT, 15.0f, 1.0f));
-        light6 = new AttenuationLight(new Vec4(-3.0f, CEILING_LIGHT_HEIGHT, -15.0f, 1.0f));
-        light7 = new AttenuationLight(new Vec4(-8.0f, CEILING_LIGHT_HEIGHT, -7.0f, 1.0f));
-        light8 = new AttenuationLight(new Vec4(-3.0f, CEILING_LIGHT_HEIGHT, 0.0f, 1.0f));
-        light9 = new AttenuationLight(new Vec4(-8.0f, CEILING_LIGHT_HEIGHT, 7.0f, 1.0f));
-        light10 = new AttenuationLight(new Vec4(-3.0f, CEILING_LIGHT_HEIGHT, 15.0f, 1.0f));
+        light1 = new AttenuationLight(new Vec4(LIGHT_DIST_FROM_CENTER, CEILING_LIGHT_HEIGHT, -15.0f, 1.0f));
+        light2 = new AttenuationLight(new Vec4(LIGHT_DIST_FROM_CENTER, CEILING_LIGHT_HEIGHT, -7.0f, 1.0f));
+        light3 = new AttenuationLight(new Vec4(LIGHT_DIST_FROM_CENTER, CEILING_LIGHT_HEIGHT, 0.0f, 1.0f));
+        light4 = new AttenuationLight(new Vec4(LIGHT_DIST_FROM_CENTER, CEILING_LIGHT_HEIGHT, 7.0f, 1.0f));
+        light5 = new AttenuationLight(new Vec4(LIGHT_DIST_FROM_CENTER, CEILING_LIGHT_HEIGHT, 15.0f, 1.0f));
+        light6 = new AttenuationLight(new Vec4(-LIGHT_DIST_FROM_CENTER, CEILING_LIGHT_HEIGHT, -15.0f, 1.0f));
+        light7 = new AttenuationLight(new Vec4(-LIGHT_DIST_FROM_CENTER, CEILING_LIGHT_HEIGHT, -7.0f, 1.0f));
+        light8 = new AttenuationLight(new Vec4(-LIGHT_DIST_FROM_CENTER, CEILING_LIGHT_HEIGHT, 0.0f, 1.0f));
+        light9 = new AttenuationLight(new Vec4(-LIGHT_DIST_FROM_CENTER, CEILING_LIGHT_HEIGHT, 7.0f, 1.0f));
+        light10 = new AttenuationLight(new Vec4(-LIGHT_DIST_FROM_CENTER, CEILING_LIGHT_HEIGHT, 15.0f, 1.0f));
 
         //texture load
         floorTexture = new ParquetTexture(gl, GL_MIRRORED_REPEAT, GL_REPEAT, GL_MIRRORED_REPEAT, 5, 0);
@@ -238,6 +239,9 @@ public class Scene implements GLEventListener {
         //walls
         drawWalls(projection, view);
 
+        //lamps
+        drawLamps(projection,view);
+
         //cubes, rubic and dice
         drawCubes(projection, view);
 
@@ -274,6 +278,14 @@ public class Scene implements GLEventListener {
         box.draw(mvp);
 
         gl.glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    }
+
+    private void drawLamps(Mat4 projection, Mat4 view) {
+        lamp.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(LIGHT_DIST_FROM_CENTER,CEILING_LIGHT_HEIGHT + 0.2f , -15))
+                .multiply(MatricesUtils.scale(0.012f, 0.08f, 0.012f))
+                .multiply(Matrices.rotate((float) (0.5f * Math.PI), new Vec3(1, 0, 0))));
+        lamp.draw(projection.multiply(view).multiply(lamp.getModel()));
+
     }
 
     private void drawVases(Mat4 projection, Mat4 view) {
