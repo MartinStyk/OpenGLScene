@@ -459,6 +459,7 @@ public class Scene implements GLEventListener {
         float directionB = 20.0f;
 
         wall.setTexture(null);
+        wall.setMaterial(WallMaterial.getInstance());
         //back wall
         wall.setModel(Mat4.MAT4_IDENTITY
                 .multiply(Matrices.rotate((float) (0.5f * Math.PI), new Vec3(0, 1, 0)))
@@ -517,6 +518,7 @@ public class Scene implements GLEventListener {
         wall.draw(mvp);
 
         //pictures on backs wall
+        wall.setMaterial(ChromeMaterial.getInstance());
         wall.setTexture(personalPicture);
         wall.setModel(Mat4.MAT4_IDENTITY
                 .translate(new Vec3(0, 0.0f, -directionA + 0.1f))
@@ -669,7 +671,7 @@ public class Scene implements GLEventListener {
     }
 
     public void lessLight() {
-        if (lightPower < 5) {
+        if (lightPower < 3) {
             lightPower += 0.1f;
         }
     }
