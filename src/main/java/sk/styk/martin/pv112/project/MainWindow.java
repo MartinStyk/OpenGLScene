@@ -142,6 +142,9 @@ public class MainWindow extends javax.swing.JFrame {
             case KeyEvent.VK_M:
                 scene.lessLight();
                 break;
+            case KeyEvent.VK_E:
+                scene.interact();
+                break;
 
         }
 

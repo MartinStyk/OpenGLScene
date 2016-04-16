@@ -14,6 +14,9 @@ import sk.styk.martin.pv112.project.textures.*;
 import sk.styk.martin.pv112.project.tooling.ClockUtils;
 import sk.styk.martin.pv112.project.tooling.RandomRotate;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.jogamp.opengl.GL3.*;
 
 public class Scene implements GLEventListener {
@@ -27,7 +30,9 @@ public class Scene implements GLEventListener {
     private Camera camera;
     private int mode = GL_FILL;
 
+    //interactive
     public static float lightPower = 1;
+    private List<Interactive> interactiveList = new ArrayList<>();
 
     // window size
     private int width;
@@ -134,10 +139,11 @@ public class Scene implements GLEventListener {
 
         lamp = new Lamp(basicProgram, RubyMaterial.getInstance());
 
-        radio = new Radio(basicProgram);
-        radio.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(-12f, -1.5f,25f))
-                .multiply(Matrices.rotate((float)Math.PI * 1, new Vec3(0,1,0)))
-                .multiply(MatricesUtils.scale(2f,1f,1f)));
+        Vec3 radioPosition = new Vec3(-12f, -1.5f, 25f);
+        radio = new Radio(basicProgram, radioPosition, camera);
+        radio.setModel(Mat4.MAT4_IDENTITY.translate(radioPosition)
+                .multiply(Matrices.rotate((float) Math.PI * 1, new Vec3(0, 1, 0)))
+                .multiply(MatricesUtils.scale(2f, 1f, 1f)));
 
         table = new Table(basicProgram, ChromeMaterial.getInstance(), new WoodTexture(gl, GL_MIRRORED_REPEAT, GL_MIRRORED_REPEAT, GL_REPEAT, 12, -1));
         table.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(-14, -8, +26)).multiply(MatricesUtils.scale(0.1f, 0.08f, 0.1f)));
@@ -187,6 +193,9 @@ public class Scene implements GLEventListener {
         dogPicture = new DogPictureTexture(gl);
         ceramicBlue = new Ceramic2(gl);
         ceramicWhite = new Ceramic1(gl);
+
+        //interactive init
+        interactiveList.add(radio);
     }
 
     @Override
@@ -210,7 +219,7 @@ public class Scene implements GLEventListener {
 
         // set view transform based on camera position and orientation
         Vec3 yAxis = new Vec3(0.0f, 1.0f, 0.0f);
-        Mat4 view = Matrices.lookAt(camera.getEyePosition(), camera.getCenterPosition(), yAxis);
+        Mat4 view = Matrices.lookAt(camera.getEyePosition(), camera.getEyeDirection(), yAxis);
 
         // get projection * view (VP) matrix
 //        Mat4 vp = Mat4.MAT4_IDENTITY;
@@ -263,7 +272,7 @@ public class Scene implements GLEventListener {
         drawVases(projection, view);
 
         //box
-        drawBoxes(projection,view);
+        drawBoxes(projection, view);
 
         //radio
         radio.draw(projection.multiply(view).multiply(radio.getModel()));
@@ -698,4 +707,10 @@ public class Scene implements GLEventListener {
         gl.glViewport(0, 0, width, height);
     }
 
+    public void interact() {
+        for (Interactive interactive : interactiveList) {
+            if (interactive.isInRange())
+                interactive.interact();
+        }
+    }
 }

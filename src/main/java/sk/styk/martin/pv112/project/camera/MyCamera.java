@@ -111,7 +111,7 @@ public class MyCamera implements Camera {
         return position;
     }
 
-    public Vec3 getCenterPosition() {
+    public Vec3 getEyeDirection() {
         return position.add(direction);
     }
 
