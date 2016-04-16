@@ -78,7 +78,7 @@ public class Scene implements GLEventListener {
 
     // helper classes
     private RandomRotate cubeRandomRotate = new RandomRotate(10);
-    
+
     public Scene(FPSAnimator animator, Camera camera) {
         this.animator = animator;
         this.camera = camera;
@@ -131,12 +131,12 @@ public class Scene implements GLEventListener {
         // create geometry
         wall = new Cube(basicProgram, WallMaterial.getInstance());
 
-        lamp = new Lamp(basicProgram,RubyMaterial.getInstance());
+        lamp = new Lamp(basicProgram, RubyMaterial.getInstance());
 
         table = new Table(basicProgram, ChromeMaterial.getInstance(), new WoodTexture(gl, GL_MIRRORED_REPEAT, GL_MIRRORED_REPEAT, GL_REPEAT, 12, -1));
         table.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(-14, -8, +26)).multiply(MatricesUtils.scale(0.1f, 0.08f, 0.1f)));
 
-        vase = new Vase(basicProgram, PewterMaterial.getInstance(),new Ceramic1(gl));
+        vase = new Vase(basicProgram, PewterMaterial.getInstance(), new Ceramic1(gl));
 
         bin = new Bin(basicProgram, BlackPlastic.getInstance());
         bin.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(-5, -8, +26)).multiply(MatricesUtils.scale(0.1f, 0.08f, 0.1f)));
@@ -240,7 +240,7 @@ public class Scene implements GLEventListener {
         drawWalls(projection, view);
 
         //lamps
-        drawLamps(projection,view);
+        drawLamps(projection, view);
 
         //cubes, rubic and dice
         drawCubes(projection, view);
@@ -255,7 +255,7 @@ public class Scene implements GLEventListener {
         drawTeapots(projection, view);
 
         //vase
-        drawVases(projection,view);
+        drawVases(projection, view);
 
         //table
         mvp = projection.multiply(view).multiply(table.getModel());
@@ -281,8 +281,50 @@ public class Scene implements GLEventListener {
     }
 
     private void drawLamps(Mat4 projection, Mat4 view) {
-        lamp.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(LIGHT_DIST_FROM_CENTER,CEILING_LIGHT_HEIGHT + 0.2f , -15))
-                .multiply(MatricesUtils.scale(0.012f, 0.08f, 0.012f))
+
+        float heightOffset = 0.25f;
+
+        //left row
+        lamp.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(LIGHT_DIST_FROM_CENTER, CEILING_LIGHT_HEIGHT + heightOffset, -15 + 0.05f))
+                .multiply(MatricesUtils.scale(0.011f, 0.08f, 0.011f))
+                .multiply(Matrices.rotate((float) (0.5f * Math.PI), new Vec3(1, 0, 0))));
+        lamp.draw(projection.multiply(view).multiply(lamp.getModel()));
+        lamp.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(LIGHT_DIST_FROM_CENTER, CEILING_LIGHT_HEIGHT + heightOffset, -7 + 0.05f))
+                .multiply(MatricesUtils.scale(0.011f, 0.08f, 0.011f))
+                .multiply(Matrices.rotate((float) (0.5f * Math.PI), new Vec3(1, 0, 0))));
+        lamp.draw(projection.multiply(view).multiply(lamp.getModel()));
+        lamp.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(LIGHT_DIST_FROM_CENTER, CEILING_LIGHT_HEIGHT + heightOffset, 0f + 0.05f))
+                .multiply(MatricesUtils.scale(0.011f, 0.08f, 0.011f))
+                .multiply(Matrices.rotate((float) (0.5f * Math.PI), new Vec3(1, 0, 0))));
+        lamp.draw(projection.multiply(view).multiply(lamp.getModel()));
+        lamp.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(LIGHT_DIST_FROM_CENTER, CEILING_LIGHT_HEIGHT + heightOffset, 7f + 0.05f))
+                .multiply(MatricesUtils.scale(0.011f, 0.08f, 0.011f))
+                .multiply(Matrices.rotate((float) (0.5f * Math.PI), new Vec3(1, 0, 0))));
+        lamp.draw(projection.multiply(view).multiply(lamp.getModel()));
+        lamp.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(LIGHT_DIST_FROM_CENTER, CEILING_LIGHT_HEIGHT + heightOffset, 15f + 0.05f))
+                .multiply(MatricesUtils.scale(0.011f, 0.08f, 0.011f))
+                .multiply(Matrices.rotate((float) (0.5f * Math.PI), new Vec3(1, 0, 0))));
+        lamp.draw(projection.multiply(view).multiply(lamp.getModel()));
+
+        //right row
+        lamp.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(-LIGHT_DIST_FROM_CENTER, CEILING_LIGHT_HEIGHT + heightOffset, -15 + 0.05f))
+                .multiply(MatricesUtils.scale(0.011f, 0.08f, 0.011f))
+                .multiply(Matrices.rotate((float) (0.5f * Math.PI), new Vec3(1, 0, 0))));
+        lamp.draw(projection.multiply(view).multiply(lamp.getModel()));
+        lamp.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(-LIGHT_DIST_FROM_CENTER, CEILING_LIGHT_HEIGHT + heightOffset, -7 + 0.05f))
+                .multiply(MatricesUtils.scale(0.011f, 0.08f, 0.011f))
+                .multiply(Matrices.rotate((float) (0.5f * Math.PI), new Vec3(1, 0, 0))));
+        lamp.draw(projection.multiply(view).multiply(lamp.getModel()));
+        lamp.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(-LIGHT_DIST_FROM_CENTER, CEILING_LIGHT_HEIGHT + heightOffset, 0f + 0.05f))
+                .multiply(MatricesUtils.scale(0.011f, 0.08f, 0.011f))
+                .multiply(Matrices.rotate((float) (0.5f * Math.PI), new Vec3(1, 0, 0))));
+        lamp.draw(projection.multiply(view).multiply(lamp.getModel()));
+        lamp.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(-LIGHT_DIST_FROM_CENTER, CEILING_LIGHT_HEIGHT + heightOffset, 7f + 0.05f))
+                .multiply(MatricesUtils.scale(0.011f, 0.08f, 0.011f))
+                .multiply(Matrices.rotate((float) (0.5f * Math.PI), new Vec3(1, 0, 0))));
+        lamp.draw(projection.multiply(view).multiply(lamp.getModel()));
+        lamp.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(-LIGHT_DIST_FROM_CENTER, CEILING_LIGHT_HEIGHT + heightOffset, 15f + 0.05f))
+                .multiply(MatricesUtils.scale(0.011f, 0.08f, 0.011f))
                 .multiply(Matrices.rotate((float) (0.5f * Math.PI), new Vec3(1, 0, 0))));
         lamp.draw(projection.multiply(view).multiply(lamp.getModel()));
 
@@ -293,7 +335,7 @@ public class Scene implements GLEventListener {
         vase.setTexture(ceramicBlue);
         vase.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(17, -8, 3))
                 .multiply(MatricesUtils.scale(0.1f, 0.2f, 0.1f)));
-                vase.draw(projection.multiply(view).multiply(vase.getModel()));
+        vase.draw(projection.multiply(view).multiply(vase.getModel()));
 
         vase.setTexture(ceramicWhite);
         vase.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(17, -8, 6))
@@ -479,7 +521,7 @@ public class Scene implements GLEventListener {
         wall.setModel(Mat4.MAT4_IDENTITY
                 .translate(new Vec3(0, 0.0f, -directionA + 0.1f))
                 .multiply(MatricesUtils.scale(4f, 1.8f, 0.1f))
-                .multiply(Matrices.rotate((float)(Math.PI/2), new Vec3(0,1,0))));
+                .multiply(Matrices.rotate((float) (Math.PI / 2), new Vec3(0, 1, 0))));
         mvp = projection.multiply(view).multiply(wall.getModel());
         wall.draw(mvp);
 
@@ -487,7 +529,7 @@ public class Scene implements GLEventListener {
         wall.setModel(Mat4.MAT4_IDENTITY
                 .translate(new Vec3(+10, 0.0f, -directionA + 0.1f))
                 .multiply(MatricesUtils.scale(4f, 1.8f, 0.1f))
-                .multiply(Matrices.rotate((float)(Math.PI/2), new Vec3(0,1,0))));
+                .multiply(Matrices.rotate((float) (Math.PI / 2), new Vec3(0, 1, 0))));
         mvp = projection.multiply(view).multiply(wall.getModel());
         wall.draw(mvp);
 
@@ -495,7 +537,7 @@ public class Scene implements GLEventListener {
         wall.setModel(Mat4.MAT4_IDENTITY
                 .translate(new Vec3(-10, 0.0f, -directionA + 0.1f))
                 .multiply(MatricesUtils.scale(4f, 1.8f, 0.1f))
-                .multiply(Matrices.rotate((float)(Math.PI/2), new Vec3(0,1,0))));
+                .multiply(Matrices.rotate((float) (Math.PI / 2), new Vec3(0, 1, 0))));
         mvp = projection.multiply(view).multiply(wall.getModel());
         wall.draw(mvp);
     }
