@@ -1,7 +1,5 @@
 package sk.styk.martin.pv112.project.tooling;
 
-import com.hackoeur.jglm.Mat;
-
 import java.time.LocalDateTime;
 
 /**
@@ -9,27 +7,30 @@ import java.time.LocalDateTime;
  */
 public class ClockUtils {
 
-    private float previousSecondPosition;
-    private SoundRunnable soundRunnable = new SoundRunnable("/sounds/tick.wav");
+    private Float previousSecondPosition;
+    private SoundRunnable soundRunnable = new TickSoundRunnable("/sounds/tick.wav");
+    private boolean isSoundTriggered = false;
 
     public float getMinuteHandRotation() {
         int minute = LocalDateTime.now().getMinute();
-        float ret = (float)(minute * Math.PI / 30 );
-        return ret - ((float)Math.PI /2);
+        float ret = (float) (minute * Math.PI / 30);
+        return ret - ((float) Math.PI / 2);
     }
 
     public float getHourHandRotation() {
         int hour = LocalDateTime.now().getHour();
-        return (float)(hour * Math.PI / 6 );
+        return (float) (hour * Math.PI / 6);
     }
 
     public float getSecondsHandRotation() {
         int second = LocalDateTime.now().getSecond();
-        float ret = (float)(second * Math.PI / 30 ) - ((float)Math.PI /2);
-        if(previousSecondPosition > ret + 0.05f || previousSecondPosition < ret - 0.05f){
-            previousSecondPosition = ret;
+        float ret = (float) (second * Math.PI / 30) - ((float) Math.PI / 2);
+        if (previousSecondPosition != null && !isSoundTriggered && (previousSecondPosition > ret + 0.05f || previousSecondPosition < ret - 0.05f)) {
+            isSoundTriggered = true;
             new Thread(soundRunnable).start();
         }
-        return previousSecondPosition ;
+        previousSecondPosition = ret;
+
+        return previousSecondPosition;
     }
 }
