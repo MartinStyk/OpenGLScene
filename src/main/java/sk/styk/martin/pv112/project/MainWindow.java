@@ -6,6 +6,7 @@ import com.jogamp.opengl.GLProfile;
 import com.jogamp.opengl.awt.GLJPanel;
 import com.jogamp.opengl.util.FPSAnimator;
 import sk.styk.martin.pv112.project.camera.Camera;
+import sk.styk.martin.pv112.project.camera.CameraBoundChecker;
 import sk.styk.martin.pv112.project.camera.MyCamera;
 
 import java.awt.*;
@@ -51,7 +52,7 @@ public class MainWindow extends javax.swing.JFrame {
         add(panel, BorderLayout.CENTER);
 
         animator = new FPSAnimator(panel, 60, true);
-        camera = new MyCamera();
+        camera = new MyCamera(new CameraBoundChecker(19.8f,7.8f,29.9f,-19.8f,-7.8f,-29.8f));
         scene = new Scene(animator, camera);
 
         panel.addGLEventListener(scene);

@@ -157,7 +157,6 @@ public class Scene implements GLEventListener {
         clock.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(-5.0f, -5.0f, 0.0f)));
 
         box = new Box(basicProgram, ChromeMaterial.getInstance(), new WoodTexture(gl));
-        box.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(-14, -8, -25)).multiply(MatricesUtils.scale(0.07f, 0.07f, 0.07f)));
 
         library = new Library(basicProgram, ChromeMaterial.getInstance(), new WoodTexture(gl));
 
@@ -257,6 +256,9 @@ public class Scene implements GLEventListener {
         //vase
         drawVases(projection, view);
 
+        //box
+        drawBoxes(projection,view);
+
         //table
         mvp = projection.multiply(view).multiply(table.getModel());
         table.draw(mvp);
@@ -265,19 +267,20 @@ public class Scene implements GLEventListener {
         mvp = projection.multiply(view).multiply(bin.getModel());
         bin.draw(mvp);
 
-        //vase
-        mvp = projection.multiply(view.multiply(vase.getModel()));
-        vase.draw(mvp);
-
-        //sofa
-//        mvp = projection.multiply(view).multiply(sofa.getModel());
-//        sofa.draw(mvp);
-
-        // box
-        mvp = projection.multiply(view).multiply(box.getModel());
-        box.draw(mvp);
-
         gl.glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    }
+
+    private void drawBoxes(Mat4 projection, Mat4 view) {
+
+        box.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(-17, -8, -25))
+                .multiply(Matrices.rotate((float) ((cubeRandomRotate.getRandom(8)) * Math.PI), new Vec3(0, 1, 0)))
+                .multiply(MatricesUtils.scale(0.07f, 0.07f, 0.07f)));
+        box.draw(projection.multiply(view).multiply(box.getModel()));
+        box.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(-17, -3.8f, -25))
+                .multiply(Matrices.rotate((float) ((cubeRandomRotate.getRandom(7)) * Math.PI), new Vec3(0, 1, 0)))
+                .multiply(MatricesUtils.scale(0.07f, 0.07f, 0.07f)));
+        box.draw(projection.multiply(view).multiply(box.getModel()));
+
     }
 
     private void drawLamps(Mat4 projection, Mat4 view) {
