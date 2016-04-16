@@ -59,7 +59,8 @@ public class Scene implements GLEventListener {
     private Clock clock;
     private Box box;
     private Library library;
-    private Lamp lamp;
+    private Lamp lamp; //not in scene now
+    private Radio radio;
 
     //lights
     private Light light1;
@@ -132,6 +133,11 @@ public class Scene implements GLEventListener {
         wall = new Cube(basicProgram, WallMaterial.getInstance());
 
         lamp = new Lamp(basicProgram, RubyMaterial.getInstance());
+
+        radio = new Radio(basicProgram);
+        radio.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(-12f, -1.5f,25f))
+                .multiply(Matrices.rotate((float)Math.PI * 1, new Vec3(0,1,0)))
+                .multiply(MatricesUtils.scale(2f,1f,1f)));
 
         table = new Table(basicProgram, ChromeMaterial.getInstance(), new WoodTexture(gl, GL_MIRRORED_REPEAT, GL_MIRRORED_REPEAT, GL_REPEAT, 12, -1));
         table.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(-14, -8, +26)).multiply(MatricesUtils.scale(0.1f, 0.08f, 0.1f)));
@@ -258,6 +264,9 @@ public class Scene implements GLEventListener {
 
         //box
         drawBoxes(projection,view);
+
+        //radio
+        radio.draw(projection.multiply(view).multiply(radio.getModel()));
 
         //table
         mvp = projection.multiply(view).multiply(table.getModel());

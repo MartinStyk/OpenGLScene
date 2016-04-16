@@ -18,13 +18,14 @@ public class TexturesFactory {
 
     public enum Types {
         WOOD, ROCKS, DICE1, DICE2, DICE3, DICE4, DICE5, DICE6, WALL, CARPET, WALL_COVERING, PHOTO_PERSONAL, PARQUET, RUBIC1, RUBIC2, RUBIC3, RUBIC4, RUBIC5, RUBIC6,
-        CLOCK_HAND, CLOCK, CERAMIC1, CERAMIC2, PHOTO_CIVIC, PHOTO_DOG
+        CLOCK_HAND, CLOCK, CERAMIC1, CERAMIC2, PHOTO_CIVIC, PHOTO_DOG, RADIO1, RADIO2
     }
 
     private Texture wood;
     private Texture rocks;
     private List<Texture> dice;
     private List<Texture> rubic;
+    private List<Texture> radio;
     private Texture wall;
     private Texture carpet;
     private Texture wallCovering;
@@ -52,8 +53,10 @@ public class TexturesFactory {
     public Texture get(Types type) {
         Texture res1 = checkDice(type);
         Texture res2 = checkRubic(type);
+        Texture res3 = checkRadio(type);
         if (res1 != null) return res1;
         if (res2 != null) return res2;
+        if (res3 != null) return res3;
 
         switch (type) {
             case WOOD:
@@ -124,6 +127,21 @@ public class TexturesFactory {
             default:
                 throw new IllegalArgumentException("Texture type does not exist");
         }
+    }
+
+    private Texture checkRadio(Types type) {
+        if (!type.toString().toLowerCase().contains("radio")) {
+            return null;
+        }
+        if (radio == null || radio.isEmpty()) {
+            radio = new ArrayList<>();
+            for (int i = 1; i <= 2; i++) {
+                radio.add(LoadUtils.loadTexture(gl, RadioTexture.getPath(i), RadioTexture.getType()));
+            }
+        }
+        String last = type.toString().substring(5);
+        int i = Integer.parseInt(last) - 1;
+        return radio.get(i);
     }
 
     private Texture checkDice(Types type) {
