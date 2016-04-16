@@ -54,4 +54,6 @@ public abstract class Program {
     public abstract void bindCamera(Camera camera);
 
     public abstract void setGlobalAmbientLight(Vec3 color);
+
+    public abstract void setAlpha(float lvl);
 }

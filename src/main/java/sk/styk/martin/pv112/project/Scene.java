@@ -122,6 +122,9 @@ public class Scene implements GLEventListener {
 
         // enable depth test
         gl.glEnable(GL_DEPTH_TEST);
+        gl.glEnable(GL_BLEND);
+        gl.glBlendFunc(GL_ONE, GL_ZERO);
+        gl.glDisable(GL_CULL_FACE);
 
         // load GLSL program (vertex and fragment shaders)
         basicProgram = new BasicProgram(gl);
@@ -238,6 +241,7 @@ public class Scene implements GLEventListener {
         basicProgram.bindLight(9, light9);
         basicProgram.bindLight(10, light10);
         basicProgram.setGlobalAmbientLight(new Vec3(0.01f, 0.01f, 0.01f));
+        basicProgram.setAlpha(1.0f);
         //LIGHTS
         //light1.animateLight(t/100);
 
@@ -275,6 +279,7 @@ public class Scene implements GLEventListener {
         drawBoxes(projection, view);
 
         //radio
+        radio.setViewProjection(projection.multiply(view));
         radio.draw(projection.multiply(view).multiply(radio.getModel()));
 
         //table

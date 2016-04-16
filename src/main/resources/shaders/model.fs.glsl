@@ -7,6 +7,7 @@ in vec3 vPosition;
 in vec2 vTex_coord;
 
 uniform vec3 lightGlobalAmbientColor;
+uniform float alfa;
 
 uniform vec4 lightPosition_1;
 uniform vec3 lightAmbientColor_1;
@@ -270,5 +271,5 @@ void main() {
     vec3 lightFinal = lightGlobalAmbientColor * materialAmbientColor + lightFinal_1 + lightFinal_2 + lightFinal_3 +
                 lightFinal_4 + lightFinal_5 + lightFinal_6 + lightFinal_7 + lightFinal_8 + lightFinal_9 + lightFinal_10;
 
-    fragColor = vec4(lightFinal, 1.0);
+    fragColor = vec4(lightFinal, alfa);
 }

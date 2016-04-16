@@ -35,6 +35,7 @@ public class BasicProgram extends Program {
     public static final String MATERIAL_SHININESS = "materialShininess";
 
     public static final String LIGHT_GLOBAL_AMBIENT_COLOR = "lightGlobalAmbientColor";
+    public static final String ALFA = "alfa";
 
     public static final String LIGHT_POSITION_BASE = "lightPosition_";
     public static final String LIGHT_AMBIENT_COLOR_BASE = "lightAmbientColor_";
@@ -148,6 +149,7 @@ public class BasicProgram extends Program {
                 IS_TEXTURE,
                 TEXTURE_COORDINATES_MULTIPLIER,
                 TEXTURE_COORDINATES_OFFSET,
+                ALFA,
 //                LIGHT1_POSITION,
 //                LIGHT1_AMBIENT_COLOR,
 //                LIGHT1_DIFFUSE_COLOR,
@@ -258,6 +260,10 @@ public class BasicProgram extends Program {
 
     public void setGlobalAmbientLight(Vec3 color) {
         gl.glUniform3fv(getUniformLoc(LIGHT_GLOBAL_AMBIENT_COLOR), 1, color.getBuffer());
+    }
+
+    public void setAlpha(float lvl) {
+        gl.glUniform1f(getUniformLoc(ALFA), lvl);
     }
 
 }
