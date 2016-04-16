@@ -7,7 +7,7 @@ import com.jogamp.opengl.util.texture.TextureIO;
 /**
  * Created by Martin Styk on 07.04.2016.
  */
-public class RockTexture extends ConfigurableTexture{
+public class RockTexture extends ConfigurableTexture {
 
     public RockTexture(GL3 gl) {
         super(TexturesFactory.getInstance(gl).get(TexturesFactory.Types.ROCKS));
@@ -21,10 +21,11 @@ public class RockTexture extends ConfigurableTexture{
         super(TexturesFactory.getInstance(gl).get(TexturesFactory.Types.ROCKS), wrapS, wrapT, wrapR, coordinatesMultiplier, coordinatesOffset, minFilter, magFilter, dimensions);
     }
 
-    public static String getPath(){
+    public static String getPath() {
         return "/textures/rocks.jpg";
     }
-    public static String getType(){
+
+    public static String getType() {
         return TextureIO.JPG;
     }
 

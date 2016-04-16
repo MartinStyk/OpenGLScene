@@ -24,16 +24,16 @@ public interface Camera {
     void onMouseMove(int x, int y);
 
     /**
-     *
-     * @param x data from mouse x axis
-     * @param y data from mouse y axis
+     * @param x           data from mouse x axis
+     * @param y           data from mouse y axis
      * @param mouseButton data from mouse button affected
-     * @param pressed data from mouse button pressed
+     * @param pressed     data from mouse button pressed
      */
     void onMousePress(int x, int y, int mouseButton, boolean pressed);
 
     /**
      * Should implement camera position reaction according to pressed key (movement of camera)
+     *
      * @param c pressed character
      */
     void onKeyPressed(char c);

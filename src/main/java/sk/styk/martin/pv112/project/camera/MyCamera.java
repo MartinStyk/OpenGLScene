@@ -13,27 +13,23 @@ public class MyCamera implements Camera {
     private static final float MIN_ELEVALITON = -1.5f;
     ///		- Maximum elevation in radians
     private static final float MAX_ELEVATION = 1.5f;
-
-    // position
-    private Vec3 position = new Vec3(0, 0, -5);
-    private Vec3 direction = new Vec3(0, 0, 0);
-    private Vec3 rightDirection = new Vec3(0, 1, 0);
     // horizontal angle : toward -Z
     float horizontalAngle = 3.14f;
     // vertical angle : 0, look at the horizon
     float verticalAngle = 0.0f;
-
     float speed = 0.7f; //
     float mouseSpeed = 0.005f;
-
     int xPosition = 0, yPosition = 0;
-
+    // position
+    private Vec3 position = new Vec3(0, 0, -5);
+    private Vec3 direction = new Vec3(0, 0, 0);
+    private Vec3 rightDirection = new Vec3(0, 1, 0);
     private boolean rotating = false;
 
     private CameraBoundChecker cameraBoundChecker;
 
-    public MyCamera(CameraBoundChecker cameraBoundChecker){
-        if(cameraBoundChecker != null){
+    public MyCamera(CameraBoundChecker cameraBoundChecker) {
+        if (cameraBoundChecker != null) {
             this.cameraBoundChecker = cameraBoundChecker;
         }
     }
@@ -101,9 +97,10 @@ public class MyCamera implements Camera {
         }
 
         if (newPosition != null && cameraBoundChecker != null)
-            if(cameraBoundChecker.checkBounds(newPosition)){
+            if (cameraBoundChecker.checkBounds(newPosition)) {
                 position = newPosition;
-            };
+            }
+        ;
     }
 
 

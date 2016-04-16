@@ -13,7 +13,7 @@ public class Box extends Drawable {
         this(program, null);
     }
 
-    public  Box(Program program, Material material) {
+    public Box(Program program, Material material) {
         this(program, material, null);
     }
 

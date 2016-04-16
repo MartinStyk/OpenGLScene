@@ -12,15 +12,7 @@ import com.hackoeur.jglm.Vec3;
  * Use left mouse button to change the point of view.
  * Use right mouse button to zoom in and zoom out.
  */
-public class CenterPointCamera{
-
-    public enum Button {
-        LEFT, RIGHT;
-    }
-
-    public enum Direction {
-        FORWARD, BACK, LEFT, RIGHT;
-    }
+public class CenterPointCamera {
 
     /// Constants that defines the behaviour of the camera
     private static final float ONE_STEP = 0.1f;
@@ -34,26 +26,21 @@ public class CenterPointCamera{
     private static final float ANGLE_SENSITIVITY = 0.008f;
     ///		- Sensitivity of the mouse when changing zoom
     private static final float ZOOM_SENSITIVITY = 0.003f;
-
     /// direction is an angle in which determines into which direction in xz plane I look.
     ///		- 0 degrees .. I look in -z direction
     ///		- 90 degrees .. I look in -x direction
     ///		- 180 degrees .. I look in +z direction
     ///		- 270 degrees .. I look in +x direction
     private float directon;
-
     /// elevation is an angle in which determines from which "height" I look.
     ///		- positive elevation .. I look from above the xz plane
     ///		- negative elevation .. I look from below the xz plane
     private float elevation;
-
     /// Distance from (0,0,0), the point at which I look
     private float distance;
-
     /// Final position of the eye in world space coordinates, for LookAt or shaders
     private Vec3 position;
     private Vec3 centerPosition;
-
     /// Last X and Y coordinates of the mouse cursor
     private int lastX;
     private int lastY;
@@ -64,8 +51,8 @@ public class CenterPointCamera{
         distance = 1.0f;
         lastX = 0;
         lastY = 0;
-        centerPosition = new Vec3(0,0,0);
-        position = new Vec3(0,0,0);
+        centerPosition = new Vec3(0, 0, 0);
+        position = new Vec3(0, 0, 0);
         updateEyePosition();
     }
 
@@ -77,10 +64,8 @@ public class CenterPointCamera{
         centerPosition = new Vec3(x, y, z);
     }
 
-    /// Called when the user moves with the mouse cursor (see MainWindow)
+    public void onMouseMove(int x, int y, int mouseButton, boolean pressed) {
 
-    public void  onMouseMove(int x, int y,int mouseButton, boolean pressed) {
- 
         float dx = (float) (x - lastX);
         float dy = (float) (y - lastY);
         lastX = x;
@@ -100,9 +85,11 @@ public class CenterPointCamera{
         updateEyePosition();
     }
 
-    public void onKeyPressed(char c){
+    public void onKeyPressed(char c) {
         return;
     }
+
+    /// Called when the user moves with the mouse cursor (see MainWindow)
 
     /// Returns the position of the eye in world space coordinates
     public Vec3 getEyePosition() {
@@ -110,9 +97,9 @@ public class CenterPointCamera{
     }
 
     public Vec3 getCenterPosition() {
-       // return new Vec3 (1,1,1);
+        // return new Vec3 (1,1,1);
         return centerPosition;
-       // return position.add(new Vec3(ONE_STEP, ONE_STEP, ONE_STEP));
+        // return position.add(new Vec3(ONE_STEP, ONE_STEP, ONE_STEP));
         //return polarCoordinates(position.getX(), position.getY());
     }
 
@@ -123,5 +110,13 @@ public class CenterPointCamera{
         cartesian[0] = (float) (a * Math.sin(Math.toRadians(azimuth)));
         cartesian[1] = (float) Math.cos(Math.toRadians(altitude));
         return new Vec3(cartesian[0], cartesian[1], cartesian[2]);
+    }
+
+    public enum Button {
+        LEFT, RIGHT;
+    }
+
+    public enum Direction {
+        FORWARD, BACK, LEFT, RIGHT;
     }
 }

@@ -24,7 +24,8 @@ public abstract class ConfigurableTexture {
     protected int coordinatesMultiplier = 1;
     protected int coordinatesOffset = 0;
 
-    protected ConfigurableTexture(){}
+    protected ConfigurableTexture() {
+    }
 
     protected ConfigurableTexture(Texture texture) {
         if (texture == null) {

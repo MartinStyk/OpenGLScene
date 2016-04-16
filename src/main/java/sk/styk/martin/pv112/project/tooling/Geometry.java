@@ -1,24 +1,24 @@
 package sk.styk.martin.pv112.project.tooling;
+
 import com.jogamp.common.nio.Buffers;
 import com.jogamp.opengl.GL3;
-import static com.jogamp.opengl.GL3.*;
+
 import java.nio.Buffer;
 import java.nio.FloatBuffer;
+
+import static com.jogamp.opengl.GL3.*;
 
 public class Geometry {
 
     private static final int SIZEOF_POSITION = 3 * Buffers.SIZEOF_FLOAT;
     private static final int SIZEOF_NORMAL = 3 * Buffers.SIZEOF_FLOAT;
     private static final int SIZEOF_TEXCOORD = 2 * Buffers.SIZEOF_FLOAT;
-
+    private static int joglArray = 0;
     private int positionBuffer;
     private int normalBuffer;
     private int texCoordBuffer;
     private int geometryArray;
-
     private int triangleCount;
-
-    private static int joglArray = 0;
 
     public Geometry(int positionBuffer, int normalBuffer, int texCoordBuffer,
                     int geometryArray, int triangleCount) {
@@ -117,19 +117,6 @@ public class Geometry {
                 arrays[0], model.getTriangleCount());
     }
 
-    public void draw(GL3 gl) {
-        gl.glBindVertexArray(geometryArray);
-        gl.glDrawArrays(GL_TRIANGLES, 0, 3 * triangleCount);
-        gl.glBindVertexArray(joglArray);
-    }
-
-    public void drawTriangles(GL3 gl, int first, int count) {
-        gl.glBindVertexArray(geometryArray);
-        gl.glDrawArrays(GL_TRIANGLES, first, count);
-        gl.glBindVertexArray(joglArray);
-    }
-
-
     private static void initJoglArray(GL3 gl) {
         // get JOGL vertex array
         int binding[] = new int[1];
@@ -147,6 +134,18 @@ public class Geometry {
         gl.glBindBuffer(type, 0);
 
         return buffers[0];
+    }
+
+    public void draw(GL3 gl) {
+        gl.glBindVertexArray(geometryArray);
+        gl.glDrawArrays(GL_TRIANGLES, 0, 3 * triangleCount);
+        gl.glBindVertexArray(joglArray);
+    }
+
+    public void drawTriangles(GL3 gl, int first, int count) {
+        gl.glBindVertexArray(geometryArray);
+        gl.glDrawArrays(GL_TRIANGLES, first, count);
+        gl.glBindVertexArray(joglArray);
     }
 
 }

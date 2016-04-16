@@ -7,12 +7,12 @@ import java.net.URL;
 
 /**
  * Plays sound repeatedly, used with radio
- *
+ * <p>
  * Created by Martin Styk on 13.04.2016.
  */
 public class SoundRunnable implements Runnable {
-    private AudioInputStream audioIn;
     protected Clip clip;
+    private AudioInputStream audioIn;
 
     public SoundRunnable(String path) {
         // Open an audio input stream.

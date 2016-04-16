@@ -1,14 +1,14 @@
 package sk.styk.martin.pv112.project.objects;
 
 import com.hackoeur.jglm.Mat4;
-import sk.styk.martin.pv112.project.materials.*;
+import sk.styk.martin.pv112.project.materials.BlackPlastic;
+import sk.styk.martin.pv112.project.materials.BlackRubber;
+import sk.styk.martin.pv112.project.materials.Material;
+import sk.styk.martin.pv112.project.materials.WhiteRubber;
 import sk.styk.martin.pv112.project.programs.Program;
-import sk.styk.martin.pv112.project.textures.ClockHandTexture;
 import sk.styk.martin.pv112.project.textures.ClockTexture;
 import sk.styk.martin.pv112.project.textures.ConfigurableTexture;
 import sk.styk.martin.pv112.project.tooling.ClockUtils;
-
-import static com.jogamp.opengl.GL.GL_REPEAT;
 
 /**
  * Created by Martin Styk on 13.04.2016.
@@ -21,7 +21,7 @@ public class Clock extends Drawable {
     private ClockUtils clockUtils = new ClockUtils();
 
     public Clock(Program program) {
-        this(program, WhiteRubber.getInstance(),new ClockTexture(program.getGL()));
+        this(program, WhiteRubber.getInstance(), new ClockTexture(program.getGL()));
     }
 
     public Clock(Program program, Material material, ConfigurableTexture texture) {

@@ -46,12 +46,12 @@ public class AttenuationLight extends Light {
         super.bindUniforms(gl, positionLocation, ambientColorLocation, diffuseColorLocation, specularColorLocation);
 
         gl.glUniform1f(attenuationConstLocation, attenuationConst);
-        gl.glUniform1f(attenuationLinearLocation, attenuationLinear * Scene.lightPower );
-        gl.glUniform1f(attenuationQuadraticLocation, attenuationQuadratic * Scene.lightPower );
+        gl.glUniform1f(attenuationLinearLocation, attenuationLinear * Scene.lightPower);
+        gl.glUniform1f(attenuationQuadraticLocation, attenuationQuadratic * Scene.lightPower);
     }
 
     @Override
-    public void animateLight(float t){
+    public void animateLight(float t) {
 
     }
 }

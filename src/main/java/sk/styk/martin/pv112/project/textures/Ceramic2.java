@@ -7,7 +7,7 @@ import com.jogamp.opengl.util.texture.TextureIO;
 /**
  * Created by Martin Styk on 07.04.2016.
  */
-public class Ceramic2 extends ConfigurableTexture{
+public class Ceramic2 extends ConfigurableTexture {
 
     public Ceramic2(GL3 gl) {
         super(TexturesFactory.getInstance(gl).get(TexturesFactory.Types.CERAMIC2));
@@ -21,10 +21,11 @@ public class Ceramic2 extends ConfigurableTexture{
         super(TexturesFactory.getInstance(gl).get(TexturesFactory.Types.CERAMIC2), wrapS, wrapT, wrapR, coordinatesMultiplier, coordinatesOffset, minFilter, magFilter, dimensions);
     }
 
-    public static String getPath(){
+    public static String getPath() {
         return "/textures/abstractCeramic2.jpg";
     }
-    public static String getType(){
+
+    public static String getType() {
         return TextureIO.JPG;
     }
 

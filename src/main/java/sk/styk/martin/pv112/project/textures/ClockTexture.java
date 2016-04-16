@@ -7,7 +7,7 @@ import com.jogamp.opengl.util.texture.TextureIO;
 /**
  * Created by Martin Styk on 13.04.2016.
  */
-public class ClockTexture extends ConfigurableTexture{
+public class ClockTexture extends ConfigurableTexture {
 
     public ClockTexture(GL3 gl) {
         super(TexturesFactory.getInstance(gl).get(TexturesFactory.Types.CLOCK));
@@ -21,10 +21,11 @@ public class ClockTexture extends ConfigurableTexture{
         super(TexturesFactory.getInstance(gl).get(TexturesFactory.Types.CLOCK), wrapS, wrapT, wrapR, coordinatesMultiplier, coordinatesOffset, minFilter, magFilter, dimensions);
     }
 
-    public static String getPath(){
+    public static String getPath() {
         return "/textures/clock.jpg";
     }
-    public static String getType(){
+
+    public static String getType() {
         return TextureIO.JPG;
     }
 

@@ -9,19 +9,18 @@ import com.hackoeur.jglm.Mat3;
 import com.hackoeur.jglm.Mat4;
 import com.hackoeur.jglm.MatricesUtils;
 import com.jogamp.opengl.GL3;
-import sk.styk.martin.pv112.project.tooling.Geometry;
-import sk.styk.martin.pv112.project.tooling.LoadUtils;
 import sk.styk.martin.pv112.project.materials.Material;
 import sk.styk.martin.pv112.project.programs.BasicProgram;
 import sk.styk.martin.pv112.project.programs.Program;
 import sk.styk.martin.pv112.project.textures.ConfigurableTexture;
+import sk.styk.martin.pv112.project.tooling.Geometry;
+import sk.styk.martin.pv112.project.tooling.LoadUtils;
 
 /**
- *
  * @author Martin Styk
  */
 public abstract class Drawable {
-    
+
     protected Program program;
     protected Geometry geometry;
     protected Material material;
@@ -29,17 +28,17 @@ public abstract class Drawable {
     protected Mat4 mvp = Mat4.MAT4_IDENTITY;
     protected Mat4 model = Mat4.MAT4_IDENTITY;
 
-    public Drawable(Program program, String path){
-        this(program, null,null, path);
+    public Drawable(Program program, String path) {
+        this(program, null, null, path);
     }
-    
-    public Drawable(Program program, Material material, ConfigurableTexture texture,String path){
+
+    public Drawable(Program program, Material material, ConfigurableTexture texture, String path) {
         this.program = program;
         this.texture = texture;
         this.material = material;
         geometry = LoadUtils.loadGeometry(program.getGL(), program.getID(), path);
     }
-    
+
     /**
      * @return the gl
      */
@@ -135,7 +134,7 @@ public abstract class Drawable {
      * basic draw scenation in BasicProgram
      * materials and textures supported
      */
-    public void draw(){
+    public void draw() {
         GL3 gl = program.getGL();
         gl.glUseProgram(program.getID());
 
@@ -168,14 +167,16 @@ public abstract class Drawable {
         gl.glUniform1i(program.getUniformLoc(BasicProgram.IS_TEXTURE), 0);
 
         gl.glUseProgram(0);
-    };
+    }
 
-    public void draw(Mat4 mvp){
+    ;
+
+    public void draw(Mat4 mvp) {
         this.setMvp(mvp);
         draw();
     }
 
-    public void draw(Mat4 model, Mat4 mvp){
+    public void draw(Mat4 model, Mat4 mvp) {
         this.setModel(model);
         this.setMvp(mvp);
         draw();

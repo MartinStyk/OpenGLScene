@@ -7,7 +7,7 @@ import com.jogamp.opengl.util.texture.TextureIO;
 /**
  * Created by Martin Styk on 07.04.2016.
  */
-public class WallCovering extends ConfigurableTexture{
+public class WallCovering extends ConfigurableTexture {
 
     public WallCovering(GL3 gl) {
         super(TexturesFactory.getInstance(gl).get(TexturesFactory.Types.WALL_COVERING));
@@ -21,10 +21,11 @@ public class WallCovering extends ConfigurableTexture{
         super(TexturesFactory.getInstance(gl).get(TexturesFactory.Types.WALL_COVERING), wrapS, wrapT, wrapR, coordinatesMultiplier, coordinatesOffset, minFilter, magFilter, dimensions);
     }
 
-    public static String getPath(){
+    public static String getPath() {
         return "/textures/wood_wall.jpg";
     }
-    public static String getType(){
+
+    public static String getType() {
         return TextureIO.JPG;
     }
 

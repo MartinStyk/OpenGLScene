@@ -7,7 +7,7 @@ import com.jogamp.opengl.util.texture.TextureIO;
 /**
  * Created by Martin Styk on 07.04.2016.
  */
-public class PersonPictureTexture extends ConfigurableTexture{
+public class PersonPictureTexture extends ConfigurableTexture {
 
     public PersonPictureTexture(GL3 gl) {
         super(TexturesFactory.getInstance(gl).get(TexturesFactory.Types.PHOTO_PERSONAL));
@@ -21,10 +21,11 @@ public class PersonPictureTexture extends ConfigurableTexture{
         super(TexturesFactory.getInstance(gl).get(TexturesFactory.Types.PHOTO_PERSONAL), wrapS, wrapT, wrapR, coordinatesMultiplier, coordinatesOffset, minFilter, magFilter, dimensions);
     }
 
-    public static String getPath(){
+    public static String getPath() {
         return "/textures/photo_personal.jpg";
     }
-    public static String getType(){
+
+    public static String getType() {
         return TextureIO.JPG;
     }
 

@@ -8,25 +8,24 @@ package sk.styk.martin.pv112.project.materials;
 import com.hackoeur.jglm.Vec3;
 
 /**
- *
  * @author Martin Styk
  */
-public class ChromeMaterial extends Material{
-    
+public class ChromeMaterial extends Material {
+
     private static Material instance;
-    
-    public static Material getInstance(){
-        if(instance == null){
+
+    private ChromeMaterial() {
+        super(new Vec3(0.25f, 0.25f, 0.25f),
+                new Vec3(0.4f, 0.4f, 0.4f),
+                new Vec3(0.774597f, 0.774597f, 0.774597f),
+                76.8f);
+    }
+
+    public static Material getInstance() {
+        if (instance == null) {
             instance = new ChromeMaterial();
         }
         return instance;
     }
-    
-    private ChromeMaterial(){
-        super(new Vec3(0.25f,0.25f,0.25f),
-                new Vec3(0.4f,0.4f,0.4f),
-                new Vec3(0.774597f,0.774597f,0.774597f),
-                76.8f);
-    }    
-    
+
 }

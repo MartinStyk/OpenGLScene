@@ -26,18 +26,15 @@ import static com.jogamp.opengl.GL.*;
  */
 public class Radio extends Cube implements Interactive {
 
+    private static Random random = new Random(System.currentTimeMillis());
     private final float MAX_DISTANCE = 7f;
     private Camera camera;
     private Vec3 position;
     private boolean isInteracting = false;
-
     private Mat4 viewProjection;
-
     private List<SoundRunnable> soundRunnableList;
     private Thread currentThread;
     private SoundRunnable currentSoundRunnable;
-
-    private static Random random = new Random(System.currentTimeMillis());
 
     public Radio(Program program, Vec3 position, Camera camera) {
         super(program, BlackPlastic.getInstance(), new RadioTexture(program.getGL()));

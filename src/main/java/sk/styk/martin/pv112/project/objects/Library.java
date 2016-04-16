@@ -13,7 +13,7 @@ public class Library extends Drawable {
         this(program, null);
     }
 
-    public  Library(Program program, Material material) {
+    public Library(Program program, Material material) {
         this(program, material, null);
     }
 

@@ -15,8 +15,8 @@ public class RubicTexture extends ConfigurableTexture {
 
     public RubicTexture(GL3 gl) {
         super();
-        for(int i=0; i<6;i++){
-            list.add(new RubicTexturePartial(gl, TexturesFactory.Types.values()[i+13]));
+        for (int i = 0; i < 6; i++) {
+            list.add(new RubicTexturePartial(gl, TexturesFactory.Types.values()[i + 13]));
         }
     }
 
@@ -28,7 +28,7 @@ public class RubicTexture extends ConfigurableTexture {
         return TextureIO.PNG;
     }
 
-    public RubicTexturePartial getPartial(int i){
+    public RubicTexturePartial getPartial(int i) {
         return list.get(i);
     }
 

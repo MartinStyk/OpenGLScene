@@ -25,13 +25,11 @@ public class Scene implements GLEventListener {
     public static final int FLOOR_POS = -8;
     public static final float CEILING_LIGHT_HEIGHT = CEILING_POS - 0.2f;
     public static final float LIGHT_DIST_FROM_CENTER = 7.0f;
-
+    //interactive
+    public static float lightPower = 1;
     private FPSAnimator animator;
     private Camera camera;
     private int mode = GL_FILL;
-
-    //interactive
-    public static float lightPower = 1;
     private List<Interactive> interactiveList = new ArrayList<>();
 
     // window size
@@ -84,6 +82,7 @@ public class Scene implements GLEventListener {
 
     // helper classes
     private RandomRotate cubeRandomRotate = new RandomRotate(10);
+    private float t = 0;
 
     public Scene(FPSAnimator animator, Camera camera) {
         this.animator = animator;
@@ -205,8 +204,6 @@ public class Scene implements GLEventListener {
     public void dispose(GLAutoDrawable drawable) {
         // not used
     }
-
-    private float t = 0;
 
     @Override
     public void display(GLAutoDrawable drawable) {

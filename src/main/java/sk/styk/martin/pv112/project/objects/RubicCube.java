@@ -19,7 +19,7 @@ public class RubicCube extends Cube {
         super(program, ChromeMaterial.getInstance(), new RubicTexture(program.getGL()));
     }
 
-    public void draw(){
+    public void draw() {
         GL3 gl = program.getGL();
         gl.glUseProgram(program.getID());
 
@@ -41,23 +41,23 @@ public class RubicCube extends Cube {
         gl.glUniform1i(program.getUniformLoc(BasicProgram.IS_TEXTURE), 1);
 
         gl.glActiveTexture(GL_TEXTURE0 + getTexture().getBufferNumber());
-        gl.glUniform1i(program.getUniformLoc(BasicProgram.TEXTURE),  getTexture().getBufferNumber());
+        gl.glUniform1i(program.getUniformLoc(BasicProgram.TEXTURE), getTexture().getBufferNumber());
         gl.glUniform1f(program.getUniformLoc(BasicProgram.TEXTURE_COORDINATES_MULTIPLIER), getTexture().getCoordinatesMultiplier());
         gl.glUniform1f(program.getUniformLoc(BasicProgram.TEXTURE_COORDINATES_OFFSET), getTexture().getCoordinatesOffset());
 
         RubicTexture rubicTexture = (RubicTexture) getTexture();
 
-        bindTexture(rubicTexture,0,gl);
+        bindTexture(rubicTexture, 0, gl);
         geometry.drawTriangles(gl, 0, 6);
-        bindTexture(rubicTexture,1,gl);
+        bindTexture(rubicTexture, 1, gl);
         geometry.drawTriangles(gl, 6, 6);
-        bindTexture(rubicTexture,5,gl);
+        bindTexture(rubicTexture, 5, gl);
         geometry.drawTriangles(gl, 12, 6);
-        bindTexture(rubicTexture,4,gl);
+        bindTexture(rubicTexture, 4, gl);
         geometry.drawTriangles(gl, 18, 6);
-        bindTexture(rubicTexture,3,gl);
+        bindTexture(rubicTexture, 3, gl);
         geometry.drawTriangles(gl, 24, 6);
-        bindTexture(rubicTexture,2,gl);
+        bindTexture(rubicTexture, 2, gl);
         geometry.drawTriangles(gl, 30, 6);
 
         //not texture
@@ -65,7 +65,8 @@ public class RubicCube extends Cube {
 
         gl.glUseProgram(0);
     }
-    private void bindTexture(RubicTexture rubicTexture ,int i, GL3 gl){
+
+    private void bindTexture(RubicTexture rubicTexture, int i, GL3 gl) {
         ConfigurableTexture t = rubicTexture.getPartial(i);
         t.get().bind(gl);
         gl.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, t.getMinFilter());

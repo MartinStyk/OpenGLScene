@@ -8,6 +8,7 @@ import sk.styk.martin.pv112.project.programs.BasicProgram;
 import sk.styk.martin.pv112.project.programs.Program;
 import sk.styk.martin.pv112.project.textures.ConfigurableTexture;
 import sk.styk.martin.pv112.project.textures.DiceTexture;
+
 import static com.jogamp.opengl.GL.*;
 
 /**
@@ -18,7 +19,7 @@ public class Dice extends Cube {
         super(program, ChromeMaterial.getInstance(), new DiceTexture(program.getGL()));
     }
 
-    public void draw(){
+    public void draw() {
         GL3 gl = program.getGL();
         gl.glUseProgram(program.getID());
 
@@ -40,23 +41,23 @@ public class Dice extends Cube {
         gl.glUniform1i(program.getUniformLoc(BasicProgram.IS_TEXTURE), 1);
 
         gl.glActiveTexture(GL_TEXTURE0 + getTexture().getBufferNumber());
-        gl.glUniform1i(program.getUniformLoc(BasicProgram.TEXTURE),  getTexture().getBufferNumber());
+        gl.glUniform1i(program.getUniformLoc(BasicProgram.TEXTURE), getTexture().getBufferNumber());
         gl.glUniform1f(program.getUniformLoc(BasicProgram.TEXTURE_COORDINATES_MULTIPLIER), getTexture().getCoordinatesMultiplier());
         gl.glUniform1f(program.getUniformLoc(BasicProgram.TEXTURE_COORDINATES_OFFSET), getTexture().getCoordinatesOffset());
 
         DiceTexture diceTexture = (DiceTexture) getTexture();
 
-        bindTexture(diceTexture,0,gl);
+        bindTexture(diceTexture, 0, gl);
         geometry.drawTriangles(gl, 0, 6);
-        bindTexture(diceTexture,1,gl);
+        bindTexture(diceTexture, 1, gl);
         geometry.drawTriangles(gl, 6, 6);
-        bindTexture(diceTexture,5,gl);
+        bindTexture(diceTexture, 5, gl);
         geometry.drawTriangles(gl, 12, 6);
-        bindTexture(diceTexture,4,gl);
+        bindTexture(diceTexture, 4, gl);
         geometry.drawTriangles(gl, 18, 6);
-        bindTexture(diceTexture,3,gl);
+        bindTexture(diceTexture, 3, gl);
         geometry.drawTriangles(gl, 24, 6);
-        bindTexture(diceTexture,2,gl);
+        bindTexture(diceTexture, 2, gl);
         geometry.drawTriangles(gl, 30, 6);
 
         //not texture
@@ -64,7 +65,8 @@ public class Dice extends Cube {
 
         gl.glUseProgram(0);
     }
-    private void bindTexture(DiceTexture diceTexture ,int i, GL3 gl){
+
+    private void bindTexture(DiceTexture diceTexture, int i, GL3 gl) {
         ConfigurableTexture t = diceTexture.getPartial(i);
         t.get().bind(gl);
         gl.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, t.getMinFilter());

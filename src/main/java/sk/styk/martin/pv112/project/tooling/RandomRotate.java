@@ -18,7 +18,7 @@ public class RandomRotate {
         }
     }
 
-    public Float getRandom(int i){
+    public Float getRandom(int i) {
         return map.get(i);
     }
 

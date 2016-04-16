@@ -6,9 +6,6 @@ import com.jogamp.opengl.util.texture.TextureIO;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.jogamp.opengl.GL.*;
-import static com.jogamp.opengl.GL.GL_TEXTURE_2D;
-
 /**
  * Created by Martin Styk on 08.04.2016.
  */
@@ -18,8 +15,8 @@ public class DiceTexture extends ConfigurableTexture {
 
     public DiceTexture(GL3 gl) {
         super();
-        for(int i=0; i<6;i++){
-            list.add(new DiceTexturePartial(gl, TexturesFactory.Types.values()[i+2]));
+        for (int i = 0; i < 6; i++) {
+            list.add(new DiceTexturePartial(gl, TexturesFactory.Types.values()[i + 2]));
         }
     }
 
@@ -31,7 +28,7 @@ public class DiceTexture extends ConfigurableTexture {
         return TextureIO.PNG;
     }
 
-    public DiceTexturePartial getPartial(int i){
+    public DiceTexturePartial getPartial(int i) {
         return list.get(i);
     }
 

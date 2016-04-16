@@ -12,45 +12,45 @@ import sk.styk.martin.pv112.project.lights.Light;
 import sk.styk.martin.pv112.project.tooling.LoadUtils;
 
 /**
- *
  * @author Martin Styk
  */
 public abstract class Program {
-    
+
     protected GL3 gl;
     protected UniformManager uniformManager;
-        
+
     protected int id;
-    
-    protected Program(GL3 gl, String vertexShaderPath, String fragmentShaderPath){
+
+    protected Program(GL3 gl, String vertexShaderPath, String fragmentShaderPath) {
         this.gl = gl;
-        id = LoadUtils.loadProgram(gl,vertexShaderPath ,fragmentShaderPath);
+        id = LoadUtils.loadProgram(gl, vertexShaderPath, fragmentShaderPath);
         uniformManager = new UniformManager(this);
     }
-    
-    public int getUniformLoc(String uniformName){
+
+    public int getUniformLoc(String uniformName) {
         return uniformManager.getUniformLocation(uniformName);
     }
-    
-    protected void addUniformLocation(String... uniformName){
-        for(String actualName : uniformName){
-            uniformManager.addUniformLocation(actualName);   
+
+    protected void addUniformLocation(String... uniformName) {
+        for (String actualName : uniformName) {
+            uniformManager.addUniformLocation(actualName);
         }
     }
-    
-    public void use(){
+
+    public void use() {
         gl.glUseProgram(id);
     }
-   
-    public int getID(){
+
+    public int getID() {
         return id;
     }
-    public GL3 getGL(){
+
+    public GL3 getGL() {
         return gl;
     }
 
     public abstract void bindLight(int i, Light light);
-    
+
     public abstract void bindCamera(Camera camera);
 
     public abstract void setGlobalAmbientLight(Vec3 color);

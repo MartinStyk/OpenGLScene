@@ -19,24 +19,16 @@ import sk.styk.martin.pv112.project.lights.Light;
  */
 public class BasicProgram extends Program {
 
-    private static final String VERTEX_SHADER = "/shaders/model.vs.glsl";
-    private static final String FRAGMENT_SHADER = "/shaders/model.fs.glsl";
-
-    private static final int NUMBER_LIGHTS = 10;
-
     public static final String MODEL = "model";
     public static final String MVP = "MVP";
     public static final String N = "N";
     public static final String COLOR = "color";
-
     public static final String MATERIAL_AMBIENT_COLOR = "materialAmbientColor";
     public static final String MATERIAL_DIFFUSE_COLOR = "materialDiffuseColor";
     public static final String MATERIAL_SPECULAR_COLOR = "materialSpecularColor";
     public static final String MATERIAL_SHININESS = "materialShininess";
-
     public static final String LIGHT_GLOBAL_AMBIENT_COLOR = "lightGlobalAmbientColor";
     public static final String ALFA = "alfa";
-
     public static final String LIGHT_POSITION_BASE = "lightPosition_";
     public static final String LIGHT_AMBIENT_COLOR_BASE = "lightAmbientColor_";
     public static final String LIGHT_DIFFUSE_COLOR_BASE = "lightDiffuseColor_";
@@ -44,6 +36,9 @@ public class BasicProgram extends Program {
     public static final String LIGHT_ATTENUATION_1_BASE = "lightAttenuationConst1_";
     public static final String LIGHT_ATTENUATION_2_BASE = "lightAttenuationConst2_";
     public static final String LIGHT_ATTENUATION_3_BASE = "lightAttenuationConst3_";
+    public static final String EYE_POSITION = "eyePosition";
+    public static final String TEXTURE = "texture";
+    public static final String IS_TEXTURE = "isTexture";
 
 //    public static final String LIGHT1_POSITION = "light1Position";
 //    public static final String LIGHT1_AMBIENT_COLOR = "light1AmbientColor";
@@ -124,15 +119,11 @@ public class BasicProgram extends Program {
 //    public static final String LIGHT10_ATTENUATION_1 = "light10AttenuationConst1";
 //    public static final String LIGHT10_ATTENUATION_2 = "light10AttenuationConst2";
 //    public static final String LIGHT10_ATTENUATION_3 = "light10AttenuationConst3";
-
-
-    public static final String EYE_POSITION = "eyePosition";
-
-    public static final String TEXTURE = "texture";
-    public static final String IS_TEXTURE = "isTexture";
-
     public static final String TEXTURE_COORDINATES_MULTIPLIER = "texCoordMultiplier";
     public static final String TEXTURE_COORDINATES_OFFSET = "texCoordOffset";
+    private static final String VERTEX_SHADER = "/shaders/model.vs.glsl";
+    private static final String FRAGMENT_SHADER = "/shaders/model.fs.glsl";
+    private static final int NUMBER_LIGHTS = 10;
 
     public BasicProgram(GL3 gl) {
         super(gl, VERTEX_SHADER, FRAGMENT_SHADER);

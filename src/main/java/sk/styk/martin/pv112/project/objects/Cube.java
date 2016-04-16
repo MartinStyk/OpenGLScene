@@ -4,8 +4,6 @@ import sk.styk.martin.pv112.project.materials.Material;
 import sk.styk.martin.pv112.project.programs.Program;
 import sk.styk.martin.pv112.project.textures.ConfigurableTexture;
 
-import static com.jogamp.opengl.GL.*;
-
 /**
  * Created by Martin Styk on 07.04.2016.
  */

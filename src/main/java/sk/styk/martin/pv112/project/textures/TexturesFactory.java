@@ -15,12 +15,6 @@ public class TexturesFactory {
     private static TexturesFactory instance;
 
     private GL3 gl;
-
-    public enum Types {
-        WOOD, ROCKS, DICE1, DICE2, DICE3, DICE4, DICE5, DICE6, WALL, CARPET, WALL_COVERING, PHOTO_PERSONAL, PARQUET, RUBIC1, RUBIC2, RUBIC3, RUBIC4, RUBIC5, RUBIC6,
-        CLOCK_HAND, CLOCK, CERAMIC1, CERAMIC2, PHOTO_CIVIC, PHOTO_DOG, RADIO1, RADIO2
-    }
-
     private Texture wood;
     private Texture rocks;
     private List<Texture> dice;
@@ -37,7 +31,6 @@ public class TexturesFactory {
     private Texture ceramic2;
     private Texture photoCivic;
     private Texture photoDog;
-
     protected TexturesFactory(GL3 gl) {
         this.gl = gl;
     }
@@ -172,6 +165,11 @@ public class TexturesFactory {
         String last = type.toString().substring(5);
         int i = Integer.parseInt(last) - 1;
         return rubic.get(i);
+    }
+
+    public enum Types {
+        WOOD, ROCKS, DICE1, DICE2, DICE3, DICE4, DICE5, DICE6, WALL, CARPET, WALL_COVERING, PHOTO_PERSONAL, PARQUET, RUBIC1, RUBIC2, RUBIC3, RUBIC4, RUBIC5, RUBIC6,
+        CLOCK_HAND, CLOCK, CERAMIC1, CERAMIC2, PHOTO_CIVIC, PHOTO_DOG, RADIO1, RADIO2
     }
 
 }
