@@ -1,7 +1,7 @@
 # OpenGLScene
 Semestral project for course FI:PV112 Computer Graphics API. Scene of room with use of OpenGL3 and GLSL shaders.
 
-Features
+###Features
 * Free camera movement in room (WASD control + pressed and dragged mouse to look around)
 * 10 point lights with adjustable attenuation (M - less, N - more light)
 * Procedural textures used on walls
