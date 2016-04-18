@@ -42,7 +42,11 @@ public class MainWindow extends javax.swing.JFrame {
 
         setTitle("Projekt");
         setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
-        panel = new GLJPanel(new GLCapabilities(profile));
+        GLCapabilities capabilities =
+                new GLCapabilities(profile);
+        capabilities.setSampleBuffers(true);
+        capabilities.setNumSamples(16);
+        panel = new GLJPanel(capabilities);
         panel.setContextCreationFlags(GLContext.CTX_OPTION_DEBUG);
 
         add(panel, BorderLayout.CENTER);

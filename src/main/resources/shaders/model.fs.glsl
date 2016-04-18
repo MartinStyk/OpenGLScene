@@ -1,4 +1,5 @@
 #version 330
+#define Integral(x, p, np) ((floor(x)*(p)) + max(fract (x) - (np), 0.0))
 
 out vec4 fragColor;
 
@@ -98,11 +99,13 @@ uniform vec3 eyePosition;
 
 uniform vec3 color;
 
-uniform int isTexture;
+uniform int isTexture; // 0 for not texture, 1 for normal texture bind to "sampler2D" uniform, 2 for procedural texture computed in this shader, 3 for psychadelic texture
 uniform sampler2D texture;
 
+//Computes one final spot light with attenuation
 vec3 getLight(vec4 lightPosition, vec3 lightAmbientColor, vec3 lightDiffuseColor, vec3 lightSpecularColor,
-vec3 ambientColor, vec3 diffuseColor, vec3 specularColor, float aConst , float aLin, float aQuad, vec3 v){
+              vec3 ambientColor, vec3 diffuseColor, vec3 specularColor, float aConst , float aLin, float aQuad, vec3 v){
+
     vec3 light;
     if(lightPosition.w == 0.0) {
         light = normalize(lightPosition.xyz);
@@ -119,6 +122,20 @@ vec3 ambientColor, vec3 diffuseColor, vec3 specularColor, float aConst , float a
                                     ambientColor * lightAmbientColor) * attenuation;
 }
 
+vec3 getProceduralWallWhiteTexture(){
+float a = mod(vPosition.z, 1.0);
+if ( a < 0.8 ) {
+    return vec3(1,1,1);
+}   return vec3(1, 0.5, 0.0);
+}
+
+vec3 getProceduralWallColorTexture(){
+float a = mod(vPosition.x, 1.0);
+if ( a < 0.8 ) {
+    return vec3(1, 0.5, 0.0);
+}   return(1,1,1);
+}
+
 void main() {
 
     vec3 v = normalize(eyePosition - vPosition);
@@ -133,7 +150,13 @@ void main() {
         vec3 texture_color = texture(texture,vTex_coord).rgb;
         diffuseColor = texture_color;
         ambientColor = texture_color;
-    }
+    } else if (isTexture == 2){ //procedural wall texture
+        diffuseColor = getProceduralWallWhiteTexture();
+        ambientColor = diffuseColor;
+    } else if (isTexture == 3){   //procedural wall texture
+              diffuseColor = getProceduralWallColorTexture();
+              ambientColor = diffuseColor;
+          }
     vec3 lightFinal_1 = getLight(lightPosition_1, lightAmbientColor_1,  lightDiffuseColor_1, lightSpecularColor_1,
                         ambientColor, diffuseColor, materialSpecularColor, lightAttenuationConst1_1 , lightAttenuationConst2_1, lightAttenuationConst3_1, v);
 

@@ -481,7 +481,7 @@ public class Scene implements GLEventListener {
         float directionA = 30.0f;
         float directionB = 20.0f;
 
-        wall.setTexture(null);
+        wall.setTexture(new ProceduralWallColorTexture());
         wall.setMaterial(WallMaterial.getInstance());
         //back wall
         wall.setModel(Mat4.MAT4_IDENTITY
@@ -491,7 +491,6 @@ public class Scene implements GLEventListener {
         Mat4 mvp = projection.multiply(view).multiply(wall.getModel());
         wall.draw(mvp);
 
-        wall.setTexture(null);
         //front wall
         wall.setModel(Mat4.MAT4_IDENTITY
                 .multiply(Matrices.rotate((float) (1.5 * Math.PI), new Vec3(0, 1, 0)))
@@ -500,7 +499,7 @@ public class Scene implements GLEventListener {
         mvp = projection.multiply(view).multiply(wall.getModel());
         wall.draw(mvp);
 
-        wall.setTexture(wallCovering);
+        wall.setTexture(new ProceduralWallWhiteTexture());
         //left wall
         wall.setModel(Mat4.MAT4_IDENTITY
                 .multiply(Matrices.rotate((float) (1 * Math.PI), new Vec3(0, 1, 0)))
@@ -509,7 +508,6 @@ public class Scene implements GLEventListener {
         mvp = projection.multiply(view).multiply(wall.getModel());
         wall.draw(mvp);
 
-        wall.setTexture(null);
         //right wall
         wall.setModel(Mat4.MAT4_IDENTITY
                 .translate(new Vec3(directionB, 0.0f, 0.0f))
@@ -517,6 +515,7 @@ public class Scene implements GLEventListener {
         mvp = projection.multiply(view).multiply(wall.getModel());
         wall.draw(mvp);
 
+        wall.setTexture(null);
         //ceiling
         wall.setModel(Mat4.MAT4_IDENTITY
                 .translate(new Vec3(0.0f, CEILING_POS, 0.0f))
@@ -539,6 +538,15 @@ public class Scene implements GLEventListener {
                 .multiply(MatricesUtils.scale(directionB / 2, 0.1f, directionA / 2)));
         mvp = projection.multiply(view).multiply(wall.getModel());
         wall.draw(mvp);
+
+//        wall.setTexture();
+//        //left picture
+//        wall.setModel(Mat4.MAT4_IDENTITY
+//                .multiply(Matrices.rotate((float) (1 * Math.PI), new Vec3(0, 1, 0)))
+//                .translate(new Vec3(directionB - 0.15f, 0.0f, 0.0f))
+//                .multiply(MatricesUtils.scale(0.1f, 3.0f, 6.0f)));
+//        mvp = projection.multiply(view).multiply(wall.getModel());
+//        wall.draw(mvp);
 
         //pictures on backs wall
         wall.setMaterial(ChromeMaterial.getInstance());

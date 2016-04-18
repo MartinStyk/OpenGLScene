@@ -13,6 +13,8 @@ import sk.styk.martin.pv112.project.materials.Material;
 import sk.styk.martin.pv112.project.programs.BasicProgram;
 import sk.styk.martin.pv112.project.programs.Program;
 import sk.styk.martin.pv112.project.textures.ConfigurableTexture;
+import sk.styk.martin.pv112.project.textures.ProceduralWallColorTexture;
+import sk.styk.martin.pv112.project.textures.ProceduralWallWhiteTexture;
 import sk.styk.martin.pv112.project.tooling.Geometry;
 import sk.styk.martin.pv112.project.tooling.LoadUtils;
 
@@ -154,11 +156,17 @@ public abstract class Drawable {
         }
 
         if (texture != null) {
-            gl.glUniform1i(program.getUniformLoc(BasicProgram.IS_TEXTURE), 1);
-            texture.use(gl,
-                    program.getUniformLoc(BasicProgram.TEXTURE_COORDINATES_MULTIPLIER),
-                    program.getUniformLoc(BasicProgram.TEXTURE_COORDINATES_OFFSET),
-                    program.getUniformLoc(BasicProgram.TEXTURE));
+            if (texture instanceof ProceduralWallWhiteTexture) {
+                gl.glUniform1i(program.getUniformLoc(BasicProgram.IS_TEXTURE), 2); //procedural wall white texture
+            } else if (texture instanceof ProceduralWallColorTexture) {
+                gl.glUniform1i(program.getUniformLoc(BasicProgram.IS_TEXTURE), 3); //procedural wall color texture
+            } else{
+                gl.glUniform1i(program.getUniformLoc(BasicProgram.IS_TEXTURE), 1);
+                texture.use(gl,
+                        program.getUniformLoc(BasicProgram.TEXTURE_COORDINATES_MULTIPLIER),
+                        program.getUniformLoc(BasicProgram.TEXTURE_COORDINATES_OFFSET),
+                        program.getUniformLoc(BasicProgram.TEXTURE));
+            }
         }
 
         geometry.draw(gl);
