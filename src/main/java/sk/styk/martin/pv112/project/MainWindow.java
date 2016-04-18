@@ -43,7 +43,7 @@ public class MainWindow extends javax.swing.JFrame {
         add(panel, BorderLayout.CENTER);
 
         animator = new FPSAnimator(panel, 60, true);
-        camera = new MyCamera(new CameraBoundChecker(19.8f, 7.8f, 29.9f, -19.8f, -7.8f, -29.8f));
+        camera = new MyCamera(new CameraBoundChecker(19.4f, 7.4f, 29.4f, -19.4f, -7.4f, -29.4f));
         scene = new Scene(animator, camera);
 
         panel.addGLEventListener(scene);
