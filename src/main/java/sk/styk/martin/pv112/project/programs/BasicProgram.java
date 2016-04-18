@@ -37,7 +37,7 @@ public class BasicProgram extends Program {
     public static final String LIGHT_ATTENUATION_2_BASE = "lightAttenuationConst2_";
     public static final String LIGHT_ATTENUATION_3_BASE = "lightAttenuationConst3_";
     public static final String EYE_POSITION = "eyePosition";
-    public static final String TEXTURE = "texture";
+    public static final String TEXTURE = "textureSampler";
     public static final String IS_TEXTURE = "isTexture";
 
     public static final String TEXTURE_COORDINATES_MULTIPLIER = "texCoordMultiplier";

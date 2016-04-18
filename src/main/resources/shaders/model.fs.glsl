@@ -100,7 +100,7 @@ uniform vec3 eyePosition;
 uniform vec3 color;
 
 uniform int isTexture; // 0 for not texture, 1 for normal texture bind to "sampler2D" uniform, 2 for procedural texture computed in this shader, 3 for psychadelic texture
-uniform sampler2D texture;
+uniform sampler2D textureSampler;
 
 //Computes one final spot light with attenuation
 vec3 getLight(vec4 lightPosition, vec3 lightAmbientColor, vec3 lightDiffuseColor, vec3 lightSpecularColor,
@@ -133,7 +133,7 @@ vec3 getProceduralWallColorTexture(){
 float a = mod(vPosition.x, 1.0);
 if ( a < 0.8 ) {
     return vec3(1, 0.5, 0.0);
-}   return(1,1,1);
+}   return vec3(1,1,1);
 }
 
 void main() {
@@ -141,13 +141,12 @@ void main() {
     vec3 v = normalize(eyePosition - vPosition);
 
     // FINAL LIGHT CALCULATION
-    // CALCULATE WITH MATERIAL/TEXTURE
-
+    // CALCULATE WITH MATERIAL/TEXTURE/PROCEDURAL TEXTURE
 
     vec3 diffuseColor = materialDiffuseColor;
     vec3 ambientColor = materialAmbientColor;
     if(isTexture == 1){
-        vec3 texture_color = texture(texture,vTex_coord).rgb;
+        vec3 texture_color = texture(textureSampler,vTex_coord).rgb;
         diffuseColor = texture_color;
         ambientColor = texture_color;
     } else if (isTexture == 2){ //procedural wall texture
