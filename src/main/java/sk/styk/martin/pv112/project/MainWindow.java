@@ -19,13 +19,11 @@ public class MainWindow extends javax.swing.JFrame {
 
     public static int WINDOW_HEIGHT = 1080;
     public static int WINDOW_WIDTH = 1920;
-    private static boolean shouldMove = true;
     private GLJPanel panel;
     private Camera camera;
     private Scene scene;
     private FPSAnimator animator;
     private boolean fullscreen = false;
-    private Robot robot;
 
     /**
      * Creates new form MainWindow
@@ -33,13 +31,6 @@ public class MainWindow extends javax.swing.JFrame {
     public MainWindow() {
         initComponents();
         GLProfile profile = GLProfile.get(GLProfile.GL3);
-
-        try {
-            robot = new Robot();
-        } catch (AWTException e) {
-            e.printStackTrace();
-        }
-
         setTitle("Projekt");
         setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
         GLCapabilities capabilities =
@@ -143,9 +134,9 @@ public class MainWindow extends javax.swing.JFrame {
                 System.exit(0);
                 break;
 
-//            case KeyEvent.VK_A:
-//                toggleAnimation();
-//                break;
+            case KeyEvent.VK_Q:
+                toggleAnimation();
+                break;
 
             case KeyEvent.VK_T:
                 toggleFullScreen();
@@ -216,8 +207,4 @@ public class MainWindow extends javax.swing.JFrame {
         setVisible(true);
         animator.start();
     }
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    // End of variables declaration//GEN-END:variables
-
 }
