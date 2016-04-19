@@ -19,7 +19,7 @@ public class ClockUtils {
 
     public float getHourHandRotation() {
         int hour = LocalDateTime.now().getHour();
-        return (float) (hour * Math.PI / 6);
+        return  (float) (hour * Math.PI / 6) + getMinuteHandRotation()/12;
     }
 
     public float getSecondsHandRotation() {
