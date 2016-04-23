@@ -64,6 +64,7 @@ public class Scene implements GLEventListener {
     private Library library;
     private Lamp lamp; //not in scene now
     private Radio radio;
+    private Alfa147 alfa147;
 
     //lights
     private Light light1;
@@ -141,10 +142,10 @@ public class Scene implements GLEventListener {
 
         lamp = new Lamp(basicProgram, RubyMaterial.getInstance());
 
-        Vec3 radioPosition = new Vec3(-12f, -1.5f, 25f);
+        Vec3 radioPosition = new Vec3(-15f, -1.5f, 25f);
         radio = new Radio(basicProgram, radioPosition, camera);
         radio.setModel(Mat4.MAT4_IDENTITY.translate(radioPosition)
-                .multiply(Matrices.rotate((float) Math.PI * 1, new Vec3(0, 1, 0)))
+                .multiply(Matrices.rotate((float) Math.PI * 0.9f, new Vec3(0, 1, 0)))
                 .multiply(MatricesUtils.scale(2f, 1f, 1f)));
 
         table = new Table(basicProgram, ChromeMaterial.getInstance(), new WoodTexture(gl, GL_MIRRORED_REPEAT, GL_MIRRORED_REPEAT, GL_REPEAT, 12, -1));
@@ -171,6 +172,14 @@ public class Scene implements GLEventListener {
         clock.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(-5.0f, -5.0f, 0.0f)));
 
         box = new Box(basicProgram, ChromeMaterial.getInstance(), new WoodTexture(gl));
+
+        alfa147 = new Alfa147(basicProgram, ChromeMaterial.getInstance());
+        alfa147.setModel(Mat4.MAT4_IDENTITY
+                        .translate(new Vec3(-10, -2.4f,25f))
+                .multiply(MatricesUtils.scale(0.02f,0.02f,0.02f))
+                .multiply(Matrices.rotate((float)Math.PI / -2 , new Vec3(1,0,0)))
+                .multiply(Matrices.rotate((float)Math.PI /2  +0.1f, new Vec3(0,0,1)))
+                );
 
         library = new Library(basicProgram, ChromeMaterial.getInstance(), new WoodTexture(gl));
 
@@ -220,11 +229,6 @@ public class Scene implements GLEventListener {
         // set view transform based on camera position and orientation
         Vec3 yAxis = new Vec3(0.0f, 1.0f, 0.0f);
         Mat4 view = Matrices.lookAt(camera.getEyePosition(), camera.getEyeDirection(), yAxis);
-
-        // get projection * view (VP) matrix
-//        Mat4 vp = Mat4.MAT4_IDENTITY;
-//        vp = vp.multiply(projection);
-//        vp = vp.multiply(view);
 
         basicProgram.use();
         basicProgram.bindLight(1, light1);
@@ -286,6 +290,8 @@ public class Scene implements GLEventListener {
         //bin
         mvp = projection.multiply(view).multiply(bin.getModel());
         bin.draw(mvp);
+
+        alfa147.draw(projection.multiply(view).multiply(alfa147.getModel()));
 
         gl.glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     }
