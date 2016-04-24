@@ -123,25 +123,20 @@ vec3 getLight(vec4 lightPosition, vec3 lightAmbientColor, vec3 lightDiffuseColor
 }
 
 vec3 getProceduralWallWhiteTexture(){
-float a = mod(vPosition.z, 1.0);
-if ( a < 0.8 ) {
-    return vec3(1,1,1);
-}   return vec3(1, 0.5, 0.0);
+float factor = smoothstep(0.45,0.5,abs(fract(vPosition.z)-0.5));
+return mix(vec3(1,1,1),vec3(1, 0.5, 0.0),factor);
 }
 
 vec3 getProceduralWallColorTexture(){
-float a = mod(vPosition.x, 1.0);
-if ( a < 0.8 ) {
-    return vec3(1, 0.5, 0.0);
-}   return vec3(1,1,1);
+float factor = smoothstep(0.45,0.5,abs(fract(vPosition.x)-0.5));
+return mix(vec3(1, 0.5, 0.0),vec3(1,1,1),factor);
 }
 
 void main() {
 
     vec3 v = normalize(eyePosition - vPosition);
 
-    // FINAL LIGHT CALCULATION
-    // CALCULATE WITH MATERIAL/TEXTURE/PROCEDURAL TEXTURE
+    // CALCULATE LIGHT WITH MATERIAL/TEXTURE/PROCEDURAL TEXTURE
 
     vec3 diffuseColor = materialDiffuseColor;
     vec3 ambientColor = materialAmbientColor;
