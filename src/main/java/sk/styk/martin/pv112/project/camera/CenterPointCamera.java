@@ -113,10 +113,10 @@ public class CenterPointCamera {
     }
 
     public enum Button {
-        LEFT, RIGHT;
+        LEFT, RIGHT
     }
 
     public enum Direction {
-        FORWARD, BACK, LEFT, RIGHT;
+        FORWARD, BACK, LEFT, RIGHT
     }
 }

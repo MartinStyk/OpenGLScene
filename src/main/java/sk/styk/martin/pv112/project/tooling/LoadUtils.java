@@ -126,8 +126,7 @@ public class LoadUtils {
         URL url = Scene.class.getResource(path);
         try {
             TextureData data = TextureIO.newTextureData(gl.getGLProfile(), url, false, suffix);
-            Texture texture = new Texture(gl, data);
-            return texture;
+            return new Texture(gl, data);
         } catch (IOException ex) {
             System.err.println("File not found");
         }
