@@ -1,5 +1,7 @@
 package sk.styk.martin.pv112.project.objects;
 
+import com.hackoeur.jglm.Mat4;
+
 /**
  * Created by Martin Styk on 16.04.2016.
  */
@@ -21,4 +23,10 @@ public interface Interactive {
      * Perform interaction
      */
     void interact();
+
+    /**
+     * set viewProjection matrix
+     * @param viewProjection
+     */
+    void setViewProjection(Mat4 viewProjection);
 }

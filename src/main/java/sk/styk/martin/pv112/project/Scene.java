@@ -53,6 +53,8 @@ public class Scene implements GLEventListener {
     private Lamp lamp; //not in scene now
     private Radio radio;
     private Alfa147 alfa147;
+    private Earth earth;
+    private Lamp earthBottom;
 
     //lights
     private Light light1;
@@ -75,6 +77,7 @@ public class Scene implements GLEventListener {
     private ConfigurableTexture civicPicture;
     private ConfigurableTexture ceramicWhite;
     private ConfigurableTexture ceramicBlue;
+    private ConfigurableTexture woodTexture;
 
     // JOGL resouces
     private int joglArray; // JOGL uses own vertex array for updating GLJPanel
@@ -127,12 +130,29 @@ public class Scene implements GLEventListener {
         // clear current Vertex Array Object state
         gl.glBindVertexArray(joglArray);
 
+        //texture load
+        floorTexture = new ParquetTexture(gl, GL_MIRRORED_REPEAT, GL_REPEAT, GL_MIRRORED_REPEAT, 5, 0);
+        carpetTexture = new CarpetTexture(gl, GL_MIRRORED_REPEAT, GL_MIRRORED_REPEAT, GL_REPEAT, 12, -1);
+        wallTexture = new ProceduralWallColorTexture();
+        personalPicture = new PersonPictureTexture(gl);
+        civicPicture = new CivicPictureTexture(gl);
+        dogPicture = new DogPictureTexture(gl);
+        ceramicBlue = new Ceramic2(gl);
+        ceramicWhite = new Ceramic1(gl);
+        woodTexture = new WoodTexture(gl);
+
+
         // create geometry with fixed position
         Vec3 radioPosition = new Vec3(-15f, -1.5f, 25f);
         radio = new Radio(basicProgram, radioPosition, camera);
         radio.setModel(Mat4.MAT4_IDENTITY.translate(radioPosition)
                 .multiply(Matrices.rotate((float) Math.PI * 0.9f, SceneConstants.Y_AXIS))
                 .multiply(MatricesUtils.scale(2f, 1f, 1f)));
+
+        Vec3 earthPosition = new Vec3(-16, 0, -15);
+        earth = new Earth(basicProgram, earthPosition, camera);
+        earth.setModel(Mat4.MAT4_IDENTITY.translate(earthPosition)
+                .multiply(MatricesUtils.scale(5.5f, 5.5f, 5.5f)));
 
         table = new Table(basicProgram, ChromeMaterial.getInstance(), new WoodTexture(gl, GL_MIRRORED_REPEAT, GL_MIRRORED_REPEAT, GL_REPEAT, 12, -1));
         table.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(-14, -8, +26))
@@ -148,17 +168,19 @@ public class Scene implements GLEventListener {
                 .multiply(MatricesUtils.scale(0.1f, 0.1f, 0.1f)));
 
         alfa147 = new Alfa147(basicProgram, ChromeMaterial.getInstance());
-        alfa147.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(-10, -2.4f, 25f))
+        alfa147.setModel(Mat4.MAT4_IDENTITY
+                .translate(new Vec3(-10, -2.4f, 25f))
                 .multiply(MatricesUtils.scale(0.02f, 0.02f, 0.02f))
                 .multiply(Matrices.rotate((float) Math.PI / -2, new Vec3(1, 0, 0)))
                 .multiply(Matrices.rotate((float) Math.PI / 2 + 0.1f, new Vec3(0, 0, 1)))
         );
 
         // create geometry with position adjusted during runtime
-        box = new Box(basicProgram, ChromeMaterial.getInstance(), new WoodTexture(gl));
+        box = new Box(basicProgram, ChromeMaterial.getInstance(), woodTexture);
         dice = new Dice(basicProgram);
+        earthBottom = new Lamp(basicProgram, BlackPlastic.getInstance());//use lamp object for bottom of earth
         lamp = new Lamp(basicProgram, RubyMaterial.getInstance());
-        library = new Library(basicProgram, ChromeMaterial.getInstance(), new WoodTexture(gl));
+        library = new Library(basicProgram, ChromeMaterial.getInstance(), woodTexture);
         rubic = new RubicCube(basicProgram);
         teapot = new Teapot(basicProgram, ChromeMaterial.getInstance());
         vase = new Vase(basicProgram, PewterMaterial.getInstance(), new Ceramic1(gl));
@@ -177,18 +199,9 @@ public class Scene implements GLEventListener {
         light10 = new AttenuationLight(new Vec4(-SceneConstants.LIGHT_DIST_FROM_CENTER, SceneConstants.CEILING_LIGHT_HEIGHT, 15.0f, 1.0f));
         basicProgram.setGlobalAmbientLight(new Vec3(0.01f, 0.01f, 0.01f));
 
-        //texture load
-        floorTexture = new ParquetTexture(gl, GL_MIRRORED_REPEAT, GL_REPEAT, GL_MIRRORED_REPEAT, 5, 0);
-        carpetTexture = new CarpetTexture(gl, GL_MIRRORED_REPEAT, GL_MIRRORED_REPEAT, GL_REPEAT, 12, -1);
-        wallTexture = new ProceduralWallColorTexture();
-        personalPicture = new PersonPictureTexture(gl);
-        civicPicture = new CivicPictureTexture(gl);
-        dogPicture = new DogPictureTexture(gl);
-        ceramicBlue = new Ceramic2(gl);
-        ceramicWhite = new Ceramic1(gl);
-
         //interactive init
         interactiveList.add(radio);
+        interactiveList.add(earth);
     }
 
     @Override
@@ -259,7 +272,11 @@ public class Scene implements GLEventListener {
         //box
         drawBoxes(projection, view);
 
+        //earth
+        drawEarth(projection,view);
+
         //geometry with fixed position
+        radio.setViewProjection(projection.multiply(view)); //neccesary to set because it is interactive
         radio.draw(projection.multiply(view).multiply(radio.getModel()));
 
         table.draw(projection.multiply(view).multiply(table.getModel()));
@@ -271,8 +288,26 @@ public class Scene implements GLEventListener {
         gl.glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     }
 
+    private void drawEarth(Mat4 projection, Mat4 view) {
+        earth.setViewProjection(projection.multiply(view));
+        earth.draw(projection.multiply(view).multiply(earth.getModel()));
+
+        earthBottom.setModel(Mat4.MAT4_IDENTITY
+                .translate(new Vec3(-16, -3.5f,  -15))
+                .multiply(MatricesUtils.scale(0.025f, 2f, 0.025f))
+                .multiply(Matrices.rotate((float) (0.5f * Math.PI), SceneConstants.X_AXIS)));
+        earthBottom.draw(projection.multiply(view).multiply(earthBottom.getModel()));
+
+        earthBottom.setModel(Mat4.MAT4_IDENTITY
+                .translate(new Vec3(-16, -8, -15.5f))
+                .multiply(MatricesUtils.scale(0.1f, 0.2f, 0.1f))
+                .multiply(Matrices.rotate((float) (-0.5f * Math.PI), SceneConstants.X_AXIS)));
+        earthBottom.draw(projection.multiply(view).multiply(earthBottom.getModel()));
+    }
+
     private void drawBoxes(Mat4 projection, Mat4 view) {
 
+        box.setTexture(woodTexture);
         box.setModel(Mat4.MAT4_IDENTITY.translate(new Vec3(-17, -8, -25))
                 .multiply(Matrices.rotate((float) ((cubeRandomRotate.getRandom(8)) * Math.PI), SceneConstants.Y_AXIS))
                 .multiply(MatricesUtils.scale(0.07f, 0.07f, 0.07f)));

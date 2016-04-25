@@ -31,6 +31,7 @@ public class TexturesFactory {
     private Texture ceramic2;
     private Texture photoCivic;
     private Texture photoDog;
+    private Texture globe;
     protected TexturesFactory(GL3 gl) {
         this.gl = gl;
     }
@@ -117,6 +118,11 @@ public class TexturesFactory {
                     photoDog = LoadUtils.loadTexture(gl, DogPictureTexture.getPath(), DogPictureTexture.getType());
                 }
                 return photoDog;
+            case GLOBE:
+                if (globe == null) {
+                    globe = LoadUtils.loadTexture(gl, GlobeTexture.getPath(), GlobeTexture.getType());
+                }
+                return globe;
             default:
                 throw new IllegalArgumentException("Texture type does not exist");
         }
@@ -169,7 +175,7 @@ public class TexturesFactory {
 
     public enum Types {
         WOOD, ROCKS, DICE1, DICE2, DICE3, DICE4, DICE5, DICE6, WALL, CARPET, WALL_COVERING, PHOTO_PERSONAL, PARQUET, RUBIC1, RUBIC2, RUBIC3, RUBIC4, RUBIC5, RUBIC6,
-        CLOCK_HAND, CLOCK, CERAMIC1, CERAMIC2, PHOTO_CIVIC, PHOTO_DOG, RADIO1, RADIO2
+        CLOCK_HAND, CLOCK, CERAMIC1, CERAMIC2, PHOTO_CIVIC, PHOTO_DOG, RADIO1, RADIO2, GLOBE
     }
 
 }

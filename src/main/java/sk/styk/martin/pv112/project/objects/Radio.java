@@ -152,6 +152,7 @@ public class Radio extends Cube implements Interactive {
         gl.glGenerateMipmap(GL_TEXTURE_2D);
     }
 
+    @Override
     public void setViewProjection(Mat4 viewProjection) {
         this.viewProjection = viewProjection;
     }
