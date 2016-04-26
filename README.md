@@ -8,6 +8,7 @@ Semestral project for course FI:PV112 Computer Graphics API. Scene of room with 
 * Clock display current system time with every second tick
 * Radio plays music when camera is close to it (radio gets red) and key E is pressed
 * Rotating globe, possible stop/start rotating when camera is close, and key E is pressed
+* Toon shading, press T to activate and switch between colors
 
 ### Pictures
 ![pic1](https://raw.githubusercontent.com/MartinStyk/OpenGLScene/master/pic1.JPG)
