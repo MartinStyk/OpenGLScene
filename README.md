@@ -7,6 +7,7 @@ Semestral project for course FI:PV112 Computer Graphics API. Scene of room with 
 * Procedural textures used on walls
 * Clock display current system time with every second tick
 * Radio plays music when camera is close to it (radio gets red) and key E is pressed
+* Rotating globe, possible stop/start rotating when camera is close, and key E is pressed
 
 ### Pictures
 ![pic1](https://raw.githubusercontent.com/MartinStyk/OpenGLScene/master/pic1.JPG)
