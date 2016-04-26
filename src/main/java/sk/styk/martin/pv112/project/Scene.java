@@ -117,7 +117,8 @@ public class Scene implements GLEventListener {
         gl.glEnable(GL_DEPTH_TEST);
         gl.glEnable(GL_BLEND);
         gl.glBlendFunc(GL_ONE, GL_ZERO);
-        gl.glDisable(GL_CULL_FACE);
+        gl.glEnable(GL_CULL_FACE);
+        gl.glCullFace(GL_BACK);
 
         // load GLSL program (vertex and fragment shaders)
         basicProgram = new BasicProgram(gl);
