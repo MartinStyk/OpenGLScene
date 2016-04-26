@@ -122,6 +122,7 @@ public class Scene implements GLEventListener {
 
         // load GLSL program (vertex and fragment shaders)
         basicProgram = new BasicProgram(gl);
+        basicProgram.use();
 
         // get JOGL vertex array
         int binding[] = new int[1];
@@ -241,8 +242,6 @@ public class Scene implements GLEventListener {
 
         //CAMERA   
         basicProgram.bindCamera(camera);
-
-        gl.glUseProgram(0);
 
         // draw filled polygons or lines
         gl.glPolygonMode(GL_FRONT_AND_BACK, mode);
