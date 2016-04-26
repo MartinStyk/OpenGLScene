@@ -137,7 +137,8 @@ public class MainWindow extends javax.swing.JFrame {
                 break;
 
             case KeyEvent.VK_T:
-                toggleFullScreen();
+                //toggleFullScreen();
+                scene.toggleToonShading();
                 break;
 
             case KeyEvent.VK_F:

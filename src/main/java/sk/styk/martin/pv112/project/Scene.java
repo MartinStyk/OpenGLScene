@@ -31,6 +31,7 @@ public class Scene implements GLEventListener {
     private Camera camera;
     private int mode = GL_FILL;
     private List<Interactive> interactiveList = new ArrayList<>();
+    private int toonShading = 0;
 
     // window size
     private int width;
@@ -239,6 +240,8 @@ public class Scene implements GLEventListener {
         basicProgram.bindLight(9, light9);
         basicProgram.bindLight(10, light10);
         basicProgram.setAlpha(1.0f);
+        basicProgram.getGL().glUniform1i(basicProgram.getUniformLoc(BasicProgram.IS_TOON_SHADING), toonShading);
+
 
         //CAMERA   
         basicProgram.bindCamera(camera);
@@ -273,7 +276,7 @@ public class Scene implements GLEventListener {
         drawBoxes(projection, view);
 
         //earth
-        drawEarth(projection,view);
+        drawEarth(projection, view);
 
         //geometry with fixed position
         radio.setViewProjection(projection.multiply(view)); //neccesary to set because it is interactive
@@ -293,7 +296,7 @@ public class Scene implements GLEventListener {
         earth.draw(projection.multiply(view).multiply(earth.getModel()));
 
         earthBottom.setModel(Mat4.MAT4_IDENTITY
-                .translate(new Vec3(-16, -3.5f,  -15))
+                .translate(new Vec3(-16, -3.5f, -15))
                 .multiply(MatricesUtils.scale(0.025f, 2f, 0.025f))
                 .multiply(Matrices.rotate((float) (0.5f * Math.PI), SceneConstants.X_AXIS)));
         earthBottom.draw(projection.multiply(view).multiply(earthBottom.getModel()));
@@ -743,5 +746,9 @@ public class Scene implements GLEventListener {
 
     public void toggleFill() {
         mode = GL_FILL;
+    }
+
+    public void toggleToonShading() {
+        toonShading = (toonShading + 1) % 4;
     }
 }

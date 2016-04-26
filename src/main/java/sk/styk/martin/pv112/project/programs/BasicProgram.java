@@ -18,7 +18,7 @@ import sk.styk.martin.pv112.project.lights.Light;
  * @author Martin Styk
  */
 public class BasicProgram extends Program {
-
+    //Uunifors
     public static final String MODEL = "model";
     public static final String MVP = "MVP";
     public static final String N = "N";
@@ -39,6 +39,7 @@ public class BasicProgram extends Program {
     public static final String EYE_POSITION = "eyePosition";
     public static final String TEXTURE = "textureSampler";
     public static final String IS_TEXTURE = "isTexture";
+    public static final String IS_TOON_SHADING = "isToonShading";
 
     public static final String TEXTURE_COORDINATES_MULTIPLIER = "texCoordMultiplier";
     public static final String TEXTURE_COORDINATES_OFFSET = "texCoordOffset";
@@ -62,7 +63,8 @@ public class BasicProgram extends Program {
                 TEXTURE_COORDINATES_MULTIPLIER,
                 TEXTURE_COORDINATES_OFFSET,
                 ALFA,
-                LIGHT_GLOBAL_AMBIENT_COLOR);
+                LIGHT_GLOBAL_AMBIENT_COLOR,
+                IS_TOON_SHADING);
         for (int i = 1; i <= NUMBER_LIGHTS; i++) {
             addUniformLocation(
                     LIGHT_POSITION_BASE + i,

@@ -102,6 +102,8 @@ uniform vec3 color;
 uniform int isTexture; // 0 for not texture, 1 for normal texture bind to "sampler2D" uniform, 2 for procedural texture computed in this shader, 3 for psychadelic texture
 uniform sampler2D textureSampler;
 
+uniform int isToonShading;
+
 //Computes one final spot light with attenuation
 vec3 getLight(vec4 lightPosition, vec3 lightAmbientColor, vec3 lightDiffuseColor, vec3 lightSpecularColor,
               vec3 ambientColor, vec3 diffuseColor, vec3 specularColor, float aConst , float aLin, float aQuad, vec3 v){
@@ -131,6 +133,76 @@ vec3 getProceduralWallColorTexture(){
 float factor = smoothstep(0.45,0.5,abs(fract(vPosition.x)-0.5));
 return mix(vec3(1, 0.5, 0.0),vec3(1,1,1),factor);
 }
+
+vec3 getRedShading(vec3 light){
+ float intensity = (light.x + light.y +light.z)/3;
+         if(intensity > 0.60){
+             return vec3(1.0,0.5,0.5);
+         }
+         if(intensity > 0.5){
+                     return vec3(0.8,0.35,0.35);
+         }
+         if(intensity > 0.4){
+             return vec3(0.7,0.25,0.25);
+         }
+         if(intensity > 0.3){
+             return vec3(0.5,0.25,0.25);
+         }
+         if(intensity > 0.22){
+             return vec3(0.45,0.2,0.2);
+         }
+                 if(intensity > 0.15){
+                     return vec3(0.35,0.1,0.1);
+                 }
+         return vec3(0.3,0.1,0.1);
+ }
+
+ vec3 getBlueShading(vec3 light){
+  float intensity = (light.x + light.y +light.z)/3;
+          if(intensity > 0.60){
+              return vec3(0.5,0.5,1);
+          }
+          if(intensity > 0.5){
+                      return vec3(0.35,0.35,0.8);
+          }
+          if(intensity > 0.4){
+              return vec3(0.25,0.25,0.7);
+          }
+          if(intensity > 0.3){
+              return vec3(0.25,0.25,0.5);
+          }
+          if(intensity > 0.22){
+              return vec3(0.2,0.2,0.45);
+          }
+                  if(intensity > 0.15){
+                      return vec3(0.1,0.1,0.35);
+                  }
+          return vec3(0.1,0.1,0.3);
+  }
+
+   vec3 getGreenShading(vec3 light){
+    float intensity = (light.x + light.y +light.z)/3;
+            if(intensity > 0.60){
+                return vec3(0.5,1,0.5);
+            }
+            if(intensity > 0.5){
+                        return vec3(0.35,0.8,0.35);
+            }
+            if(intensity > 0.4){
+                return vec3(0.25,0.7,0.25);
+            }
+            if(intensity > 0.3){
+                return vec3(0.25,0.5,0.25);
+            }
+            if(intensity > 0.22){
+                return vec3(0.2,0.45,0.2);
+            }
+                    if(intensity > 0.15){
+                        return vec3(0.1,0.35,0.1);
+                    }
+            return vec3(0.1,0.3,0.1);
+    }
+
 
 void main() {
 
@@ -189,8 +261,17 @@ void main() {
                            ambientColor, diffuseColor, materialSpecularColor, lightAttenuationConst1_10 , lightAttenuationConst2_10, lightAttenuationConst3_10, v);
                                                                                                                                                                
 
-    vec3 lightFinal = lightGlobalAmbientColor * materialAmbientColor + lightFinal_1 + lightFinal_2 + lightFinal_3 +
+   vec3 lightFinal = lightGlobalAmbientColor * materialAmbientColor + lightFinal_1 + lightFinal_2 + lightFinal_3 +
                 lightFinal_4 + lightFinal_5 + lightFinal_6 + lightFinal_7 + lightFinal_8 + lightFinal_9 + lightFinal_10;
 
-    fragColor = vec4(lightFinal, alfa);
+   if(isToonShading == 0){
+        fragColor = vec4(lightFinal, alfa);
+   }else if(isToonShading == 1){//red shading
+        fragColor = vec4(getRedShading(lightFinal), alfa);
+   }else if(isToonShading == 2){//blue shading
+             fragColor = vec4(getBlueShading(lightFinal), alfa);
+   }else if(isToonShading == 3){//green shading
+                 fragColor = vec4(getGreenShading(lightFinal), alfa);
+       }
+
 }
