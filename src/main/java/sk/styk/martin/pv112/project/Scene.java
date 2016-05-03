@@ -722,13 +722,13 @@ public class Scene implements GLEventListener {
 
     //METHOD FOR INTERACTION FROM MainWindow.java
     public void moreLight() {
-        if (lightPower > 0.7) {
+        if (lightPower > 0.6) {
             lightPower -= 0.1f;
         }
     }
 
     public void lessLight() {
-        if (lightPower < 3) {
+        if (lightPower < 4) {
             lightPower += 0.1f;
         }
     }
